@@ -1,0 +1,37 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:vent-here-web}/prisma/db.sqlite",
+            "name": "Local VH sqlite"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "109.70.148.43",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "Prod Vent Here",
+            "database": "pillarstechcom_venthere",
+            "username": "vh_root",
+            "password": "7Ri4phr96336MKb"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "Test Vent Here",
+            "username": "root",
+            "database": "venthere",
+            "password": ""
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
