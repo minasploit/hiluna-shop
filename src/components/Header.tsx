@@ -2,6 +2,7 @@ import { UserRole } from "@prisma/client";
 import clsx from "clsx";
 import { type NextPage } from "next"
 import { signIn, signOut, useSession } from "next-auth/react"
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import SwitchTheme from "./Switch-theme"
@@ -55,7 +56,9 @@ const Header: NextPage = () => {
                     </div>
                 </div>
 
-                <a className="btn btn-ghost normal-case text-xl">Hiluna Art</a>
+                <Link href="/" className="btn btn-ghost normal-case text-xl">
+                    Hiluna Art
+                </Link>
 
                 <ul className="menu menu-horizontal px-1 ml-3 hidden md:flex">
                     {nav.map(item => {
@@ -108,8 +111,7 @@ const Header: NextPage = () => {
                     <div className="dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar ml-3">
                             <div className="w-10 rounded-full">
-                                {/* <img src="https://media.licdn.com/dms/image/D4E03AQG08DjJ2i61sg/profile-displayphoto-shrink_400_400/0/1673610385486?e=1682553600&v=beta&t=R3z80IwSd739WwSuVhLiYl10FG_tw4gPoipT0h6MvnU" /> */}
-                                <img src={session.user.image ?? ""} alt="user image" />
+                                <Image src={session.user.image ?? ""} alt={"user image"} width={40} height={40} />
                             </div>
                         </label>
                         <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
