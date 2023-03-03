@@ -10,10 +10,55 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// model Example {
-//     id        String   @id @default(cuid())
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
+model Artwork {
+    id               Int         @id @default(autoincrement())
+    name             String
+    imageUrl         String
+    dimension        String
+    description      String?
+    featured         Boolean
+    availableForSale Boolean
+    price            Int
+    currency         Currency    @default(ETB)
+    createdAt        DateTime    @default(now())
+    updatedAt        DateTime    @updatedAt
+    collectionId     Int?
+    media            Media[]     @relation("ArtworkAndMedia")
+    Collection       Collection? @relation(fields: [collectionId], references: [id])
+}
+
+enum Currency {
+    ETB
+    USD
+}
+
+model Media {
+    id          Int       @id @default(autoincrement())
+    name        String
+    description String
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    artworks    Artwork[] @relation("ArtworkAndMedia")
+}
+
+model Collection {
+    id          Int       @id @default(autoincrement())
+    name        String
+    description String?
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    artworks    Artwork[]
+}
+
+// model MediaOnArtworks {
+//     artwork    Artwork  @relation(fields: [artworkId], references: [id])
+//     artworkId  Int
+//     media      Media    @relation(fields: [mediaId], references: [id])
+//     mediaId    Int
+//     assignedAt DateTime @default(now())
+//     assignedBy String
+
+//     @@id([artworkId, mediaId])
 // }
 
 // Necessary for Next auth
