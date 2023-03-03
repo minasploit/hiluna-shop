@@ -4,7 +4,12 @@ const config = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    styled: true,
+    themes: ["bumblebee", "halloween"],
+    darkTheme: "halloween"
+  }
 };
 
 module.exports = config;
