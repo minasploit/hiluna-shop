@@ -1,3 +1,10 @@
+export default `
+:root {
+    --productWidth: 14%;
+    --thickness: 1vw;
+    --backgroundColor: #444444;
+}
+
 #slideshowparentcontainer {
     display: block;
     box-sizing: border-box;
@@ -549,3 +556,4 @@
     }
 
 }
+`

@@ -2,11 +2,9 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./_app";
-import { type ReactElement } from "react";
-import AppLayout from "~/components/AppLayout";
 import Artwall from "~/components/Artwall";
-
-import "~/pages/home.module.css"
+import { ReactElement } from "react";
+import AppLayout from "~/components/AppLayout";
 
 const Home: NextPageWithLayout = () => {
 	// const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -38,12 +36,6 @@ const Home: NextPageWithLayout = () => {
 		</>
 	);
 };
-
-Home.getLayout = function getLayout(page: ReactElement) {
-	return (
-		<AppLayout>{page}</AppLayout>
-	)
-}
 
 export default Home;
 

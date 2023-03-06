@@ -1,11 +1,9 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { type ReactElement } from "react";
-import AdminLayout from "~/components/AdminLayout";
 import { type NextPageWithLayout } from "~/pages/_app";
 
-const Artworks: NextPageWithLayout = () => {
+const ManageArtworks: NextPageWithLayout = () => {
 
     const session = useSession();
 
@@ -152,10 +150,4 @@ const Artworks: NextPageWithLayout = () => {
     </>
 }
 
-Artworks.getLayout = function getLayout(page: ReactElement) {
-    return (
-        <AdminLayout>{page}</AdminLayout>
-    )
-}
-
-export default Artworks
+export default ManageArtworks

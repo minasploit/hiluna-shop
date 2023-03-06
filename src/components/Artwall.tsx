@@ -1,6 +1,8 @@
 import { type NextPage } from "next";
+import useCss from "~/hooks/useCss";
 
 const Artwall: NextPage = () => {
+    const style = useCss;
 
     let lastTarget: (EventTarget & HTMLDivElement) | null = null;
 
@@ -15,13 +17,22 @@ const Artwall: NextPage = () => {
     }
 
     return <>
+        <style jsx>
+            {style}
+        </style>
+
         <div id="slideshowparentcontainer">
-            <div id="slideshowparent" className="h-[450px] md:h-0">
+            <div id="slideshowparent" className="h-[450px] md:h-0 hide">
                 <div className="slideDiv z-[2] left-0" id="slideshow-0" tabIndex={0} title="Shop for Art">
                     <div id="animationDiv" data-template-id="default">
 
                         <div id="annimationTextDiv">
-                            <img src="/Making art-home.svg" alt="" />
+                            {/* <img src="/Making art-home.svg" alt="" />
+                            <div className="-mt-52 border-2 border-white">
+                                <div className="rounded-3xl backdrop-blur-xl p-4">
+                                    hiasdkjfn
+                                </div>
+                            </div> */}
                             {/* <p id="animationTextLine001">Shop for</p>
                             <h1 id="animationTextLine002">Art Youll Love</h1>
                             <a type="button" id="animationButton" href="/wall-art">Shop Now</a>
@@ -216,10 +227,7 @@ const Artwall: NextPage = () => {
 
 
                         </div>
-
                     </div>
-
-
                 </div>
             </div>
         </div>

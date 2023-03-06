@@ -9,6 +9,7 @@ import "~/styles/globals.css";
 import { type ReactElement, type ReactNode, useState } from "react";
 import Head from "next/head";
 import { type NextPage } from "next";
+import setLayoutDefinitions from "~/components/_setLayoutDefinitions";
 
 export type NextPageWithLayout = NextPage & {
 	getLayout?: (page: ReactElement) => ReactNode;
@@ -29,7 +30,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 			})
 	);
 
-	const getLayout = Component.getLayout ?? ((page) => page);
+	setLayoutDefinitions();
+
+	const getLayout = Component.getLayout ?? (page => page);
 
 	return (
 		<>

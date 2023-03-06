@@ -8,7 +8,7 @@ export default function AppLayout({ children }: { children: ReactElement }) {
             <div className="">
                 <Header />
 
-                <div className="pt-[4.14rem]">
+                <div className="pt-[4.14rem] min-h-screen">
                     {children}
                 </div>
             </div>

@@ -1,6 +1,4 @@
-import { type ReactElement } from "react";
 import { FiArchive, FiList, FiUsers } from "react-icons/fi";
-import AdminLayout from "~/components/AdminLayout";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "../_app";
 
@@ -40,12 +38,6 @@ const AdminPage: NextPageWithLayout = () => {
             </div>
         </div>
     </>
-}
-
-AdminPage.getLayout = function getLayout(page: ReactElement) {
-    return (
-        <AdminLayout>{page}</AdminLayout>
-    )
 }
 
 export default AdminPage

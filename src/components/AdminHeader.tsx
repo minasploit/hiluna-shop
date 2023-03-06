@@ -9,23 +9,23 @@ import SwitchTheme from "./SwitchTheme"
 import { useRouter } from "next/router";
 import Head from "next/head";
 
+const nav = [
+    { id: 0, title: "Dashboard", icon: <FiHome />, href: "/admin" },
+    { id: 1, title: "Artworks", icon: <FiArchive />, href: "/admin/artworks" },
+    { id: 2, title: "Medium", icon: <FiPenTool />, href: "/admin/medium" },
+    { id: 3, title: "Collections", icon: <FiList />, href: "/admin/collections" },
+    // {
+    //     id: 4, title: "Item 3", href: "item3",
+    //     children: [
+    //         { id: 1, title: "Item 1", href: "item1" },
+    //         { id: 2, title: "Item 2", href: "item2" }
+    //     ]
+    // },
+]
+
 const AdminHeader: NextPage = () => {
 
     const router = useRouter();
-
-    const nav = [
-        { id: 0, title: "Dashboard", icon: <FiHome />, href: "/admin" },
-        { id: 1, title: "Artworks", icon: <FiArchive />, href: "/admin/artworks" },
-        { id: 2, title: "Medium", icon: <FiPenTool />, href: "/admin/medium" },
-        { id: 3, title: "Collections", icon: <FiList />, href: "/admin/collections" },
-        // {
-        //     id: 4, title: "Item 3", href: "item3",
-        //     children: [
-        //         { id: 1, title: "Item 1", href: "item1" },
-        //         { id: 2, title: "Item 2", href: "item2" }
-        //     ]
-        // },
-    ]
 
     const { data: session } = useSession();
     const [top, setTop] = useState(true);
@@ -43,7 +43,7 @@ const AdminHeader: NextPage = () => {
         <Head>
             <title>Manage - Hiluna Art</title>
         </Head>
-        
+
         <div className={clsx("navbar fixed z-10 backdrop-blur-lg border-t-8 border-primary", !top && `shadow`)}>
             <div className="flex-1">
                 <div className="navbar-start block md:hidden">

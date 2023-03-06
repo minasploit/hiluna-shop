@@ -1,5 +1,4 @@
-import { useState, type ReactElement } from "react";
-import AdminLayout from "~/components/AdminLayout";
+import { useState } from "react";
 import { type NextPageWithLayout } from "~/pages/_app";
 import 'react-quill/dist/quill.snow.css'
 import dynamic from "next/dynamic";
@@ -107,12 +106,6 @@ const NewArtwork: NextPageWithLayout = () => {
             </div>
         </div>
     </>
-}
-
-NewArtwork.getLayout = function getLayout(page: ReactElement) {
-    return (
-        <AdminLayout>{page}</AdminLayout>
-    )
 }
 
 export default NewArtwork

@@ -4,20 +4,20 @@ import { type NextPage } from "next"
 import { signIn, signOut, useSession } from "next-auth/react"
 import Image from "next/image";
 import Link from "next/link";
-import { useTop } from "~/hooks/UseTop";
+import { useTop } from "~/hooks/useTop";
 import SwitchTheme from "./SwitchTheme"
 
 const nav = [
     { id: 0, title: "Manage Site", href: "admin" },
-    { id: 1, title: "Item 1", href: "item1" },
-    { id: 2, title: "Item 2", href: "item2" },
-    {
-        id: 3, title: "Item 3", href: "item3",
-        children: [
-            { id: 1, title: "Item 1", href: "item1" },
-            { id: 2, title: "Item 2", href: "item2" }
-        ]
-    },
+    { id: 1, title: "Artworks", href: "artworks" },
+    { id: 2, title: "Collections", href: "collections" },
+    // {
+    //     id: 3, title: "Item 3", href: "item3",
+    //     children: [
+    //         { id: 1, title: "Item 1", href: "item1" },
+    //         { id: 2, title: "Item 2", href: "item2" }
+    //     ]
+    // },
 ]
 
 const Header: NextPage = () => {
@@ -34,7 +34,7 @@ const Header: NextPage = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
                         </label>
                         <ul tabIndex={0} className="menu menu-compact dropdown-content bg-base-100 mt-3 p-2 shadow rounded-box w-52">
-                            <li><SwitchTheme /></li>
+                            <li key="switchTheme"><SwitchTheme /></li>
                             {nav.map(item => {
                                 if (item.id == 0 && session?.user.role != UserRole.ADMIN)
                                     return <></>
@@ -59,17 +59,17 @@ const Header: NextPage = () => {
                         return <li key={item.id}>
                             <Link href={item.href}>
                                 {item.title}
-                                {item.children &&
+                                {/* {item.children &&
                                     <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
-                                }
+                                } */}
                             </Link>
-                            {item.children &&
+                            {/* {item.children &&
                                 <ul className="p-2 shadow-lg bg-base-100">
                                     {item.children?.map(child => (
                                         <li key={child.id}><Link href={child.href}>{child.title}</Link></li>
                                     ))}
                                 </ul>
-                            }
+                            } */}
                         </li>
                     })}
                 </ul>
