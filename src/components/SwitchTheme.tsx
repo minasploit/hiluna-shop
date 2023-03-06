@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { FiMoon, FiSun } from "react-icons/fi";
 import { useLocalStorage } from "usehooks-ts";
 
-const lightTheme = "bumblebee";
-const darkTheme = "halloween";
+const lightTheme = "garden";
+const darkTheme = "dark";
 
 const SwitchTheme = () => {
     const [theme, setTheme] = useLocalStorage("theme", lightTheme);

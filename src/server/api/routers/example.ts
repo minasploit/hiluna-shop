@@ -4,6 +4,7 @@ import {
 	createTRPCRouter,
 	publicProcedure,
 	protectedProcedure,
+	adminProcedure,
 } from "~/server/api/trpc";
 
 export const exampleRouter = createTRPCRouter({
@@ -15,11 +16,7 @@ export const exampleRouter = createTRPCRouter({
 			};
 		}),
 
-	getAll: publicProcedure.query(({ ctx }) => {
-		return ctx.prisma.example.findMany();
-	}),
-
-	getSecretMessage: protectedProcedure.query(() => {
+	getSecretMessage: adminProcedure.query(() => {
 		return "you can now see this secret message!";
 	}),
 });

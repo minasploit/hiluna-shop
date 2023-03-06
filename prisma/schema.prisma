@@ -11,20 +11,23 @@ datasource db {
 }
 
 model Artwork {
-    id               Int         @id @default(autoincrement())
+    id               Int          @id @default(autoincrement())
     name             String
     imageUrl         String
     dimension        String
-    description      String?
+    description      String       @db.Text
     featured         Boolean
     availableForSale Boolean
     price            Int
-    currency         Currency    @default(ETB)
-    createdAt        DateTime    @default(now())
-    updatedAt        DateTime    @updatedAt
+    currency         Currency     @default(ETB)
+    orientation      Orientation?
     collectionId     Int?
-    media            Media[]     @relation("ArtworkAndMedia")
-    Collection       Collection? @relation(fields: [collectionId], references: [id])
+    createdById      String
+    createdAt        DateTime     @default(now())
+    updatedAt        DateTime     @updatedAt
+    Collection       Collection?  @relation(fields: [collectionId], references: [id])
+    createdBy        User         @relation(fields: [createdById], references: [id])
+    media            Media[]      @relation("ArtworkAndMedia")
 }
 
 enum Currency {
@@ -32,10 +35,15 @@ enum Currency {
     USD
 }
 
+enum Orientation {
+    Portrait
+    Landscape
+}
+
 model Media {
     id          Int       @id @default(autoincrement())
     name        String
-    description String
+    description String?   @db.Text
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
     artworks    Artwork[] @relation("ArtworkAndMedia")
@@ -44,22 +52,11 @@ model Media {
 model Collection {
     id          Int       @id @default(autoincrement())
     name        String
-    description String?
+    description String?   @db.Text
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
     artworks    Artwork[]
 }
-
-// model MediaOnArtworks {
-//     artwork    Artwork  @relation(fields: [artworkId], references: [id])
-//     artworkId  Int
-//     media      Media    @relation(fields: [mediaId], references: [id])
-//     mediaId    Int
-//     assignedAt DateTime @default(now())
-//     assignedBy String
-
-//     @@id([artworkId, mediaId])
-// }
 
 // Necessary for Next auth
 model Account {
@@ -89,14 +86,15 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    role          UserRole  @default(USER)
-    accounts      Account[]
-    sessions      Session[]
+    id              String    @id @default(cuid())
+    name            String?
+    email           String?   @unique
+    emailVerified   DateTime?
+    image           String?
+    role            UserRole  @default(USER)
+    accounts        Account[]
+    sessions        Session[]
+    createdArtworks Artwork[]
 }
 
 enum UserRole {

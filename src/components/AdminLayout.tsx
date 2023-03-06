@@ -1,7 +1,7 @@
 import { UserRole } from "@prisma/client";
 import { signIn, useSession } from "next-auth/react";
 import type { ReactElement } from "react";
-import Header from "./Header";
+import AdminHeader from "./AdminHeader";
 import { LoadingSpinner } from "./LoadingSpinner";
 
 export default function AdminLayout({ children }: { children: ReactElement }) {
@@ -24,9 +24,9 @@ export default function AdminLayout({ children }: { children: ReactElement }) {
     return (
         <>
             <div className="">
-                <Header />
+                <AdminHeader />
 
-                <div className="pt-[4.14rem]">
+                <div className="pt-[4.64rem] min-h-screen md:px-12 lg:px-32">
                     {children}
                 </div>
             </div>

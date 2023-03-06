@@ -27,6 +27,12 @@ const config = {
 				hostname: "*.googleusercontent.com",
 				pathname: "/**",
 				port: ""
+			},
+			{
+				protocol: "https",
+				hostname: "*.fineartamerica.com",
+				pathname: "/**",
+				port: ""
 			}
 		]
 	}

@@ -21,15 +21,16 @@ const Artwall: NextPage = () => {
                     <div id="animationDiv" data-template-id="default">
 
                         <div id="annimationTextDiv">
-                            <p id="animationTextLine001">Shop for</p>
+                            <img src="/Making art-home.svg" alt="" />
+                            {/* <p id="animationTextLine001">Shop for</p>
                             <h1 id="animationTextLine002">Art Youll Love</h1>
                             <a type="button" id="animationButton" href="/wall-art">Shop Now</a>
 
                             <div id="animationButtonTemplateContainerDiv">
-                                {/* <button type="button" class="buttonTemplate" onclick="changeTemplate(event);" data-target-template-id="wallArt" data-selected="1" style="display: inline-block;">Featured Artwork</button>
+                                <button type="button" class="buttonTemplate" onclick="changeTemplate(event);" data-target-template-id="wallArt" data-selected="1" style="display: inline-block;">Featured Artwork</button>
                                 <button type="button" class="buttonTemplate" onclick="changeTemplate(event);" data-target-template-id="photography" style="display: inline-block;">Photography</button>
-                                <button type="button" class="buttonTemplate" onclick="changeTemplate(event);" data-target-template-id="sportsIllustrated" style="display: inline-block;">Sports Illustrated</button> */}
-                            </div>
+                                <button type="button" class="buttonTemplate" onclick="changeTemplate(event);" data-target-template-id="sportsIllustrated" style="display: inline-block;">Sports Illustrated</button>
+                            </div> */}
 
                         </div>
 
