@@ -40,7 +40,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                             <div className="flex items-center space-x-3">
                                 <div className="avatar">
                                     <div className="mask mask-squircle w-12 h-12">
-                                        <img src={session.data?.user.image} />
+                                        <img src={session.data?.user.image ?? ""} />
                                     </div>
                                 </div>
                                 <div>
@@ -65,7 +65,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                             <div className="flex items-center space-x-3">
                                 <div className="avatar">
                                     <div className="mask mask-squircle w-12 h-12">
-                                        <img src={session.data?.user.image} />
+                                        <img src={session.data?.user.image ?? ""} />
                                     </div>
                                 </div>
                                 <div>
@@ -90,7 +90,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                             <div className="flex items-center space-x-3">
                                 <div className="avatar">
                                     <div className="mask mask-squircle w-12 h-12">
-                                        <img src={session.data?.user.image} />
+                                        <img src={session.data?.user.image ?? ""} />
                                     </div>
                                 </div>
                                 <div>
@@ -115,7 +115,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                             <div className="flex items-center space-x-3">
                                 <div className="avatar">
                                     <div className="mask mask-squircle w-12 h-12">
-                                        <img src={session.data?.user.image} />
+                                        <img src={session.data?.user.image ?? ""} />
                                     </div>
                                 </div>
                                 <div>

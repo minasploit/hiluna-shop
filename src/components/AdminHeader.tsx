@@ -8,12 +8,13 @@ import { FiArchive, FiArrowLeft, FiHome, FiList, FiPenTool } from "react-icons/f
 import SwitchTheme from "./SwitchTheme"
 import { useRouter } from "next/router";
 import Head from "next/head";
+import crypto from "crypto"
 
 const nav = [
     { id: 0, title: "Dashboard", icon: <FiHome />, href: "/admin" },
-    { id: 1, title: "Artworks", icon: <FiArchive />, href: "/admin/artworks" },
-    { id: 2, title: "Medium", icon: <FiPenTool />, href: "/admin/medium" },
-    { id: 3, title: "Collections", icon: <FiList />, href: "/admin/collections" },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", icon: <FiArchive />, href: "/admin/artworks" },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Medium", icon: <FiPenTool />, href: "/admin/medium" },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", icon: <FiList />, href: "/admin/collections" },
     // {
     //     id: 4, title: "Item 3", href: "item3",
     //     children: [

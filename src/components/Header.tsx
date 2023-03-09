@@ -6,11 +6,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTop } from "~/hooks/useTop";
 import SwitchTheme from "./SwitchTheme"
+import crypto from "crypto"
+import { Fragment } from "react";
 
 const nav = [
-    { id: 0, title: "Manage Site", href: "admin" },
-    { id: 1, title: "Artworks", href: "artworks" },
-    { id: 2, title: "Collections", href: "collections" },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Manage Site", href: "admin", adminOnly: true },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", href: "artworks", adminOnly: false },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", href: "collections", adminOnly: false },
     // {
     //     id: 3, title: "Item 3", href: "item3",
     //     children: [
@@ -36,8 +38,8 @@ const Header: NextPage = () => {
                         <ul tabIndex={0} className="menu menu-compact dropdown-content bg-base-100 mt-3 p-2 shadow rounded-box w-52">
                             <li key="switchTheme"><SwitchTheme /></li>
                             {nav.map(item => {
-                                if (item.id == 0 && session?.user.role != UserRole.ADMIN)
-                                    return <></>
+                                if (item.adminOnly && session?.user.role != UserRole.ADMIN)
+                                    return <Fragment key={item.id}></Fragment>
 
                                 return <li key={item.id}>
                                     <Link href={item.href}>{item.title}</Link>
@@ -53,8 +55,8 @@ const Header: NextPage = () => {
 
                 <ul className="menu menu-horizontal px-1 ml-3 hidden md:flex">
                     {nav.map(item => {
-                        if (item.id == 0 && session?.user.role != UserRole.ADMIN)
-                            return <></>
+                        if (item.adminOnly && session?.user.role != UserRole.ADMIN)
+                            return <Fragment key={item.id}></Fragment>
 
                         return <li key={item.id}>
                             <Link href={item.href}>

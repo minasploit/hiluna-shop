@@ -3,11 +3,17 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./_app";
 import Artwall from "~/components/Artwall";
-import { ReactElement } from "react";
-import AppLayout from "~/components/AppLayout";
 
 const Home: NextPageWithLayout = () => {
-	// const hello = api.example.hello.useQuery({ text: "from tRPC" });
+	const mediaMutation = api.media.create.useMutation()
+	const medium = api.media.list.useQuery();
+
+	function addMedia() {
+		mediaMutation.mutate({
+			name: "Minasie",
+			description: "Dagem"
+		});
+	}
 
 	return (
 		<>
@@ -23,6 +29,14 @@ const Home: NextPageWithLayout = () => {
 							<img src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/2/dancing-queen-balazs-solti.jpg"
 								alt="" className="h-max rounded-xl" />
 						</div>
+						<ul>
+							{
+								medium.data?.map((media) => (
+									<li key={media.id}>{media.name}</li>
+								))
+							}
+						</ul>
+						<button className="btn btn-primary" onClick={addMedia}>hi</button>
 						<div className="col-span-2 grid gap-6 grid-rows-4">
 							<p className="row-span-1 flex items-center justify-center text-3xl">Portrait and Landscape</p>
 							<div className="row-span-3">

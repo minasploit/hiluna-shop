@@ -7,11 +7,13 @@ import ManageArtworks from "~/pages/admin/artworks";
 import NewArtwork from "~/pages/admin/artworks/new";
 import Artworks from "~/pages/artworks";
 import Collections from "~/pages/collections";
+import Form from "~/pages/form";
 
 const UserLayoutPages = [
     Home,
     Artworks,
     Collections,
+    Form
 ];
 
 const AdminLayoutPages = [
