@@ -9,7 +9,7 @@ const SwitchTheme = () => {
     const [theme, setTheme] = useLocalStorage("theme", lightTheme);
 
     const toggleTheme = () => {
-        setTheme(theme === darkTheme ? lightTheme : darkTheme);
+        setTheme(theme === darkTheme ? lightTheme : lightTheme);
     };
 
     useEffect(() => {

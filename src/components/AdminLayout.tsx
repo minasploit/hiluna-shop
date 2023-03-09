@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: ReactElement }) {
     if (session.status === 'loading') {
         return (
             <div className="pb-20 flex h-screen justify-center items-center">
-                <LoadingSpinner className="h-16 w-16 text-blue-700" />
+                <LoadingSpinner className="h-16 w-16 text-primary" />
             </div>
         );
     }
