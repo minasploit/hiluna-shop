@@ -33,6 +33,12 @@ const config = {
 				hostname: "*.fineartamerica.com",
 				pathname: "/**",
 				port: ""
+			},
+			{
+				protocol: "https",
+				hostname: "*.googleapis.com",
+				pathname: "/**",
+				port: ""
 			}
 		]
 	}
