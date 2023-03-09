@@ -12,6 +12,9 @@ import Field from "~/components/form/Field";
 import clsx from "clsx";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
+import { useState } from "react";
+import { ref, uploadBytesResumable, getDownloadURL, uploadBytes } from "firebase/storage";
+import { storage } from "firebaseConfig";
 
 const artworkFields: FieldAttributes[] = [
     {
@@ -87,21 +90,46 @@ const NewArtwork: NextPageWithLayout = () => {
 
     const artworkMutation = api.artwork.create.useMutation();
 
+    const [imageFile, setImageFile] = useState<File>()
+
     type AddArtworkFormSchemaType = z.infer<typeof AddArtworkFormSchema>;
     const artworkForm = useForm<AddArtworkFormSchemaType>({
         resolver: zodResolver(AddArtworkFormSchema),
     });
 
+    const handleSelectedFile = (files: FileList | null) => {
+        if (files && files[0] && files[0].size < 10000000) {
+            setImageFile(files[0])
+
+            console.log(files[0])
+        } else {
+            alert('File size to large')
+        }
+    }
+
     const onSubmit: SubmitHandler<AddArtworkFormSchemaType> = async (data) => {
         const toastId = toast.loading("Saving...");
 
         try {
-            const res = await artworkMutation.mutateAsync(data);
-            console.log(res);
+            if (imageFile) {
+                const name = imageFile.name
+                const storageRef = ref(storage, `image/${name}`)
 
-            artworkForm.reset(res);
 
-            toast.success("Artwork added.", { id: toastId });
+                const uploadedFile = await uploadBytes(storageRef, imageFile)
+                const url = await getDownloadURL(uploadedFile.ref)
+
+                const res = await artworkMutation.mutateAsync({
+                    ...data,
+                    imageUrl: url
+                });
+
+                artworkForm.reset(res);
+
+                toast.success("Artwork added.", { id: toastId });
+            } else {
+                alert('File not found')
+            }
         } catch {
             toast.success("Error saving artwork...", { id: toastId });
         }
@@ -119,6 +147,14 @@ const NewArtwork: NextPageWithLayout = () => {
                     <FormProvider {...artworkForm}>
                         <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
+                                <div className="form-control w-full col-span-6">
+                                    <label className="label">
+                                        <span className="label-text">Pick an image for the artwork</span>
+                                    </label>
+                                    <input type="file" accept="image/*" className="file-input file-input-bordered w-full"
+                                        name="imageUrl" onChange={(files) => handleSelectedFile(files.target.files)} required />
+                                </div>
+
                                 {artworkFields.map((field) => (
                                     <div className={clsx("col-span-6", field.name != "description" && "sm:col-span-3")} key={field.id}>
                                         <Field {...field} />

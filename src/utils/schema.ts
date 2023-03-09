@@ -5,7 +5,7 @@ export const AddMediaFormSchema = z.object({
     description: z.string().min(2),
 })
 
-export const AddArtworkFormSchema = z.object({
+const AddArtworkSharedSchema = {
     name: z.string().min(2),
     description: z.string().min(2),
     dimension: z.string().min(2),
@@ -15,4 +15,11 @@ export const AddArtworkFormSchema = z.object({
     currency: z.enum(["ETB", "USD"]).default("ETB"),
     collectionId: z.number().nullable(),
     orientation: z.enum(["Portrait", "Landscape"]).nullable()
+}
+
+export const AddArtworkSchema = z.object({
+    ...AddArtworkSharedSchema,
+    imageUrl: z.string().min(2),
 })
+
+export const AddArtworkFormSchema = z.object(AddArtworkSharedSchema)
