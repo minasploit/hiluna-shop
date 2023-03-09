@@ -136,11 +136,11 @@ const NewArtwork: NextPageWithLayout = () => {
     };
 
     return <>
-        <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6 md:mt-8">
+        <div className="card shadow px-4 py-5 sm:rounded-lg sm:p-6 md:mt-8">
             <div className="md:grid md:grid-cols-3 md:gap-6">
                 <div className="md:col-span-1">
-                    <h3 className="text-lg font-medium leading-6 text-gray-900">New artwork</h3>
-                    <p className="mt-1 text-sm text-gray-500">Show your art to the world</p>
+                    <h3 className="text-lg font-medium leading-6">New artwork</h3>
+                    <p className="mt-1 text-sm">Show your art to the world</p>
                 </div>
 
                 <div className="mt-5 md:mt-0 md:col-span-2">
@@ -166,13 +166,13 @@ const NewArtwork: NextPageWithLayout = () => {
                                 <button
                                     type="button"
                                     disabled={artworkForm.formState.isSubmitting}
-                                    className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    className="btn btn-ghost">
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={artworkForm.formState.isSubmitting}
-                                    className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    className="ml-3 btn btn-primary">
                                     {artworkForm.formState.isSubmitting ? "Saving..." : "Save"}
                                 </button>
                             </div>

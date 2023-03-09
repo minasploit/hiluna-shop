@@ -3,7 +3,7 @@ import { FiMoon, FiSun } from "react-icons/fi";
 import { useLocalStorage } from "usehooks-ts";
 
 const lightTheme = "garden";
-const darkTheme = "dark";
+const darkTheme = "halloween";
 
 const SwitchTheme = () => {
     const [theme, setTheme] = useLocalStorage("theme", lightTheme);
