@@ -46,8 +46,8 @@ const AdminHeader: NextPage = () => {
         </Head>
 
         <div className={clsx("navbar fixed z-10 backdrop-blur-lg border-t-8 border-primary", !top && `shadow`)}>
-            <div className="flex-1">
-                <div className="navbar-start block md:hidden">
+            <div className="flex-1 justify-between">
+                <div className="block md:hidden">
                     <div className="dropdown">
                         <label tabIndex={0} className="btn btn-ghost btn-circle">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
@@ -88,37 +88,39 @@ const AdminHeader: NextPage = () => {
                         </li>
                     ))}
                 </ul>
-            </div>
-            <div className="flex-none">
-                <div className="hidden sm:block">
-                    <SwitchTheme />
-                </div>
 
-                {
-                    session &&
-                    <div className="dropdown dropdown-end">
-                        <label tabIndex={0} className="btn btn-ghost btn-circle avatar ml-3">
-                            <div className="w-10 rounded-full">
-                                <Image src={session.user.image ?? ""} alt={"user image"} width={40} height={40} />
-                            </div>
-                        </label>
-                        <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>
-                                <a className="justify-between">
-                                    Profile
-                                    <span className="badge">New</span>
-                                </a>
-                            </li>
-                            <li><a>Settings</a></li>
-                            <li><a onClick={() => void signOut({ redirect: false })}>Logout</a></li>
-                        </ul>
+                <div className="hidden md:block md:flex-1"></div>
+
+                <div className="flex">
+                    <div className="hidden sm:block">
+                        <SwitchTheme />
                     </div>
-                }
-                {
-                    !session &&
-                    <button className="btn btn-ghost" onClick={() => void signIn()}>Login</button>
-                }
 
+                    {
+                        session &&
+                        <div className="dropdown dropdown-end">
+                            <label tabIndex={0} className="btn btn-ghost btn-circle avatar ml-3">
+                                <div className="w-10 rounded-full">
+                                    <Image src={session.user.image ?? ""} alt={"user image"} width={40} height={40} />
+                                </div>
+                            </label>
+                            <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                                <li>
+                                    <a className="justify-between">
+                                        Profile
+                                        <span className="badge">New</span>
+                                    </a>
+                                </li>
+                                <li><a>Settings</a></li>
+                                <li><a onClick={() => void signOut({ redirect: false })}>Logout</a></li>
+                            </ul>
+                        </div>
+                    }
+                    {
+                        !session &&
+                        <button className="btn btn-ghost" onClick={() => void signIn()}>Login</button>
+                    }
+                </div>
             </div>
         </div>
     </>
