@@ -13,7 +13,7 @@ import clsx from "clsx";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
-import { ref, uploadBytesResumable, getDownloadURL, uploadBytes } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from "firebaseConfig";
 
 const artworkFields: FieldAttributes[] = [

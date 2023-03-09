@@ -1,4 +1,4 @@
-export default `
+const css = `
 :root {
     --productWidth: 14%;
     --thickness: 1vw;
@@ -557,3 +557,5 @@ export default `
 
 }
 `
+
+export default css

@@ -3,7 +3,6 @@ import { z } from "zod";
 import {
 	createTRPCRouter,
 	publicProcedure,
-	protectedProcedure,
 	adminProcedure,
 } from "~/server/api/trpc";
 

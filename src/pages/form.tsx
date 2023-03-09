@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
+import { useForm, FormProvider, type SubmitHandler, type FieldValues } from "react-hook-form";
 import Field from "~/components/form/Field";
 import type FieldAttributes from "~/components/form/FieldAttributes";
 import { FieldType } from "~/components/form/FieldAttributes";
@@ -37,7 +37,7 @@ const formSchema: FieldAttributes[] = [
 const Form: NextPageWithLayout = () => {
     const form = useForm();
 
-    const onSubmitHandler: SubmitHandler<any> = (values: any) => {
+    const onSubmitHandler: SubmitHandler<FieldValues> = (values: unknown) => {
         console.log(`Submitted`);
         console.log(values);
     };
