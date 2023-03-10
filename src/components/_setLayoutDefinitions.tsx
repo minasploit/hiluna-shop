@@ -8,7 +8,6 @@ import ManageArtworks from "~/pages/admin/artworks";
 import NewArtwork from "~/pages/admin/artworks/new";
 import Artworks from "~/pages/artworks";
 import Collections from "~/pages/collections";
-import Form from "~/pages/form";
 import ManageMedium from "~/pages/admin/medium";
 import NewMedium from "~/pages/admin/medium/new";
 import EditMedium from "~/pages/admin/medium/[id]";
@@ -16,12 +15,13 @@ import ManageCollection from "~/pages/admin/collections";
 import NewCollection from "~/pages/admin/collections/new";
 import EditCollection from "~/pages/admin/collections/[id]";
 import EditArtwork from "~/pages/admin/artworks/[id]";
+import ArtworkDetail from "~/pages/artworks/[id]";
 
 const UserLayoutPages = [
     Home,
     Artworks,
+    ArtworkDetail,
     Collections,
-    Form
 ];
 
 const AdminLayoutPages = [

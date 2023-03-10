@@ -190,7 +190,8 @@ const EditArtwork: NextPageWithLayout = () => {
                                         <span className="label-text">Pick an image for the artwork</span>
                                     </label>
                                     <input type="file" accept="image/*" className="file-input file-input-bordered file-input-primary w-full"
-                                        name="imageUrl" onChange={(files) => handleSelectedFile(files.target.files)} />
+                                        name="imageUrl" onChange={(files) => handleSelectedFile(files.target.files)}
+                                        disabled={artworkForm.formState.isSubmitting} />
                                 </div>
 
                                 {artworkFields.map((field) => (
