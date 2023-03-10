@@ -72,7 +72,7 @@ const EditMedium: NextPageWithLayout = () => {
         <div className="card shadow px-4 py-5 sm:rounded-lg sm:p-6 md:mt-8">
             <div className="md:grid md:grid-cols-3 md:gap-6">
                 <div className="md:col-span-1">
-                    <h3 className="text-lg font-medium leading-6">New media</h3>
+                    <h3 className="text-lg font-medium leading-6">Edit media</h3>
                 </div>
 
                 <div className="mt-5 md:mt-0 md:col-span-2">

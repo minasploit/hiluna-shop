@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { type CheckboxFieldAttributes } from "./FieldAttributes";
 
 const CheckboxField: React.FC<CheckboxFieldAttributes> = ({ label, name, type, defaultValue }) => {
     const form = useFormContext();
+
+    useEffect(() => {
+        form.setValue(name, defaultValue);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [defaultValue]);
 
     return (
         <>

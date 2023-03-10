@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useFormContext } from "react-hook-form";
 import { type SelectFieldAttributes } from "./FieldAttributes";
 
 const SelectField: React.FC<SelectFieldAttributes> = ({ label, name, options, defaultValue, valueType }) => {
 	const form = useFormContext();
+
+	useEffect(() => {
+		form.setValue(name, defaultValue);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [defaultValue]);
 
 	return (
 		<>
@@ -16,7 +21,7 @@ const SelectField: React.FC<SelectFieldAttributes> = ({ label, name, options, de
 					{...form.register(name, { valueAsNumber: valueType == "number" })}
 					id={name} defaultValue={defaultValue}
 					disabled={form.formState.isSubmitting}>
-						
+
 					{options.map((option) => (
 						<option key={option.value} value={option.value}>
 							{option.label}

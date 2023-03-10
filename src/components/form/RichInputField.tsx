@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { type RichInputFieldAttributes } from "./FieldAttributes";
 
@@ -7,6 +7,11 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const RichInputField: React.FC<RichInputFieldAttributes> = ({ label, name, defaultValue }) => {
     const form = useFormContext();
+
+    useEffect(() => {
+        form.setValue(name, defaultValue);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [defaultValue]);
 
     return (
         <>
