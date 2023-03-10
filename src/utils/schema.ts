@@ -26,3 +26,13 @@ export const EditMediaFormSchema = z.object({
     id: z.number(),
     ...MediaSharedSchema
 })
+
+const CollectionSharedSchema = {
+    name: z.string().min(2),
+    description: z.string().nullable(),
+}
+export const AddCollectionFormSchema = z.object(CollectionSharedSchema)
+export const EditCollectionFormSchema = z.object({
+    id: z.number(),
+    ...CollectionSharedSchema
+})

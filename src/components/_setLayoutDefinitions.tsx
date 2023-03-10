@@ -12,6 +12,9 @@ import Form from "~/pages/form";
 import ManageMedium from "~/pages/admin/medium";
 import NewMedium from "~/pages/admin/medium/new";
 import EditMedium from "~/pages/admin/medium/[id]";
+import ManageCollection from "~/pages/admin/collections";
+import NewCollection from "~/pages/admin/collections/new";
+import EditCollection from "~/pages/admin/collections/[id]";
 
 const UserLayoutPages = [
     Home,
@@ -26,7 +29,10 @@ const AdminLayoutPages = [
     NewArtwork,
     ManageMedium,
     NewMedium,
-    EditMedium
+    EditMedium,
+    ManageCollection,
+    NewCollection,
+    EditCollection
 ];
 
 export default function setLayoutDefinitions() {
