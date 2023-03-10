@@ -3,8 +3,8 @@ import { type NextPageWithLayout } from "./_app";
 import Artwall from "~/components/Artwall";
 
 const Home: NextPageWithLayout = () => {
-	const mediaMutation = api.media.create.useMutation()
-	const medium = api.media.list.useQuery();
+	const mediaMutation = api.medium.create.useMutation()
+	const medium = api.medium.list.useQuery();
 
 	function addMedia() {
 		mediaMutation.mutate({

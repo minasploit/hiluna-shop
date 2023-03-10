@@ -30,20 +30,20 @@ const ManageMedium: NextPageWithLayout = () => {
             <title>Manage Medium - Hiluna Art</title>
         </Head>
 
-        <input type="checkbox" id="my-modal-4" className="modal-toggle" />
-        <label htmlFor="my-modal-4" className="modal cursor-pointer modal-bottom sm:modal-middle">
+        <input type="checkbox" id="delete-modal" className="modal-toggle" />
+        <label htmlFor="delete-modal" className="modal cursor-pointer modal-bottom sm:modal-middle">
             <label className="modal-box relative" htmlFor="">
                 <h3 className="text-lg font-bold">Confirm</h3>
                 <p className="py-4">Are you sure you want to delete this media?</p>
 
                 <div className="flex justify-end mt-4">
                     <label
-                        htmlFor="my-modal-4"
+                        htmlFor="delete-modal"
                         className="btn btn-ghost">
                         Cancel
                     </label>
                     <label
-                        htmlFor="my-modal-4"
+                        htmlFor="delete-modal"
                         className="ml-3 btn btn-error"
                         onClick={() => deleteMedia(deleteMediaId)}>
                         Delete
@@ -82,7 +82,7 @@ const ManageMedium: NextPageWithLayout = () => {
                                     <Link href={`/admin/medium/${media.id}`}>
                                         <button className="btn btn-outline btn-sm">Edit</button>
                                     </Link>
-                                    <label className="btn btn-error btn-sm" htmlFor="my-modal-4" onClick={() => setDeleteMediaId(media.id)}>Delete</label>
+                                    <label className="btn btn-error btn-sm" htmlFor="delete-modal" onClick={() => setDeleteMediaId(media.id)}>Delete</label>
                                 </th>
                             </tr>
                         ))
