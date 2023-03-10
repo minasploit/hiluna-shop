@@ -71,7 +71,9 @@ const AdminHeader: NextPage = () => {
                 <ul className="menu menu-horizontal px-1 ml-3 hidden md:flex">
                     {nav.map(item => (
                         <li key={item.id}>
-                            <Link href={item.href} className={clsx("btn", router.pathname == item.href ? "bg-primary/40" : "btn-ghost")}>
+                            <Link href={item.href} className={clsx("btn",
+                                (item.id == 0 && router.pathname == item.href) || (item.id != 0 && router.pathname.startsWith(item.href))
+                                    ? "bg-primary/40" : "btn-ghost")}>
                                 {item.icon}
                                 {item.title}
                                 {/* {item.children &&
