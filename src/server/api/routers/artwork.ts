@@ -20,7 +20,11 @@ export const artworkRouter = createTRPCRouter({
         }),
     list: publicProcedure
         .query(async ({ ctx }) => {
-            const res = await ctx.prisma.artwork.findMany()
+            const res = await ctx.prisma.artwork.findMany({
+                include: {
+                    Collection: true
+                }
+            })
 
             return res;
         }),

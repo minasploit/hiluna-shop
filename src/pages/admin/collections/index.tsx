@@ -55,7 +55,7 @@ const ManageCollection: NextPageWithLayout = () => {
         <div className="flex flex-col lg:flex-row justify-between items-center p-8">
             <div className="">
                 <h1 className="text-5xl font-bold">Collections</h1>
-                <p className="py-6">Here are your collection</p>
+                <p className="py-6">Here are your collections</p>
             </div>
             <Link href="collections/new">
                 <button className="btn btn-outline">Add new Collection</button>

@@ -1,9 +1,11 @@
+import { Currency } from "@prisma/client";
 import clsx from "clsx";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { FiCheckCircle } from "react-icons/fi";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 
@@ -94,15 +96,19 @@ const ManageArtworks: NextPageWithLayout = () => {
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="font-bold">{artwork.name}</div>
-                                            <div className="text-sm opacity-50">{artwork.collectionId}</div>
+                                            <div className="font-bold">
+                                                {artwork.name}
+                                                {artwork.featured && <FiCheckCircle className="inline ml-2 text-primary" />}
+                                            </div>
+                                            <div className="text-sm opacity-50">{artwork.Collection?.name}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td>{artwork.orientation}</td>
                                 <td>{artwork.dimension}</td>
                                 <td>
-                                    {artwork.price}{" "}{artwork.currency}
+                                    {artwork.currency == Currency.USD && `$${artwork.price}`}
+                                    {artwork.currency == Currency.ETB && `${artwork.price} ${artwork.currency}`}
                                     <br />
                                     <span className={clsx("badge", artwork.availableForSale ? "badge-primary" : "badge-ghost")}>
                                         {artwork.availableForSale ? "Available for sale" : "Unavailable for sale"}
