@@ -11,7 +11,7 @@ import { collectionRouter } from "./routers/collection";
  */
 export const appRouter = createTRPCRouter({
 	dashboard: dashboardRouter,
-	media: mediaRouter,
+	medium: mediaRouter,
 	artwork: artworkRouter,
 	collection: collectionRouter,
 });

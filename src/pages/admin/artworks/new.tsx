@@ -15,8 +15,12 @@ import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from "firebaseConfig";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
 const NewArtwork: NextPageWithLayout = () => {
+    const router = useRouter();
+
     const artworkMutation = api.artwork.create.useMutation();
     const collections = api.collection.list.useQuery();
 
@@ -136,6 +140,10 @@ const NewArtwork: NextPageWithLayout = () => {
     };
 
     return <>
+        <Head>
+            <title>Add a new Artwork - Hiluna Art</title>
+        </Head>
+
         <div className="card shadow px-4 py-5 sm:rounded-lg sm:p-6 md:mt-8">
             <div className="md:grid md:grid-cols-3 md:gap-6">
                 <div className="md:col-span-1">
@@ -166,13 +174,14 @@ const NewArtwork: NextPageWithLayout = () => {
                                 <button
                                     type="button"
                                     disabled={artworkForm.formState.isSubmitting}
-                                    className="btn btn-ghost">
+                                    className="btn btn-ghost"
+                                    onClick={() => router.push("/admin/artworks")}>
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={artworkForm.formState.isSubmitting}
-                                    className="ml-3 btn btn-primary">
+                                    className={clsx("ml-3 btn btn-primary", artworkForm.formState.isSubmitting && "loading")}>
                                     {artworkForm.formState.isSubmitting ? "Saving..." : "Save"}
                                 </button>
                             </div>

@@ -1,4 +1,5 @@
 import { type ReactElement } from "react";
+
 import Home from "~/pages";
 import AppLayout from "~/components/AppLayout";
 import AdminLayout from "./AdminLayout";
@@ -8,6 +9,9 @@ import NewArtwork from "~/pages/admin/artworks/new";
 import Artworks from "~/pages/artworks";
 import Collections from "~/pages/collections";
 import Form from "~/pages/form";
+import ManageMedium from "~/pages/admin/medium";
+import NewMedium from "~/pages/admin/medium/new";
+import EditMedium from "~/pages/admin/medium/[id]";
 
 const UserLayoutPages = [
     Home,
@@ -20,6 +24,9 @@ const AdminLayoutPages = [
     AdminPage,
     ManageArtworks,
     NewArtwork,
+    ManageMedium,
+    NewMedium,
+    EditMedium
 ];
 
 export default function setLayoutDefinitions() {

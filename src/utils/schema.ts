@@ -1,11 +1,6 @@
 import { z } from "zod";
 
-export const AddMediaFormSchema = z.object({
-    name: z.string().min(2),
-    description: z.string().min(2),
-})
-
-const AddArtworkSharedSchema = {
+const ArtworkSharedSchema = {
     name: z.string().min(2),
     description: z.string().min(2),
     dimension: z.string().min(2),
@@ -16,10 +11,18 @@ const AddArtworkSharedSchema = {
     collectionId: z.number().nullable(),
     orientation: z.enum(["Portrait", "Landscape"]).nullable()
 }
-
 export const AddArtworkSchema = z.object({
-    ...AddArtworkSharedSchema,
+    ...ArtworkSharedSchema,
     imageUrl: z.string().min(2),
 })
+export const AddArtworkFormSchema = z.object(ArtworkSharedSchema)
 
-export const AddArtworkFormSchema = z.object(AddArtworkSharedSchema)
+const MediaSharedSchema = {
+    name: z.string().min(2),
+    description: z.string().nullable(),
+}
+export const AddMediaFormSchema = z.object(MediaSharedSchema)
+export const EditMediaFormSchema = z.object({
+    id: z.number(),
+    ...MediaSharedSchema
+})
