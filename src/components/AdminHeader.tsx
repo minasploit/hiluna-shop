@@ -73,7 +73,7 @@ const AdminHeader: NextPage = () => {
                         <li key={item.id}>
                             <Link href={item.href} className={clsx("btn",
                                 (item.id == 0 && router.route == item.href) || (item.id != 0 && router.route.startsWith(item.href))
-                                    ? "bg-primary/20" : "btn-ghost")}>
+                                    ? "bg-primary/20 hover:text-white/80" : "btn-ghost")}>
                                 {item.icon}
                                 {item.title}
                                 {/* {item.children &&
