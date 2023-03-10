@@ -72,8 +72,8 @@ const AdminHeader: NextPage = () => {
                     {nav.map(item => (
                         <li key={item.id}>
                             <Link href={item.href} className={clsx("btn",
-                                (item.id == 0 && router.pathname == item.href) || (item.id != 0 && router.pathname.startsWith(item.href))
-                                    ? "bg-primary/40" : "btn-ghost")}>
+                                (item.id == 0 && router.route == item.href) || (item.id != 0 && router.route.startsWith(item.href))
+                                    ? "bg-primary/20" : "btn-ghost")}>
                                 {item.icon}
                                 {item.title}
                                 {/* {item.children &&

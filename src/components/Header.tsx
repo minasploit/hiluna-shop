@@ -8,11 +8,12 @@ import { useTop } from "~/hooks/useTop";
 import SwitchTheme from "./SwitchTheme"
 import crypto from "crypto"
 import { Fragment } from "react";
+import { useRouter } from "next/router";
 
 const nav = [
-    { id: crypto.randomBytes(16).toString('hex'), title: "Manage Site", href: "admin", adminOnly: true },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", href: "artworks", adminOnly: false },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", href: "collections", adminOnly: false },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Manage Site", href: "/admin", adminOnly: true },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", href: "/artworks", adminOnly: false },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", href: "/collections", adminOnly: false },
     // {
     //     id: 3, title: "Item 3", href: "item3",
     //     children: [
@@ -23,7 +24,7 @@ const nav = [
 ]
 
 const Header: NextPage = () => {
-
+    const router = useRouter();
     const { data: session } = useSession();
     const top = useTop()
 
@@ -59,7 +60,7 @@ const Header: NextPage = () => {
                             return <Fragment key={item.id}></Fragment>
 
                         return <li key={item.id}>
-                            <Link href={item.href}>
+                            <Link href={item.href} className={clsx("btn", router.route.startsWith(item.href) ? "bg-primary/20" : "btn-ghost")}>
                                 {item.title}
                                 {/* {item.children &&
                                     <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
