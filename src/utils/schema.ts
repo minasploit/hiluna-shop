@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// ARTWORK
+// =========== ARTWORK ===========
 const ArtworkSharedSchema = {
     name: z.string().min(2),
     description: z.string().min(2),
@@ -17,8 +17,18 @@ export const AddArtworkSchema = z.object({
     imageUrl: z.string().min(2),
 })
 export const AddArtworkFormSchema = z.object(ArtworkSharedSchema)
+export const EditArtworkSchema = z.object({
+    id: z.number(),
+    imageUrl: z.string(),
+    ...ArtworkSharedSchema,
+})
+export const EditArtworkFormSchema = z.object({
+    id: z.number(),
+    imageUrl: z.string().nullable().optional(),
+    ...ArtworkSharedSchema,
+})
 
-// MEDIA
+// =========== MEDIA ===========
 const MediaSharedSchema = {
     name: z.string().min(2),
     description: z.string().nullable(),
@@ -29,7 +39,7 @@ export const EditMediaFormSchema = z.object({
     ...MediaSharedSchema
 })
 
-// COLLECTION
+// =========== COLLECTION ===========
 const CollectionSharedSchema = {
     name: z.string().min(2),
     description: z.string().nullable(),

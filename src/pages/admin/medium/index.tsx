@@ -64,9 +64,9 @@ const ManageMedium: NextPageWithLayout = () => {
 
         <div className="overflow-x-auto w-full">
             <table className="table w-full">
-                {/* head */}
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Name</th>
                         <th>Description</th>
                         <th></th>
@@ -74,8 +74,9 @@ const ManageMedium: NextPageWithLayout = () => {
                 </thead>
                 <tbody>
                     {
-                        medium.data?.map(media => (
+                        medium.data?.map((media, index) => (
                             <tr key={media.id}>
+                                <th>{index + 1}</th>
                                 <td>{media.name}</td>
                                 <td>{media.description}</td>
                                 <th className="flex gap-2 justify-end">
@@ -88,7 +89,6 @@ const ManageMedium: NextPageWithLayout = () => {
                         ))
                     }
                 </tbody>
-
             </table>
         </div>
     </>

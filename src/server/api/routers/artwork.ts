@@ -1,11 +1,29 @@
+import { z } from "zod";
 import {
     createTRPCRouter,
     adminProcedure,
     publicProcedure,
 } from "~/server/api/trpc";
-import { AddArtworkSchema } from "~/utils/schema";
+import { AddArtworkSchema, EditArtworkSchema } from "~/utils/schema";
 
 export const artworkRouter = createTRPCRouter({
+    getOne: publicProcedure
+        .input(z.number())
+        .query(async ({ ctx, input }) => {
+            const res = await ctx.prisma.artwork.findFirst({
+                where: {
+                    id: input
+                }
+            })
+
+            return res;
+        }),
+    list: publicProcedure
+        .query(async ({ ctx }) => {
+            const res = await ctx.prisma.artwork.findMany()
+
+            return res;
+        }),
     create: adminProcedure
         .input(AddArtworkSchema)
         .mutation(async ({ ctx, input }) => {
@@ -19,9 +37,30 @@ export const artworkRouter = createTRPCRouter({
 
             return res;
         }),
-    list: publicProcedure
-        .query(async ({ ctx }) => {
-            const res = await ctx.prisma.artwork.findMany()
+    edit: adminProcedure
+        .input(EditArtworkSchema)
+        .mutation(async ({ ctx, input }) => {
+            const res = await ctx.prisma.artwork.update({
+                where: {
+                    id: input.id
+                },
+                data: {
+                    ...input,
+                    createdById: ctx.session.user.id,
+                    collectionId: input.collectionId == 0 ? null : input.collectionId
+                }
+            });
+
+            return res;
+        }),
+    delete: adminProcedure
+        .input(z.number())
+        .mutation(async ({ ctx, input }) => {
+            const res = await ctx.prisma.artwork.delete({
+                where: {
+                    id: input
+                }
+            });
 
             return res;
         }),

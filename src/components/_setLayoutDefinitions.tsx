@@ -15,6 +15,7 @@ import EditMedium from "~/pages/admin/medium/[id]";
 import ManageCollection from "~/pages/admin/collections";
 import NewCollection from "~/pages/admin/collections/new";
 import EditCollection from "~/pages/admin/collections/[id]";
+import EditArtwork from "~/pages/admin/artworks/[id]";
 
 const UserLayoutPages = [
     Home,
@@ -27,6 +28,7 @@ const AdminLayoutPages = [
     AdminPage,
     ManageArtworks,
     NewArtwork,
+    EditArtwork,
     ManageMedium,
     NewMedium,
     EditMedium,

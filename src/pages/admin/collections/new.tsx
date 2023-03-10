@@ -33,7 +33,7 @@ const NewCollection: NextPageWithLayout = () => {
     const collectionsMutation = api.collection.create.useMutation();
 
     type AddCollectionsFormSchemaType = z.infer<typeof AddCollectionFormSchema>;
-    const collectionsForm = useForm<AddCollectionsFormSchemaType>({
+    const collectionForm = useForm<AddCollectionsFormSchemaType>({
         resolver: zodResolver(AddCollectionFormSchema),
     });
 
@@ -43,7 +43,7 @@ const NewCollection: NextPageWithLayout = () => {
         try {
             const res = await collectionsMutation.mutateAsync(data);
 
-            collectionsForm.reset(res)
+            collectionForm.reset(res)
 
             toast.success("Collection saved", { id: toastId });
 
@@ -65,8 +65,8 @@ const NewCollection: NextPageWithLayout = () => {
                 </div>
 
                 <div className="mt-5 md:mt-0 md:col-span-2">
-                    <FormProvider {...collectionsForm}>
-                        <form onSubmit={collectionsForm.handleSubmit(onSubmit)}>
+                    <FormProvider {...collectionForm}>
+                        <form onSubmit={collectionForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
                                 {collectionsFields.map((field) => (
                                     <div className="col-span-6 sm:col-span-3" key={field.id}>
@@ -78,16 +78,16 @@ const NewCollection: NextPageWithLayout = () => {
                             <div className="flex justify-end mt-4">
                                 <button
                                     type="button"
-                                    disabled={collectionsForm.formState.isSubmitting}
+                                    disabled={collectionForm.formState.isSubmitting}
                                     className="btn btn-ghost"
                                     onClick={() => router.push("/admin/collections")}>
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    disabled={collectionsForm.formState.isSubmitting}
-                                    className={clsx("ml-3 btn btn-primary", collectionsForm.formState.isSubmitting && "loading")}>
-                                    {collectionsForm.formState.isSubmitting ? "Saving..." : "Save"}
+                                    disabled={collectionForm.formState.isSubmitting}
+                                    className={clsx("ml-3 btn btn-primary", collectionForm.formState.isSubmitting && "loading")}>
+                                    {collectionForm.formState.isSubmitting ? "Saving..." : "Save"}
                                 </button>
                             </div>
                         </form>

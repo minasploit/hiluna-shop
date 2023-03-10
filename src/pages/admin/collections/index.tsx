@@ -64,9 +64,9 @@ const ManageCollection: NextPageWithLayout = () => {
 
         <div className="overflow-x-auto w-full">
             <table className="table w-full">
-                {/* head */}
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Name</th>
                         <th>Description</th>
                         <th></th>
@@ -74,8 +74,9 @@ const ManageCollection: NextPageWithLayout = () => {
                 </thead>
                 <tbody>
                     {
-                        collection.data?.map(collection => (
+                        collection.data?.map((collection, index) => (
                             <tr key={collection.id}>
+                                <th>{index + 1}</th>
                                 <td>{collection.name}</td>
                                 <td>{collection.description}</td>
                                 <th className="flex gap-2 justify-end">
@@ -88,7 +89,6 @@ const ManageCollection: NextPageWithLayout = () => {
                         ))
                     }
                 </tbody>
-
             </table>
         </div>
     </>
