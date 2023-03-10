@@ -12,7 +12,7 @@ const ManageMedium: NextPageWithLayout = () => {
     const deleteMediaMutation = api.medium.delete.useMutation();
 
     async function deleteMedia(id: number) {
-        const toastId = toast.loading("Saving media...");
+        const toastId = toast.loading("Deleting media...");
 
         try {
             await deleteMediaMutation.mutateAsync(id);
