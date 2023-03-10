@@ -16,81 +16,84 @@ import { useState } from "react";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from "firebaseConfig";
 
-const artworkFields: FieldAttributes[] = [
-    {
-        id: crypto.randomBytes(16).toString('hex'),
-        name: "name",
-        label: "Name of the Artwork",
-        type: FieldType.TEXT
-    },
-    {
-        id: crypto.randomBytes(16).toString('hex'),
-        name: "dimension",
-        label: "Dimensions of the art",
-        type: FieldType.TEXT,
-    },
-    {
-        id: crypto.randomBytes(16).toString('hex'),
-        name: "description",
-        label: "Description",
-        type: FieldType.RICHTEXT,
-    },
-    {
-        id: crypto.randomBytes(16).toString('hex'),
-        name: "featured",
-        label: "Show this art on the home page?",
-        type: FieldType.CHECKBOX,
-    },
-    {
-        id: crypto.randomBytes(16).toString('hex'),
-        name: "availableForSale",
-        label: "Is this art available for sale?",
-        type: FieldType.CHECKBOX,
-    },
-    {
-        id: crypto.randomBytes(16).toString('hex'),
-        name: "price",
-        label: "The price for the art?",
-        type: FieldType.NUMBER,
-        defaultValue: 0
-    },
-    {
-        id: crypto.randomBytes(16).toString('hex'),
-        name: "currency",
-        label: "Currency",
-        type: FieldType.SELECT,
-        options: [
-            { label: "ETB", value: "ETB" },
-            { label: "USD", value: "USD" },
-        ]
-    },
-    {
-        id: crypto.randomBytes(16).toString('hex'),
-        name: "orientation",
-        label: "Orientation of the art",
-        type: FieldType.SELECT,
-        options: [
-            { label: "Portrait", value: "Portrait" },
-            { label: "Landscape", value: "Landscape" }
-        ]
-    },
-    {
-        id: crypto.randomBytes(16).toString('hex'),
-        name: "collectionId",
-        label: "Collection",
-        type: FieldType.SELECT,
-        valueType: "number",
-        options: [
-            { label: "None", value: 0 },
-        ]
-    },
-]
-
 const NewArtwork: NextPageWithLayout = () => {
-
     const artworkMutation = api.artwork.create.useMutation();
+    const collections = api.collection.list.useQuery();
 
     const [imageFile, setImageFile] = useState<File>()
+
+    const artworkFields: FieldAttributes[] = [
+        {
+            id: crypto.randomBytes(16).toString('hex'),
+            name: "name",
+            label: "Name of the Artwork",
+            type: FieldType.TEXT
+        },
+        {
+            id: crypto.randomBytes(16).toString('hex'),
+            name: "dimension",
+            label: "Dimensions of the art",
+            type: FieldType.TEXT,
+        },
+        {
+            id: crypto.randomBytes(16).toString('hex'),
+            name: "description",
+            label: "Description",
+            type: FieldType.RICHTEXT,
+        },
+        {
+            id: crypto.randomBytes(16).toString('hex'),
+            name: "featured",
+            label: "Show this art on the home page?",
+            type: FieldType.CHECKBOX,
+        },
+        {
+            id: crypto.randomBytes(16).toString('hex'),
+            name: "availableForSale",
+            label: "Is this art available for sale?",
+            type: FieldType.CHECKBOX,
+        },
+        {
+            id: crypto.randomBytes(16).toString('hex'),
+            name: "price",
+            label: "The price for the art?",
+            type: FieldType.NUMBER,
+            defaultValue: 0
+        },
+        {
+            id: crypto.randomBytes(16).toString('hex'),
+            name: "currency",
+            label: "Currency",
+            type: FieldType.SELECT,
+            options: [
+                { label: "ETB", value: "ETB" },
+                { label: "USD", value: "USD" },
+            ]
+        },
+        {
+            id: crypto.randomBytes(16).toString('hex'),
+            name: "orientation",
+            label: "Orientation of the art",
+            type: FieldType.SELECT,
+            options: [
+                { label: "Portrait", value: "Portrait" },
+                { label: "Landscape", value: "Landscape" }
+            ]
+        },
+        {
+            id: crypto.randomBytes(16).toString('hex'),
+            name: "collectionId",
+            label: "Collection",
+            type: FieldType.SELECT,
+            valueType: "number",
+            options: [
+                { label: "None", value: 0 },
+                ...collections.data?.map(i => {
+                    return { label: i.name, value: i.id }
+                }) ?? []
+            ]
+        },
+    ]
 
     type AddArtworkFormSchemaType = z.infer<typeof AddArtworkFormSchema>;
     const artworkForm = useForm<AddArtworkFormSchemaType>({
@@ -100,10 +103,8 @@ const NewArtwork: NextPageWithLayout = () => {
     const handleSelectedFile = (files: FileList | null) => {
         if (files && files[0] && files[0].size < 10000000) {
             setImageFile(files[0])
-
-            console.log(files[0])
         } else {
-            alert('File size to large')
+            toast.error("file size too large");
         }
     }
 
@@ -114,7 +115,6 @@ const NewArtwork: NextPageWithLayout = () => {
             if (imageFile) {
                 const name = imageFile.name
                 const storageRef = ref(storage, `image/${name}`)
-
 
                 const uploadedFile = await uploadBytes(storageRef, imageFile)
                 const url = await getDownloadURL(uploadedFile.ref)
@@ -128,7 +128,7 @@ const NewArtwork: NextPageWithLayout = () => {
 
                 toast.success("Artwork added.", { id: toastId });
             } else {
-                alert('File not found')
+                toast.error("File not found.", { id: toastId });
             }
         } catch {
             toast.success("Error saving artwork...", { id: toastId });
