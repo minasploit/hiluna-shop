@@ -7,13 +7,16 @@ import { api } from "~/utils/api";
 const HeaderCartButton = () => {
 
     const [hasMounted, setHasMounted] = useState(false);
+    const [subTotal, setSubTotal] = useState(0);
 
     const [cartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
     const cartItems = api.artwork.getCartItems.useQuery(cartItemIds.map(c => c.id), { enabled: cartItemIds != undefined });
 
     useEffect(() => {
-        console.log(cartItemIds);
-    }, [cartItemIds]);
+        setSubTotal(
+            cartItems.data?.map(c => c.price).length ? cartItems.data?.map(c => c.price).reduce((a, b) => a + b) : 0
+        )
+    }, [cartItems.data]);
 
     useEffect(() => {
         setHasMounted(true)
@@ -34,7 +37,7 @@ const HeaderCartButton = () => {
                 <div className="card-body">
                     <span className="font-bold text-lg">{cartItemIds.length} Items</span>
                     <span className="text-primary">Subtotal: {' '}
-                        <span className="font-bold __next-auth-theme-light">{cartItems.data?.map(c => c.price).length ? cartItems.data?.map(c => c.price).reduce((a, b) => a + b) : 0} ETB</span>
+                        <span className="font-bold __next-auth-theme-light">{subTotal.toLocaleString()} ETB</span>
                     </span>
                     <div className="card-actions">
                         <button className="btn btn-primary btn-block mt-1" onClick={() => router.push("/cart")}>View cart</button>

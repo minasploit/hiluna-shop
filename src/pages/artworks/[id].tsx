@@ -88,8 +88,8 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                 {
                                     artwork.data?.availableForSale &&
                                     <>
-                                        {artwork.data?.currency == Currency.USD && `$${artwork.data?.price}`}
-                                        {artwork.data?.currency == Currency.ETB && `${artwork.data?.price} ${artwork.data?.currency}`}
+                                        {artwork.data?.currency == Currency.USD && `$${artwork.data?.price.toLocaleString()}`}
+                                        {artwork.data?.currency == Currency.ETB && `${artwork.data?.price.toLocaleString()} ${artwork.data?.currency}`}
                                     </>
                                 }
                             </p>

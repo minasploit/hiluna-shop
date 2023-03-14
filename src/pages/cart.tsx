@@ -1,11 +1,12 @@
 import { Currency } from "@prisma/client";
 import toast from "react-hot-toast";
-import { FiX } from "react-icons/fi"
+import { FiHelpCircle, FiLock, FiLogIn, FiUserCheck, FiX } from "react-icons/fi"
 import { useLocalStorage } from "usehooks-ts";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./_app"
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 
 export interface CartItem {
     id: number;
@@ -13,8 +14,20 @@ export interface CartItem {
 
 const Cart: NextPageWithLayout = () => {
 
+    const { status } = useSession()
+
+    const [subTotal, setSubTotal] = useState(0);
+    const [total, setTotal] = useState(0);
+
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
     const cartItems = api.artwork.getMany.useQuery(cartItemIds.map(c => c.id));
+
+    useEffect(() => {
+        setSubTotal(
+            cartItems.data?.map(c => c.price).length ? cartItems.data?.map(c => c.price).reduce((a, b) => a + b) : 0
+        )
+        setTotal(subTotal)
+    }, [cartItems]);
 
     useEffect(() => {
         cartItems.data?.forEach(c => {
@@ -34,7 +47,7 @@ const Cart: NextPageWithLayout = () => {
         <>
             <div className="max-w-2xl mx-auto pt-8 md:pt-16 pb-24 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Shopping Cart</h1>
-                <form className="mt-12 lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start xl:gap-x-16">
+                <div className="mt-12 lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start xl:gap-x-16">
                     <section aria-labelledby="cart-heading" className="lg:col-span-7">
                         <h2 id="cart-heading" className="sr-only">
                             Items in your shopping cart
@@ -69,8 +82,8 @@ const Cart: NextPageWithLayout = () => {
                                                     ) : null}
                                                 </div> */}
                                                 <p className="mt-1 text-sm font-medium">
-                                                    {product.currency == Currency.USD && `$${product.price}`}
-                                                    {product.currency == Currency.ETB && `${product.price} ${product.currency}`}
+                                                    {product.currency == Currency.USD && `$${product.price.toLocaleString()}`}
+                                                    {product.currency == Currency.ETB && `${product.price.toLocaleString()} ${product.currency}`}
                                                 </p>
                                             </div>
 
@@ -85,13 +98,9 @@ const Cart: NextPageWithLayout = () => {
                                         </div>
 
                                         <p className="mt-4 flex text-sm space-x-2">
-                                            {/* {product.inStock ? (
-                                                <FiCheck className="flex-shrink-0 h-5 w-5 text-green-500" aria-hidden="true" />
-                                            ) : (
-                                                <FiClock className="flex-shrink-0 h-5 w-5 text-gray-300" aria-hidden="true" />
-                                            )}
+                                            hi
 
-                                            <span>{product.inStock ? 'In stock' : `Ships in ${product.leadTime ?? ""}`}</span> */}
+                                            {/* <span>{product.inStock ? 'In stock' : `Ships in ${product.leadTime ?? ""}`}</span> */}
                                         </p>
                                     </div>
                                 </li>
@@ -112,44 +121,42 @@ const Cart: NextPageWithLayout = () => {
                             <div className="flex items-center justify-between">
                                 <dt className="text-sm">Subtotal</dt>
                                 <dd className="text-sm font-medium">
-                                    {
-                                        cartItems.data?.map(c => c.price).length ? cartItems.data?.map(c => c.price).reduce((a, b) => a + b) : 0
-                                    } ETB
+                                    {subTotal.toLocaleString()} ETB
                                 </dd>
                             </div>
                             <div className="border-t border-gray-500 pt-4 flex items-center justify-between">
                                 <dt className="flex items-center text-sm">
-                                    <span>Shipping estimate</span>
-                                    <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
+                                    <span>Shipping</span>
+                                    <div className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500 tooltip tooltip-right cursor-pointer"
+                                        data-tip="Your items will be shipped to you for free">
                                         <span className="sr-only">Learn more about how shipping is calculated</span>
-                                        {/* <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" /> */}
-                                    </a>
+                                        <FiHelpCircle className="h-5 w-5 text-info-content" aria-hidden="true" />
+                                    </div>
                                 </dt>
-                                <dd className="text-sm font-medium">$5.00</dd>
-                            </div>
-                            <div className="border-t border-gray-500 pt-4 flex items-center justify-between">
-                                <dt className="flex text-sm">
-                                    <span>Tax estimate</span>
-                                    <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                                        <span className="sr-only">Learn more about how tax is calculated</span>
-                                        {/* <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" /> */}
-                                    </a>
-                                </dt>
-                                <dd className="text-sm font-medium">$8.32</dd>
+                                <dd className="text-sm font-medium">Free (0 ETB)</dd>
                             </div>
                             <div className="border-t border-gray-500 pt-4 flex items-center justify-between">
                                 <dt className="text-base font-medium">Order total</dt>
-                                <dd className="text-base font-medium">$112.32</dd>
+                                <dd className="text-base font-medium">{total.toLocaleString()} ETB</dd>
                             </div>
                         </dl>
 
                         <div className="mt-6">
-                            <button className="btn btn-primary w-full" type="submit">
-                                Checkout
-                            </button>
+                            {
+                                status == "authenticated" ?
+                                    <button className="btn btn-primary w-full">
+                                        <FiLock className="mx-3 text-xl" />
+                                        Checkout
+                                    </button>
+                                    :
+                                    <button className="btn btn-primary w-full" onClick={() => void signIn()}>
+                                        <FiUserCheck className="mx-3 text-xl" />
+                                        Login to checkout
+                                    </button>
+                            }
                         </div>
                     </section>
-                </form>
+                </div>
             </div>
         </>
     )
