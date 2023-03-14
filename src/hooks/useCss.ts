@@ -5,12 +5,31 @@ const css = `
     --backgroundColor: #444444;
 }
 
+[data-theme="garden"] #animationDiv {
+    background-color: #dedede;
+}
+
+[data-theme="halloween"] #animationDiv {
+    background-color: #2f2f2f;
+}
+
+#divvvv {
+    backdrop-filter:blur(10px);
+    -webkit-mask: -webkit-gradient(
+        linear,
+        left 50%,
+        left 0%,
+        from(rgb(255 11 11)),
+        to(rgb(213 255 0 / 0%))
+    )
+}
+
 #slideshowparentcontainer {
     display: block;
     box-sizing: border-box;
     max-width: 1800px;
     margin: auto;
-    margin-top: -15px;
+    margin-top: -1px;
     text-align: center;
 }
 
@@ -60,14 +79,6 @@ const css = `
     perspective: 600px;
     /* background-color: #FFFFFF; */
 }
-
-[data-theme="bumblebee"] #animationDiv {
-    background-color: #ffffff;
-}
-
-/* [data-theme="halloween"] #animationDiv {
-    background-color: #2f2f2f;
-} */
 
 #annimationTextDiv {
     display: inline-flex;
@@ -463,6 +474,14 @@ const css = `
 }
 
 @media screen and (max-width: 640px) {
+    [data-theme="garden"] #animationDiv {
+        background-color: inherit;
+    }
+    
+    [data-theme="halloween"] #animationDiv {
+        background-color: inherit;
+    }
+
     @keyframes example {
         0% {
             transform: rotateY(-30deg);

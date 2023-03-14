@@ -1,9 +1,12 @@
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "../_app";
 import Image from 'next/image'
+import { useLocalStorage } from "usehooks-ts";
+import { type CartItem } from "../cart";
 
 const Artworks: NextPageWithLayout = () => {
 
+    const [cartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
     const artworks = api.artwork.list.useQuery();
 
     return <>
@@ -19,11 +22,20 @@ const Artworks: NextPageWithLayout = () => {
                                     src={artwork.imageUrl}
                                     alt={artwork.name}
                                     className="w-full h-full object-center object-cover group-hover:opacity-75"
-                                    width={120} height={120}
+                                    width={220} height={220}
                                 />
                             </div>
-                            <h3 className="mt-4 text-sm text-gray-700">{artwork.name}</h3>
-                            <p className="mt-1 text-lg font-medium text-gray-900">{artwork.price}</p>
+                            <h3 className="mt-4 text-lg font-medium">{artwork.name}</h3>
+                            {
+                                artwork.availableForSale ? 
+                                <p className="mt-1 inline">{artwork.price} ETB</p>
+                                :
+                                <p className="mt-1 text-sm inline">Not available for sale</p>
+                            }
+                            {
+                                cartItemIds.map(c => c.id).includes(artwork.id) &&
+                                <span className="badge ml-2">In your cart</span>
+                            }
                         </a>
                     ))}
                 </div>

@@ -1,6 +1,5 @@
 import { UserRole } from "@prisma/client";
 import clsx from "clsx";
-import { type NextPage } from "next"
 import { signIn, signOut, useSession } from "next-auth/react"
 import Image from "next/image";
 import Link from "next/link";
@@ -9,11 +8,13 @@ import SwitchTheme from "./SwitchTheme"
 import crypto from "crypto"
 import { Fragment } from "react";
 import { useRouter } from "next/router";
+import HeaderCartButton from "./HeaderCartButton";
+import { FiEye, FiImage, FiList } from "react-icons/fi";
 
 const nav = [
-    { id: crypto.randomBytes(16).toString('hex'), title: "Manage Site", href: "/admin", adminOnly: true },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", href: "/artworks", adminOnly: false },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", href: "/collections", adminOnly: false },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Manage Site", icon: <FiEye className="text-xl" />, href: "/admin", adminOnly: true },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", icon: <FiImage className="text-xl" />, href: "/artworks", adminOnly: false },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", icon: <FiList className="text-xl" />, href: "/collections", adminOnly: false },
     // {
     //     id: 3, title: "Item 3", href: "item3",
     //     children: [
@@ -23,10 +24,11 @@ const nav = [
     // },
 ]
 
-const Header: NextPage = () => {
+const Header = () => {
+
     const router = useRouter();
     const { data: session } = useSession();
-    const top = useTop()
+    const top = useTop();
 
     return <>
         <div className={clsx("navbar fixed z-10 backdrop-blur-lg", !top && `shadow`)}>
@@ -38,12 +40,16 @@ const Header: NextPage = () => {
                         </label>
                         <ul tabIndex={0} className="menu menu-compact dropdown-content bg-base-100 mt-3 p-2 shadow rounded-box w-52">
                             <li key="switchTheme"><SwitchTheme /></li>
+
                             {nav.map(item => {
                                 if (item.adminOnly && session?.user.role != UserRole.ADMIN)
                                     return <Fragment key={item.id}></Fragment>
 
                                 return <li key={item.id}>
-                                    <Link href={item.href}>{item.title}</Link>
+                                    <Link href={item.href}>
+                                        {item.icon}
+                                        {item.title}
+                                    </Link>
                                 </li>
                             })}
                         </ul>
@@ -61,6 +67,7 @@ const Header: NextPage = () => {
 
                         return <li key={item.id}>
                             <Link href={item.href} className={clsx("btn", router.route.startsWith(item.href) ? "bg-primary/20 hover:text-white/80" : "btn-ghost")}>
+                                {item.icon}
                                 {item.title}
                                 {/* {item.children &&
                                     <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
@@ -82,23 +89,7 @@ const Header: NextPage = () => {
                     <SwitchTheme />
                 </div>
 
-                <div className="dropdown dropdown-end">
-                    <label tabIndex={0} className="btn btn-ghost btn-circle">
-                        <div className="indicator">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                            <span className="badge badge-sm indicator-item">8</span>
-                        </div>
-                    </label>
-                    <div tabIndex={0} className="mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow">
-                        <div className="card-body">
-                            <span className="font-bold text-lg">8 Items</span>
-                            <span className="text-info">Subtotal: $999</span>
-                            <div className="card-actions">
-                                <button className="btn btn-primary btn-block">View cart</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <HeaderCartButton />
 
                 {
                     session &&

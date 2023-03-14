@@ -1,7 +1,6 @@
-import { type NextPage } from "next";
 import useCss from "~/hooks/useCss";
 
-const Artwall: NextPage = () => {
+const Artwall = () => {
     const style = useCss;
 
     let lastTarget: (EventTarget & HTMLDivElement) | null = null;
@@ -22,7 +21,7 @@ const Artwall: NextPage = () => {
         </style>
 
         <div id="slideshowparentcontainer">
-            <div id="slideshowparent" className="h-[450px] md:h-0 hide">
+            <div id="slideshowparent" className="h-[450px] md:h-0 hide mb-[-6.1px]">
                 <div className="slideDiv z-[2] left-0" id="slideshow-0" tabIndex={0} title="Shop for Art">
                     <div id="animationDiv" data-template-id="default">
 

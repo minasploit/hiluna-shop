@@ -1,20 +1,20 @@
 import clsx from "clsx";
-import { type NextPage } from "next"
 import { signIn, signOut, useSession } from "next-auth/react"
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FiArchive, FiArrowLeft, FiHome, FiList, FiPenTool } from "react-icons/fi";
+import { FiArrowLeft, FiDollarSign, FiHome, FiImage, FiList, FiPenTool } from "react-icons/fi";
 import SwitchTheme from "./SwitchTheme"
 import { useRouter } from "next/router";
 import Head from "next/head";
 import crypto from "crypto"
 
 const nav = [
-    { id: 0, title: "Dashboard", icon: <FiHome />, href: "/admin" },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", icon: <FiArchive />, href: "/admin/artworks" },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Medium", icon: <FiPenTool />, href: "/admin/medium" },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", icon: <FiList />, href: "/admin/collections" },
+    { id: 0, title: "Dashboard", icon: <FiHome className="text-xl" />, href: "/admin" },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", icon: <FiImage className="text-xl" />, href: "/admin/artworks" },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Orders", icon: <FiDollarSign className="text-xl" />, href: "/admin/orders" },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Medium", icon: <FiPenTool className="text-xl" />, href: "/admin/medium" },
+    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", icon: <FiList className="text-xl" />, href: "/admin/collections" },
     // {
     //     id: 4, title: "Item 3", href: "item3",
     //     children: [
@@ -24,7 +24,7 @@ const nav = [
     // },
 ]
 
-const AdminHeader: NextPage = () => {
+const AdminHeader = () => {
 
     const router = useRouter();
 

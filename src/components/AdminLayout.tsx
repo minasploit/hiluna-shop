@@ -5,7 +5,6 @@ import AdminHeader from "./AdminHeader";
 import { LoadingSpinner } from "./LoadingSpinner";
 
 export default function AdminLayout({ children }: { children: ReactElement }) {
-
     const session = useSession();
 
     if (session.status === 'loading') {

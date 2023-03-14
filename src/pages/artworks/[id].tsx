@@ -1,13 +1,17 @@
 import clsx from "clsx";
 import { type NextPageWithLayout } from "../_app";
-import { Tab } from '@headlessui/react'
 import { FiHeart, FiStar } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { Currency } from "@prisma/client";
+import parse from 'html-react-parser'
+import { useLocalStorage } from "usehooks-ts";
+import { toast } from "react-hot-toast";
+import { type CartItem } from "../cart";
+import Image from "next/image";
 
 const product = {
-    name: 'Zip Tote Basket',
+    // name: 'Zip Tote Basket',
     // price: '$140',
     rating: 4,
     images: [
@@ -15,12 +19,6 @@ const product = {
             id: 1,
             name: 'Angled view',
             src: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg',
-            alt: 'Angled front view with bag zipped and handles upright.',
-        },
-        {
-            id: 2,
-            name: 'Angled view',
-            src: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-02.jpg',
             alt: 'Angled front view with bag zipped and handles upright.',
         },
         // More images...
@@ -51,58 +49,36 @@ const ArtworkDetail: NextPageWithLayout = () => {
     const router = useRouter();
     const { id } = router.query;
 
-    const artwork = api.artwork.getOne.useQuery(Number(id))
+    const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
 
-    // const [selectedColor, setSelectedColor] = useState(product.colors[0])
+    const artwork = api.artwork.getOne.useQuery(Number(id), { enabled: id != undefined });
+
+    function addToCart() {
+        setCartItemIds([
+            ...cartItemIds,
+            {
+                id: Number(id)
+            }
+        ]);
+        toast.success("Added to cart");
+    }
+
+    function removeFromCart() {
+        setCartItemIds(cartItemIds.filter(c => c.id != Number(id)))
+        toast.success("Removed from cart")
+    }
 
     return <>
         <div className="">
             <div className="max-w-2xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-                    {/* Image gallery */}
-                    <Tab.Group as="div" className="flex flex-col-reverse">
-                        {/* Image selector */}
-                        <div className="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
-                            <Tab.List className="grid grid-cols-4 gap-6">
-                                {product.images.map((image) => (
-                                    <Tab
-                                        key={image.id}
-                                        className="relative h-24 rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50"
-                                    >
-                                        {({ selected }) => (
-                                            <>
-                                                <span className="sr-only">{image.name}</span>
-                                                <span className="absolute inset-0 rounded-md overflow-hidden">
-                                                    <img src={image.src} alt="" className="w-full h-full object-center object-cover" />
-                                                </span>
-                                                <span
-                                                    className={clsx(
-                                                        selected ? 'ring-indigo-500' : 'ring-transparent',
-                                                        'absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none'
-                                                    )}
-                                                    aria-hidden="true"
-                                                />
-                                            </>
-                                        )}
-                                    </Tab>
-                                ))}
-                            </Tab.List>
-                        </div>
+                    <Image
+                        src={artwork.data?.imageUrl ?? ""}
+                        alt="Artwork image"
+                        width={720} height={720}
+                        className="w-full h-full object-center object-cover sm:rounded-lg"
+                    />
 
-                        <Tab.Panels className="w-full aspect-w-1 aspect-h-1">
-                            {product.images.map((image) => (
-                                <Tab.Panel key={image.id}>
-                                    <img
-                                        src={image.src}
-                                        alt={image.alt}
-                                        className="w-full h-full object-center object-cover sm:rounded-lg"
-                                    />
-                                </Tab.Panel>
-                            ))}
-                        </Tab.Panels>
-                    </Tab.Group>
-
-                    {/* Product info */}
                     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                         <h1 className="text-3xl font-extrabold tracking-tight">{artwork.data?.name}</h1>
 
@@ -143,9 +119,9 @@ const ArtworkDetail: NextPageWithLayout = () => {
                             <h3 className="sr-only">Description</h3>
 
                             <div
-                                className="text-base space-y-6"
-                                dangerouslySetInnerHTML={{ __html: artwork.data?.description ?? "" }}
-                            />
+                                className="text-base space-y-6">
+                                {parse(artwork.data?.description ?? "")}
+                            </div>
                         </div>
 
                         <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 mt-4">
@@ -159,9 +135,8 @@ const ArtworkDetail: NextPageWithLayout = () => {
                             </div>
                         </dl>
 
-                        <form className="mt-6">
-                            {/* Colors */}
-                            {/* <div>
+                        {/* Colors */}
+                        {/* <div>
                                 <h3 className="text-sm text-gray-600">Color</h3>
 
                                 <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-2">
@@ -196,22 +171,32 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                 </RadioGroup>
                             </div> */}
 
-                            <div className="mt-10 flex sm:flex-col1">
-                                {
-                                    artwork.data?.availableForSale &&
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary btn-wide">
-                                        Add to cart
-                                    </button>
-                                }
+                        <div className="mt-10 flex sm:flex-col1">
+                            {
+                                artwork.data?.availableForSale &&
+                                <>
+                                    {
+                                        cartItemIds.filter(c => c.id == Number(id)).length == 0 ?
+                                            <button
+                                                className="btn btn-primary btn-wide"
+                                                onClick={addToCart}>
+                                                Add to cart
+                                            </button>
+                                            :
+                                            <button
+                                                className="btn btn-error btn-wide"
+                                                onClick={removeFromCart}>
+                                                Remove from cart
+                                            </button>
+                                    }
+                                </>
+                            }
 
-                                <button className={clsx("btn ", artwork.data?.availableForSale ? "btn-square btn-outline ml-4 " : "btn-primary gap-2")}>
-                                    <FiHeart className="text-xl" />
-                                    {!artwork.data?.availableForSale && "Add to Favorites"}
-                                </button>
-                            </div>
-                        </form>
+                            <button className={clsx("btn ", artwork.data?.availableForSale ? "btn-square btn-outline ml-4 " : "btn-primary gap-2")}>
+                                <FiHeart className="text-xl" />
+                                {!artwork.data?.availableForSale && "Add to Favorites"}
+                            </button>
+                        </div>
 
                         {/* <section aria-labelledby="details-heading" className="mt-12">
                             <h2 id="details-heading" className="sr-only">

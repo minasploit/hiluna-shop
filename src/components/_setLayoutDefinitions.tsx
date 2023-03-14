@@ -16,12 +16,15 @@ import NewCollection from "~/pages/admin/collections/new";
 import EditCollection from "~/pages/admin/collections/[id]";
 import EditArtwork from "~/pages/admin/artworks/[id]";
 import ArtworkDetail from "~/pages/artworks/[id]";
+import ManageOrders from "~/pages/admin/orders";
+import Cart from "~/pages/cart";
 
 const UserLayoutPages = [
     Home,
     Artworks,
     ArtworkDetail,
     Collections,
+    Cart
 ];
 
 const AdminLayoutPages = [
@@ -34,7 +37,8 @@ const AdminLayoutPages = [
     EditMedium,
     ManageCollection,
     NewCollection,
-    EditCollection
+    EditCollection,
+    ManageOrders
 ];
 
 export default function setLayoutDefinitions() {

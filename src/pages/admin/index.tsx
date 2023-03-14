@@ -1,4 +1,4 @@
-import { FiArchive, FiList, FiUsers } from "react-icons/fi";
+import { FiImage, FiList, FiPenTool, FiUsers } from "react-icons/fi";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "../_app";
 
@@ -11,7 +11,7 @@ const AdminPage: NextPageWithLayout = () => {
             <div className="stats stats-vertical sm:stats-horizontal shadow gap-5 mt-10">
                 <div className="stat">
                     <div className="stat-figure text-primary">
-                        <FiUsers />
+                        <FiUsers className="text-4xl" />
                     </div>
                     <div className="stat-title">Users</div>
                     <div className="stat-value text-primary">{dashboardNumbers.data?.userCount}</div>
@@ -20,7 +20,7 @@ const AdminPage: NextPageWithLayout = () => {
 
                 <div className="stat">
                     <div className="stat-figure text-primary">
-                        <FiArchive />
+                        <FiImage className="text-4xl" />
                     </div>
                     <div className="stat-title">Artworks</div>
                     <div className="stat-value text-primary">{dashboardNumbers.data?.artworkCount}</div>
@@ -29,7 +29,16 @@ const AdminPage: NextPageWithLayout = () => {
 
                 <div className="stat">
                     <div className="stat-figure text-primary">
-                        <FiList />
+                        <FiPenTool className="text-4xl" />
+                    </div>
+                    <div className="stat-title">Medium</div>
+                    <div className="stat-value text-primary">{dashboardNumbers.data?.mediumCount}</div>
+                    <div className="stat-desc">Total number of medium</div>
+                </div>
+
+                <div className="stat">
+                    <div className="stat-figure text-primary">
+                        <FiList className="text-4xl" />
                     </div>
                     <div className="stat-title">Collections</div>
                     <div className="stat-value text-primary">{dashboardNumbers.data?.collectionCount}</div>
