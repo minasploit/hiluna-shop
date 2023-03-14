@@ -9,7 +9,7 @@ const HeaderCartButton = () => {
     const [hasMounted, setHasMounted] = useState(false);
 
     const [cartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
-    const cartItems = api.artwork.getMany.useQuery(cartItemIds.map(c => c.id), { enabled: cartItemIds != undefined });
+    const cartItems = api.artwork.getCartItems.useQuery(cartItemIds.map(c => c.id), { enabled: cartItemIds != undefined });
 
     useEffect(() => {
         console.log(cartItemIds);

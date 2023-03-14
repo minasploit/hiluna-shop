@@ -11,7 +11,7 @@ export const artworkRouter = createTRPCRouter({
         .input(z.number())
         .query(async ({ ctx, input }) => {
             console.log(input);
-            
+
             const res = await ctx.prisma.artwork.findFirst({
                 where: {
                     id: input
@@ -28,6 +28,23 @@ export const artworkRouter = createTRPCRouter({
                     id: {
                         in: input
                     }
+                }
+            })
+
+            return res;
+        }),
+    getCartItems: publicProcedure
+        .input(z.array(z.number()))
+        .query(async ({ ctx, input }) => {
+            const res = await ctx.prisma.artwork.findMany({
+                where: {
+                    id: {
+                        in: input
+                    }
+                },
+                select: {
+                    id: true,
+                    price: true
                 }
             })
 
