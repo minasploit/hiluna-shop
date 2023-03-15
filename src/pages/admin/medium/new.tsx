@@ -6,13 +6,13 @@ import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { type z } from "zod";
 import Field from "~/components/form/Field";
-import type FieldAttributes from "~/components/form/FieldAttributes";
+import type FieldAttribute from "~/components/form/FieldAttributes";
 import { FieldType } from "~/components/form/FieldAttributes";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 import { AddMediaFormSchema } from "~/utils/schema";
 
-const mediumFields: FieldAttributes[] = [
+const mediumFields: FieldAttribute[] = [
     {
         id: "name",
         name: "name",

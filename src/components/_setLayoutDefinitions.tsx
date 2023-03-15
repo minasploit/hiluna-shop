@@ -18,13 +18,17 @@ import EditArtwork from "~/pages/admin/artworks/[id]";
 import ArtworkDetail from "~/pages/artworks/[id]";
 import ManageOrders from "~/pages/admin/orders";
 import Cart from "~/pages/cart";
+import Checkout from "~/pages/checkout";
+import Orders from "~/pages/orders";
 
 const UserLayoutPages = [
     Home,
     Artworks,
     ArtworkDetail,
     Collections,
-    Cart
+    Cart,
+    Checkout,
+    Orders
 ];
 
 const AdminLayoutPages = [

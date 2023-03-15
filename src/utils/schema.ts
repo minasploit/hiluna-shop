@@ -1,5 +1,19 @@
 import { z } from "zod";
 
+// =========== ORDER ===========
+const OrderSharedSchema = {
+    phoneNumber: z.string().min(10)
+}
+export const AddOrderSchema = z.object({
+    ...OrderSharedSchema,
+    items: z.array(z.number()),
+    paymentMethod: z.enum(["CashOnDelivery", "CBE", "Telebirr", "Bunna"]).default("CashOnDelivery"),
+    screenshotUrl: z.string().nullable()
+})
+export const AddOrderFormSchema = z.object(
+    OrderSharedSchema
+)
+
 // =========== ARTWORK ===========
 const ArtworkSharedSchema = {
     name: z.string().min(2),

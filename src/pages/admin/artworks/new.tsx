@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AddArtworkFormSchema } from "~/utils/schema";
 import { type z } from "zod";
-import type FieldAttributes from "~/components/form/FieldAttributes";
+import type FieldAttribute from "~/components/form/FieldAttributes";
 import crypto from 'crypto';
 import { FieldType } from "~/components/form/FieldAttributes";
 import Field from "~/components/form/Field";
@@ -26,7 +26,7 @@ const NewArtwork: NextPageWithLayout = () => {
 
     const [imageFile, setImageFile] = useState<File>()
 
-    const artworkFields: FieldAttributes[] = [
+    const artworkFields: FieldAttribute[] = [
         {
             id: crypto.randomBytes(16).toString('hex'),
             name: "name",

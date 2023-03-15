@@ -26,8 +26,9 @@ model Artwork {
     createdAt        DateTime     @default(now())
     updatedAt        DateTime     @updatedAt
     Collection       Collection?  @relation(fields: [collectionId], references: [id])
-    createdBy        User         @relation(fields: [createdById], references: [id])
-    media            Media[]      @relation("ArtworkAndMedia")
+    CreatedBy        User         @relation(fields: [createdById], references: [id])
+    Media            Media[]      @relation("ArtworkAndMedia")
+    Order            Order[]
 }
 
 enum Currency {
@@ -46,7 +47,7 @@ model Media {
     description String?   @db.Text
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
-    artworks    Artwork[] @relation("ArtworkAndMedia")
+    Artworks    Artwork[] @relation("ArtworkAndMedia")
 }
 
 model Collection {
@@ -56,6 +57,34 @@ model Collection {
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
     artworks    Artwork[]
+}
+
+model Order {
+    id            Int           @id @default(autoincrement())
+    artworkId     Int
+    orderedById   String
+    phoneNumber   String
+    paymentMethod PaymentMethod @default(CashOnDelivery)
+    screenshotUrl String?
+    orderStatus   OrderStatus
+    orderedAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
+    OrderedBy     User          @relation(fields: [orderedById], references: [id])
+    Artwork       Artwork       @relation(fields: [artworkId], references: [id])
+}
+
+enum PaymentMethod {
+    CashOnDelivery
+    CBE
+    Telebirr
+    Bunna
+}
+
+enum OrderStatus {
+    Ordered
+    OrderedAndPaid
+    Completed
+    Cancelled
 }
 
 // Necessary for Next auth
@@ -95,6 +124,7 @@ model User {
     accounts        Account[]
     sessions        Session[]
     createdArtworks Artwork[]
+    Order           Order[]
 }
 
 enum UserRole {

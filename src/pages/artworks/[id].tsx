@@ -72,12 +72,16 @@ const ArtworkDetail: NextPageWithLayout = () => {
         <div className="">
             <div className="max-w-2xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-                    <Image
-                        src={artwork.data?.imageUrl ?? ""}
-                        alt="Artwork image"
-                        width={720} height={720}
-                        className="w-full h-full object-center object-cover sm:rounded-lg"
-                    />
+                    {artwork.data ?
+                        <Image
+                            src={artwork.data.imageUrl}
+                            alt="Artwork image"
+                            width={720} height={720}
+                            className="w-full h-full object-center object-cover sm:rounded-lg"
+                        />
+                        :
+                        <>Loading...</>
+                    }
 
                     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                         <h1 className="text-3xl font-extrabold tracking-tight">{artwork.data?.name}</h1>

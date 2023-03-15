@@ -7,7 +7,7 @@ import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { type z } from "zod";
 import Field from "~/components/form/Field";
-import type FieldAttributes from "~/components/form/FieldAttributes";
+import type FieldAttribute from "~/components/form/FieldAttributes";
 import { FieldType } from "~/components/form/FieldAttributes";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
@@ -21,7 +21,7 @@ const EditCollection: NextPageWithLayout = () => {
 
     const collectionsMutation = api.collection.edit.useMutation();
 
-    const collectionsFields: FieldAttributes[] = [
+    const collectionsFields: FieldAttribute[] = [
         {
             id: "name",
             name: "name",

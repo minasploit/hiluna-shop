@@ -9,7 +9,7 @@ import crypto from "crypto"
 import { Fragment } from "react";
 import { useRouter } from "next/router";
 import HeaderCartButton from "./HeaderCartButton";
-import { FiEye, FiImage, FiList } from "react-icons/fi";
+import { FiDollarSign, FiEye, FiHeart, FiImage, FiList, FiLogOut, FiUser } from "react-icons/fi";
 
 const nav = [
     { id: crypto.randomBytes(16).toString('hex'), title: "Manage Site", icon: <FiEye className="text-xl" />, href: "/admin", adminOnly: true },
@@ -100,14 +100,25 @@ const Header = () => {
                             </div>
                         </label>
                         <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>
+                            {/* <li>
                                 <a className="justify-between">
                                     Profile
                                     <span className="badge">New</span>
                                 </a>
+                            </li> */}
+                            <li><button onClick={() => router.push("/profile")}>
+                                <FiUser className="text-lg" /> Profile</button>
                             </li>
-                            <li><a>Settings</a></li>
-                            <li><a onClick={() => void signOut({ redirect: false })}>Logout</a></li>
+                            <li><button onClick={() => router.push("/orders")}>
+                                <FiDollarSign className="text-lg" /> Orders</button>
+                            </li>
+                            <li><button onClick={() => router.push("/favorites")}>
+                                <FiHeart className="text-lg" /> Favorites</button>
+                            </li>
+                            <li><button onClick={() => void signOut({ redirect: false })}>
+                                <FiLogOut className="text-lg" />
+                                Logout
+                            </button></li>
                         </ul>
                     </div>
                 }

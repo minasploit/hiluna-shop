@@ -1,9 +1,12 @@
+import type React from "react";
+
 enum FieldType {
     TEXT = "text",
     SELECT = "select",
     CHECKBOX = "checkbox",
     NUMBER = "number",
     RICHTEXT = "richtext",
+    FILE = "file"
 }
 
 interface BaseFieldAttributes {
@@ -14,12 +17,12 @@ interface BaseFieldAttributes {
 }
 
 interface SelectStringOptions {
-    label: string; 
+    label: string;
     value: string
 }
 
 interface SelectNumberOptions {
-    label: string; 
+    label: string;
     value: number
 }
 
@@ -50,7 +53,15 @@ interface InputFieldAttributes extends BaseFieldAttributes {
     defaultValue?: string;
 }
 
-type FieldAttributes = InputFieldAttributes | SelectFieldAttributes | CheckboxFieldAttributes | NumberFieldAttributes | RichInputFieldAttributes;
+interface FileFieldAttributes extends BaseFieldAttributes {
+    type: FieldType.FILE;
+    inputFileRef: React.MutableRefObject<HTMLInputElement | null>,
+    accept?: string,
+    multiple?: boolean,
+    required?: boolean
+}
 
-export default FieldAttributes;
-export { FieldType, type InputFieldAttributes, type SelectFieldAttributes, type CheckboxFieldAttributes, type NumberFieldAttributes, type RichInputFieldAttributes };
+type FieldAttribute = InputFieldAttributes | SelectFieldAttributes | CheckboxFieldAttributes | NumberFieldAttributes | RichInputFieldAttributes | FileFieldAttributes;
+
+export default FieldAttribute;
+export { FieldType, type InputFieldAttributes, type SelectFieldAttributes, type CheckboxFieldAttributes, type NumberFieldAttributes, type RichInputFieldAttributes, type FileFieldAttributes };

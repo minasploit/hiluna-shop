@@ -3,6 +3,7 @@ import { dashboardRouter } from "./routers/dashboard";
 import { mediaRouter } from "./routers/media";
 import { artworkRouter } from "./routers/artwork";
 import { collectionRouter } from "./routers/collection";
+import { orderRouter } from "./routers/order";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
 	medium: mediaRouter,
 	artwork: artworkRouter,
 	collection: collectionRouter,
+	order: orderRouter,
 });
 
 // export type definition of API

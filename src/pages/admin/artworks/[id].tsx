@@ -7,7 +7,7 @@ import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { type z } from "zod";
 import Field from "~/components/form/Field";
-import type FieldAttributes from "~/components/form/FieldAttributes";
+import type FieldAttribute from "~/components/form/FieldAttributes";
 import crypto from 'crypto';
 import { FieldType } from "~/components/form/FieldAttributes";
 import { type NextPageWithLayout } from "~/pages/_app";
@@ -28,7 +28,7 @@ const EditArtwork: NextPageWithLayout = () => {
 
     const [imageFile, setImageFile] = useState<File>()
 
-    const artworkFields: FieldAttributes[] = [
+    const artworkFields: FieldAttribute[] = [
         {
             id: crypto.randomBytes(16).toString('hex'),
             name: "name",

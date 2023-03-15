@@ -23,6 +23,9 @@ const server = z.object({
 	DISCORD_CLIENT_SECRET: z.string(),
 	GOOGLE_CLIENT_ID: z.string(),
 	GOOGLE_CLIENT_SECRET: z.string(),
+	FTP_HOST: z.string().min(1),
+	FTP_USER: z.string().min(1),
+	FTP_PASS: z.string().min(1),
 });
 
 /**
@@ -48,6 +51,9 @@ const processEnv = {
 	DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
 	GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
 	GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+	FTP_HOST: process.env.FTP_HOST,
+	FTP_USER: process.env.FTP_USER,
+	FTP_PASS: process.env.FTP_PASS,
 	// NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
