@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable, { type File } from 'formidable';
-import Client from "ftp-ts";
 import { v4 as uuidv4 } from 'uuid';
 import { env } from '~/env.mjs';
+import * as ftp from "basic-ftp"
 
 export const config = {
     api: {
@@ -17,14 +17,14 @@ type FileFtpUrl = {
 }
 
 export interface FtpUploadResult {
-    status: 'ok' | 'fail',
+    status: 200 | 500,
     message: string,
     urls: FileFtpUrl[]
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let status = 200;
-    let resultBody: FtpUploadResult = { status: 'ok', message: 'Files were uploaded successfully', urls: [] };
+    let resultBody: FtpUploadResult = { status: 200, message: 'Files were uploaded successfully', urls: [] };
 
     /* Get files using formidable */
     const files = await new Promise<ProcessedFiles | undefined>((resolve, reject) => {
@@ -42,49 +42,56 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         console.log(e);
         status = 500;
         resultBody = {
-            status: 'fail', message: 'Upload error', urls: []
+            status: 500, message: 'Upload error', urls: []
         }
     });
 
     if (files?.length) {
-        const client = await Client.connect({
-            host: env.FTP_HOST,
-            port: 21,
-            user: env.FTP_USER,
-            password: env.FTP_PASS
-        });
-
-        const urls: FileFtpUrl[] = []
-        for (const uploadedFile of files) {
-            const file = uploadedFile[1];
-            // console.log(file.originalFilename);
-
-            if (!file.originalFilename) {
-                continue;
-            }
-
-            const split = file.originalFilename.split(".");
-            const extension = split[split.length - 1];
-
-            const random = uuidv4().replace(/-/g, "");
-            const newFileName = `${random}.${extension ?? ""}`;
-
-            await client.put(file.filepath, `/${newFileName}`);
-
-            urls.push({
-                originalName: file.originalFilename,
-                newName: newFileName
-            });
-        }
-
-        resultBody = {
-            ...resultBody,
-            urls: urls
-        }
+        const client = new ftp.Client()
 
         try {
-            void client.end();
-        } catch { }
+            await client.access({
+                host: env.FTP_HOST,
+                user: env.FTP_USER,
+                password: env.FTP_PASS
+            })
+
+            const urls: FileFtpUrl[] = []
+
+            for (const uploadedFile of files) {
+                const file = uploadedFile[1];
+
+                if (!file.originalFilename) {
+                    continue;
+                }
+
+                const split = file.originalFilename.split(".");
+                const extension = split[split.length - 1];
+
+                const random = uuidv4().replace(/-/g, "");
+                const newFileName = `${random}.${extension ?? ""}`;
+
+                await client.uploadFrom(file.filepath, `/${newFileName}`);
+
+                urls.push({
+                    originalName: file.originalFilename,
+                    newName: newFileName
+                });
+            }
+
+            resultBody = {
+                ...resultBody,
+                urls: urls
+            }
+        }
+        catch (err) {
+            status = 500;
+            resultBody = {
+                status: 500, message: 'Upload error', urls: []
+            }
+        }
+
+        client.close()
     }
 
     res.status(status).json(resultBody);

@@ -18,9 +18,8 @@ import { type z } from "zod";
 import Field from "~/components/form/Field";
 import Image from "next/image";
 import Link from "next/link";
-import axios from "axios";
 import React from "react";
-import { FtpUploadResult } from "./api/upload";
+import { type FtpUploadResult } from "./api/upload";
 import { PaymentMethod } from "@prisma/client";
 import { useRouter } from "next/router";
 
@@ -42,7 +41,6 @@ const Checkout: NextPageWithLayout = () => {
     const [subTotal, setSubTotal] = useState(0);
     const [total, setTotal] = useState(0);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(paymentMethods[0]);
-    const [screenshotFile, setScreenshotFile] = useState<File>();
     const inputFileRef = React.useRef<HTMLInputElement | null>(null);
 
     const router = useRouter();
@@ -66,7 +64,6 @@ const Checkout: NextPageWithLayout = () => {
             inputFileRef: inputFileRef,
             accept: "image/*",
             type: FieldType.FILE,
-            multiple: true,
             required: selectedPaymentMethod?.id != 0
         }
     ]
@@ -94,32 +91,18 @@ const Checkout: NextPageWithLayout = () => {
         setCartItemIds(cartItemIds.filter(c => c.id != Number(id)));
     }
 
-    const handleSelectedFile = (files: FileList | null) => {
-        if (files && files[0] && files[0].size < 10000000) {
-            setScreenshotFile(files[0])
-        } else {
-            toast.error("file size too large");
-        }
-    }
-
     type AddOrderFormSchemaType = z.infer<typeof AddOrderFormSchema>;
     const checkoutForm = useForm<AddOrderFormSchemaType>({
         resolver: zodResolver(AddOrderFormSchema),
     });
 
     const onSubmit: SubmitHandler<AddOrderFormSchemaType> = async (data) => {
-        
-
-
-        // ======================================================================
-
         const toastId = toast.loading("Placing order...");
 
         try {
             let url: string | null = null;
 
             if (selectedPaymentMethod?.id != 0) {
-
                 if (!inputFileRef.current?.files?.length) {
                     toast.error("Please, select the files you want to upload.", { id: toastId });
                     return;
@@ -136,11 +119,15 @@ const Checkout: NextPageWithLayout = () => {
                     body: formData
                 });
         
-                const body = await response.json() as FtpUploadResult;
-        
-                console.log(body);
+                const result = await response.json() as FtpUploadResult;
+
+                if (result.status == 500) {
+                    toast.error("Error uploading the files", { id: toastId });
+                    return;
+                }
 
                 // set the url here
+                url = result.urls[0]?.newName ?? ""
             }
 
             await orderMutation.mutateAsync({
