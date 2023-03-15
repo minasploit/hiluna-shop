@@ -45,6 +45,16 @@ export const orderRouter = createTRPCRouter({
             });
 
             // set the artworks as unavailable for sale
+            await ctx.prisma.artwork.updateMany({
+                data: {
+                    availableForSale: false
+                },
+                where: {
+                    id: {
+                        in: input.items
+                    }
+                }
+            })
 
             return res;
         }),

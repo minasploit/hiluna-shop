@@ -5,9 +5,8 @@ import { useLocalStorage } from "usehooks-ts";
 import { api } from "~/utils/api";
 import { type CartItem } from "./cart";
 import { type NextPageWithLayout } from "./_app";
-
 import { RadioGroup } from '@headlessui/react'
-import { FiCheckSquare, FiTrash } from "react-icons/fi";
+import { FiCheckSquare, FiInfo, FiTrash } from "react-icons/fi";
 import type FieldAttribute from "~/components/form/FieldAttributes";
 import crypto from 'crypto'
 import { FieldType } from "~/components/form/FieldAttributes";
@@ -24,18 +23,11 @@ import { PaymentMethod } from "@prisma/client";
 import { useRouter } from "next/router";
 
 const paymentMethods = [
-    { id: 0, title: 'Cash on Delivery', label: 'Cash', turnaround: '4–10 business days', price: '$5.00' },
-    { id: 1, title: 'CBE', label: 'CBE', turnaround: '2–5 business days', price: '$16.00' },
-    { id: 2, title: 'Telebirr', label: 'Telebirr', turnaround: '2–5 business days', price: '$16.00' },
-    { id: 3, title: 'Bunna', label: 'Bunna', turnaround: '2–5 business days', price: '$16.00' },
+    { id: 0, title: 'Cash on Delivery', label: 'Cash', description: 'Make the payment in cash when the artwork is delivered', value: PaymentMethod.CashOnDelivery },
+    { id: 1, title: 'CBE', label: 'CBE', description: 'Make the payment using CBE', value: PaymentMethod.CBE },
+    { id: 2, title: 'Telebirr', label: 'Telebirr', description: 'Make the payment using Telebirr', value: PaymentMethod.Telebirr },
+    { id: 3, title: 'Bunna Bank', label: 'Bunna', description: 'Make the payment using Bunna', value: PaymentMethod.Bunna },
 ]
-
-// const phoneNumberField: FieldAttribute = {
-//     id: crypto.randomBytes(16).toString('hex'),
-//     name: "phoneNumber",
-//     label: "Your phone number",
-//     type: FieldType.TEXT
-// }
 
 const Checkout: NextPageWithLayout = () => {
     const [subTotal, setSubTotal] = useState(0);
@@ -44,31 +36,31 @@ const Checkout: NextPageWithLayout = () => {
     const inputFileRef = React.useRef<HTMLInputElement | null>(null);
 
     const router = useRouter();
-    
+
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
     const cartItems = api.artwork.getMany.useQuery(cartItemIds.map(c => c.id));
 
     const orderMutation = api.order.create.useMutation();
 
-    const checkoutFields: FieldAttribute[] = [
-        {
-            id: crypto.randomBytes(16).toString('hex'),
-            name: "phoneNumber",
-            label: "Your phone number",
-            type: FieldType.TEXT
-        },
-        {
-            id: crypto.randomBytes(16).toString('hex'),
-            name: "screenshot",
-            label: "Add a screenshot of the transaction",
-            inputFileRef: inputFileRef,
-            accept: "image/*",
-            type: FieldType.FILE,
-            required: selectedPaymentMethod?.id != 0
-        }
-    ]
+    const phoneNumberField: FieldAttribute = {
+        id: crypto.randomBytes(16).toString('hex'),
+        name: "phoneNumber",
+        label: "Your phone number",
+        type: FieldType.TEXT
+    }
+
+    const screenshotField: FieldAttribute = {
+        id: crypto.randomBytes(16).toString('hex'),
+        name: "screenshot",
+        label: "Provide a screenshot or image of the payment",
+        inputFileRef: inputFileRef,
+        accept: "image/*",
+        type: FieldType.FILE,
+        required: selectedPaymentMethod?.id != 0
+    }
 
     useEffect(() => {
+        // calculate total and subtotal
         setSubTotal(
             cartItems.data?.map(c => c.price).length ? cartItems.data?.map(c => c.price).reduce((a, b) => a + b) : 0
         )
@@ -76,10 +68,12 @@ const Checkout: NextPageWithLayout = () => {
     }, [cartItems, subTotal]);
 
     useEffect(() => {
+        // check if all items in the cart are available for sale
         cartItems.data?.forEach(c => {
             if (!c.availableForSale && cartItemIds.map(cc => cc.id).includes(c.id)) {
                 // remove from cart
                 removeFromCart(c.id);
+                
                 toast(`Removed ${c.name} from your cart because it is no longer available for purchase.`, {
                     duration: 5000
                 });
@@ -107,37 +101,36 @@ const Checkout: NextPageWithLayout = () => {
                     toast.error("Please, select the files you want to upload.", { id: toastId });
                     return;
                 }
-        
+
                 const formData = new FormData();
                 Object.values(inputFileRef.current.files).forEach(file => {
                     formData.append('file', file);
                 })
-        
-                /* Send request to our api route */
+
                 const response = await fetch('/api/upload', {
                     method: 'POST',
                     body: formData
                 });
-        
+
                 const result = await response.json() as FtpUploadResult;
 
-                if (result.status == 500) {
-                    toast.error("Error uploading the files", { id: toastId });
+                if (result.status == 500 || !result.urls[0]) {
+                    toast.error("Error uploading the file", { id: toastId });
                     return;
                 }
 
-                // set the url here
-                url = result.urls[0]?.newName ?? ""
+                // set screenshot url
+                url = result.urls[0]?.newName
             }
 
             await orderMutation.mutateAsync({
                 items: cartItemIds.map(c => c.id),
                 phoneNumber: data.phoneNumber,
                 screenshotUrl: url,
-                paymentMethod: PaymentMethod.CBE
+                paymentMethod: selectedPaymentMethod?.value
             });
 
-            // checkoutForm.reset();
+            checkoutForm.reset();
 
             toast.success("Order placed. Thank you!", { id: toastId });
 
@@ -178,13 +171,14 @@ const Checkout: NextPageWithLayout = () => {
 
                                     <div className="mt-4">
                                         {
-                                            <Field {...(checkoutFields[0])} />
+                                            <Field {...phoneNumberField} />
                                         }
                                     </div>
                                 </div>
 
                                 <div className="mt-10 border-t border-gray-500 pt-10">
-                                    <RadioGroup value={selectedPaymentMethod} onChange={setSelectedPaymentMethod}>
+                                    <RadioGroup value={selectedPaymentMethod} onChange={setSelectedPaymentMethod}
+                                        disabled={checkoutForm.formState.isSubmitting}>
                                         <RadioGroup.Label className="text-lg font-medium">Payment method</RadioGroup.Label>
 
                                         <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
@@ -196,7 +190,8 @@ const Checkout: NextPageWithLayout = () => {
                                                         clsx(
                                                             checked ? 'border-transparent' : 'border-gray-500',
                                                             active ? 'ring-2 ring-primary' : '',
-                                                            'relative bg-base-100 border rounded-lg shadow-sm p-4 flex cursor-pointer focus:outline-none'
+                                                            checkoutForm.formState.isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer',
+                                                            'relative bg-base-100 border rounded-lg shadow-sm p-4 flex focus:outline-none'
                                                         )
                                                     }
                                                 >
@@ -207,14 +202,8 @@ const Checkout: NextPageWithLayout = () => {
                                                                     <RadioGroup.Label as="span" className="block text-sm font-medium">
                                                                         {paymentMethod.title}
                                                                     </RadioGroup.Label>
-                                                                    <RadioGroup.Description
-                                                                        as="span"
-                                                                        className="mt-1 flex items-center text-sm"
-                                                                    >
-                                                                        {paymentMethod.turnaround}
-                                                                    </RadioGroup.Description>
-                                                                    <RadioGroup.Description as="span" className="mt-6 text-sm font-medium">
-                                                                        {paymentMethod.price}
+                                                                    <RadioGroup.Description as="span" className="mt-6 flex items-center text-sm">
+                                                                        {paymentMethod.description}
                                                                     </RadioGroup.Description>
                                                                 </div>
                                                             </div>
@@ -235,25 +224,71 @@ const Checkout: NextPageWithLayout = () => {
                                     </RadioGroup>
                                 </div>
 
-                                {/* Payment */}
-                                <div className="mt-10">
-                                    <h2 className="text-lg font-medium">Pay with {selectedPaymentMethod?.label}</h2>
+                                {
+                                    selectedPaymentMethod?.id != 0 &&
+                                    <>
+                                        {/* Payment */}
+                                        <div className="mt-10">
+                                            <h2 className="text-lg font-medium">Pay with {selectedPaymentMethod?.label}</h2>
 
-                                    <div className="mt-6">
-                                        instructions on how to deposit
-                                    </div>
-
-                                    <div className="mt-6">
-                                        {
-                                            selectedPaymentMethod?.id != 0 &&
-                                            <>
+                                            <div className="mt-6 border border-primary p-3 rounded-md">
                                                 {
-                                                    <Field {...(checkoutFields[1])} />
+                                                    selectedPaymentMethod?.id == 1 &&
+                                                    <>
+                                                        {/* cbe */}
+                                                        Send a total of <span className="font-bold text-primary">{total.toLocaleString()} ETB</span> to {" "}
+                                                        <span className="font-bold text-primary">1000276021129</span>
+                                                        <br />
+                                                        <br />
+                                                        <span>
+                                                            <FiInfo className="inline mr-2" />
+                                                            Make sure to take screenshot or image of the transfer and provide it below.
+                                                        </span>
+                                                    </>
                                                 }
-                                            </>
-                                        }
-                                    </div>
-                                </div>
+                                                {
+                                                    selectedPaymentMethod?.id == 2 &&
+                                                    <>
+                                                        {/* telebirr */}
+                                                        Send a total of <span className="font-bold text-primary">{total.toLocaleString()} ETB</span> to {" "}
+                                                        <span className="font-bold text-primary">0938053405</span>
+                                                        <br />
+                                                        <br />
+                                                        <span>
+                                                            <FiInfo className="inline mr-2" />
+                                                            Make sure to take screenshot or image of the transfer and provide it below.
+                                                        </span>
+                                                    </>
+                                                }
+                                                {
+                                                    selectedPaymentMethod?.id == 3 &&
+                                                    <>
+                                                        {/* telebirr */}
+                                                        Send a total of <span className="font-bold text-primary">{total.toLocaleString()} ETB</span> to {" "}
+                                                        <span className="font-bold text-primary">1234567890</span>
+                                                        <br />
+                                                        <br />
+                                                        <span>
+                                                            <FiInfo className="inline mr-2" />
+                                                            Make sure to take screenshot or image of the transfer and provide it below.
+                                                        </span>
+                                                    </>
+                                                }
+                                            </div>
+
+                                            <div className="mt-6">
+                                                {
+                                                    selectedPaymentMethod?.id != 0 &&
+                                                    <>
+                                                        {
+                                                            <Field {...screenshotField} />
+                                                        }
+                                                    </>
+                                                }
+                                            </div>
+                                        </div>
+                                    </>
+                                }
                             </div>
 
                             {/* Order summary */}
@@ -329,7 +364,7 @@ const Checkout: NextPageWithLayout = () => {
                                     </dl>
 
                                     <div className="border-t border-gray-500 py-6 px-4 sm:px-6">
-                                        <button type="submit" className="w-full btn btn-primary" disabled={cartItems.data?.length == 0}>
+                                        <button type="submit" className="w-full btn btn-primary" disabled={cartItems.data?.length == 0 || checkoutForm.formState.isSubmitting}>
                                             Confirm order
                                         </button>
                                     </div>

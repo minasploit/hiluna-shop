@@ -40,6 +40,13 @@ const config = {
 				pathname: "/**",
 				port: ""
 			}
+			,
+			{
+				protocol: "https",
+				hostname: "*.hiluna.art",
+				pathname: "/**",
+				port: ""
+			}
 		]
 	}
 };
