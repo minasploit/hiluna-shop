@@ -138,7 +138,7 @@ const Checkout: NextPageWithLayout = () => {
 
             await router.push("/orders");
         } catch {
-            toast.success("Error placing order...", { id: toastId });
+            toast.error("Error placing order...", { id: toastId });
         }
     };
 
