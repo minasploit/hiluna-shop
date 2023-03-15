@@ -30,7 +30,10 @@ export const AddArtworkSchema = z.object({
     ...ArtworkSharedSchema,
     imageUrl: z.string().min(2),
 })
-export const AddArtworkFormSchema = z.object(ArtworkSharedSchema)
+export const AddArtworkFormSchema = z.object({
+    ...ArtworkSharedSchema,
+    // imageUrl: z.string()
+})
 export const EditArtworkSchema = z.object({
     id: z.number(),
     imageUrl: z.string(),

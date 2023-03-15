@@ -28,7 +28,6 @@
 		"basic-ftp": "^5.0.2",
 		"clsx": "^1.2.1",
 		"daisyui": "^2.51.3",
-		"firebase": "^9.17.2",
 		"formidable": "^2.1.1",
 		"ftp-ts": "^1.1.0",
 		"html-react-parser": "^3.0.12",

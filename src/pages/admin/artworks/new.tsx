@@ -13,10 +13,9 @@ import clsx from "clsx";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
-import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import { storage } from "firebaseConfig";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { type FtpUploadResult } from "~/pages/api/upload";
 
 const NewArtwork: NextPageWithLayout = () => {
     const router = useRouter();
@@ -72,7 +71,8 @@ const NewArtwork: NextPageWithLayout = () => {
             options: [
                 { label: "ETB", value: "ETB" },
                 { label: "USD", value: "USD" },
-            ]
+            ],
+            defaultValue: "ETB"
         },
         {
             id: crypto.randomBytes(16).toString('hex'),
@@ -82,7 +82,8 @@ const NewArtwork: NextPageWithLayout = () => {
             options: [
                 { label: "Portrait", value: "Portrait" },
                 { label: "Landscape", value: "Landscape" }
-            ]
+            ],
+            defaultValue: "Portrait"
         },
         {
             id: crypto.randomBytes(16).toString('hex'),
@@ -95,7 +96,8 @@ const NewArtwork: NextPageWithLayout = () => {
                 ...collections.data?.map(i => {
                     return { label: i.name, value: i.id }
                 }) ?? []
-            ]
+            ],
+            defaultValue: 0
         },
     ]
 
@@ -117,15 +119,24 @@ const NewArtwork: NextPageWithLayout = () => {
 
         try {
             if (imageFile) {
-                const name = imageFile.name
-                const storageRef = ref(storage, `image/${name}`)
+                const formData = new FormData();
+                formData.append('file', imageFile);
 
-                const uploadedFile = await uploadBytes(storageRef, imageFile)
-                const url = await getDownloadURL(uploadedFile.ref)
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json() as FtpUploadResult;
+
+                if (result.status == 500 || !result.urls[0]) {
+                    toast.error("Error uploading the file", { id: toastId });
+                    return;
+                }
 
                 const res = await artworkMutation.mutateAsync({
                     ...data,
-                    imageUrl: url
+                    imageUrl: result.urls[0]?.newName
                 });
 
                 artworkForm.reset(res);

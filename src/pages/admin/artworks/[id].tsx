@@ -13,9 +13,9 @@ import { FieldType } from "~/components/form/FieldAttributes";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 import { EditArtworkFormSchema } from "~/utils/schema";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "firebaseConfig";
 import Image from "next/image";
+import { resolveResource } from "~/components/Functions";
+import { type FtpUploadResult } from "~/pages/api/upload";
 
 const EditArtwork: NextPageWithLayout = () => {
     const router = useRouter()
@@ -134,11 +134,22 @@ const EditArtwork: NextPageWithLayout = () => {
             let url = artwork.data?.imageUrl ?? ""
 
             if (imageFile) {
-                const name = imageFile.name
-                const storageRef = ref(storage, `image/${name}`)
+                const formData = new FormData();
+                formData.append('file', imageFile);
 
-                const uploadedFile = await uploadBytes(storageRef, imageFile)
-                url = await getDownloadURL(uploadedFile.ref)
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json() as FtpUploadResult;
+
+                if (result.status == 500 || !result.urls[0]) {
+                    toast.error("Error uploading the file", { id: toastId });
+                    return;
+                }
+
+                url = result.urls[0]?.newName;
             }
 
             const res = await artworkMutation.mutateAsync({
@@ -173,7 +184,7 @@ const EditArtwork: NextPageWithLayout = () => {
                         {
                             artwork.data?.imageUrl &&
                             <Image
-                                src={artwork.data?.imageUrl ?? ""}
+                                src={resolveResource(artwork.data?.imageUrl ?? "")}
                                 width={320} height={320} alt="Artwork image"
                                 priority
                             />

@@ -9,7 +9,11 @@ const RichInputField: React.FC<RichInputFieldAttributes> = ({ label, name, defau
     const form = useFormContext();
 
     useEffect(() => {
-        form.setValue(name, defaultValue);
+        if (!form.formState.isDirty)
+            form.setValue(name, defaultValue, {
+                shouldDirty: false
+            });
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [defaultValue]);
 

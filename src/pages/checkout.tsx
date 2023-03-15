@@ -21,6 +21,7 @@ import React from "react";
 import { type FtpUploadResult } from "./api/upload";
 import { PaymentMethod } from "@prisma/client";
 import { useRouter } from "next/router";
+import { resolveResource } from "~/components/Functions";
 
 const paymentMethods = [
     { id: 0, title: 'Cash on Delivery', label: 'Cash', description: 'Make the payment in cash when the artwork is delivered', value: PaymentMethod.CashOnDelivery },
@@ -303,7 +304,7 @@ const Checkout: NextPageWithLayout = () => {
                                                 <div className="flex-shrink-0">
                                                     {item.imageUrl &&
                                                         <Image
-                                                            src={item.imageUrl}
+                                                            src={resolveResource(item.imageUrl)}
                                                             alt="Artwork image"
                                                             width={80} height={80}
                                                             className="w-20 rounded-md" />

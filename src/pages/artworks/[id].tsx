@@ -9,6 +9,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { toast } from "react-hot-toast";
 import { type CartItem } from "../cart";
 import Image from "next/image";
+import { resolveResource } from "~/components/Functions";
 
 const product = {
     // name: 'Zip Tote Basket',
@@ -74,7 +75,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
                     {artwork.data ?
                         <Image
-                            src={artwork.data.imageUrl}
+                            src={resolveResource(artwork.data.imageUrl)}
                             alt="Artwork image"
                             width={720} height={720}
                             className="w-full h-full object-center object-cover sm:rounded-lg"
