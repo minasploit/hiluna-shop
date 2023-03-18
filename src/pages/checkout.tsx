@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocalStorage } from "usehooks-ts";
 import { api } from "~/utils/api";
@@ -40,6 +40,10 @@ const Checkout: NextPageWithLayout = () => {
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
     const cartItems = api.artwork.getMany.useQuery(cartItemIds.map(c => c.id));
 
+    const removeFromCart = useCallback((id: number) => {
+        setCartItemIds(cartItemIds.filter(c => c.id != id));
+    }, [cartItemIds, setCartItemIds]);
+
     const orderMutation = api.order.create.useMutation();
 
     const phoneNumberField: FieldAttribute = {
@@ -77,11 +81,7 @@ const Checkout: NextPageWithLayout = () => {
                 });
             }
         })
-    }, [cartItemIds, cartItems]);
-
-    function removeFromCart(id: number) {
-        setCartItemIds(cartItemIds.filter(c => c.id != Number(id)));
-    }
+    }, [cartItemIds, cartItems, removeFromCart]);
 
     type AddOrderFormSchemaType = z.infer<typeof AddOrderFormSchema>;
     const checkoutForm = useForm<AddOrderFormSchemaType>({
