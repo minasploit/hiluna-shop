@@ -5,7 +5,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./_app"
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -16,7 +16,6 @@ export interface CartItem {
 }
 
 const Cart: NextPageWithLayout = () => {
-
     const { status } = useSession()
     const router = useRouter();
 
@@ -25,6 +24,10 @@ const Cart: NextPageWithLayout = () => {
 
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
     const cartItems = api.artwork.getMany.useQuery(cartItemIds.map(c => c.id));
+
+    const removeFromCart = useCallback((id: number) => {
+        setCartItemIds(cartItemIds.filter(c => c.id != id));
+    }, [cartItemIds, setCartItemIds]);
 
     useEffect(() => {
         setSubTotal(
@@ -43,11 +46,7 @@ const Cart: NextPageWithLayout = () => {
                 });
             }
         })
-    }, [cartItemIds, cartItems]);
-
-    function removeFromCart(id: number) {
-        setCartItemIds(cartItemIds.filter(c => c.id != Number(id)));
-    }
+    }, [cartItemIds, cartItems, removeFromCart]);
 
     return (
         <>
