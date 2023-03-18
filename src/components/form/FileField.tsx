@@ -14,6 +14,7 @@ const FileField: React.FC<FileFieldAttributes> = ({ label, name, type, inputFile
                 <input type={type} accept={accept} className="file-input file-input-bordered file-input-primary w-full"
                     {...form.register(name)} required={required}
                     ref={inputFileRef} multiple={multiple}
+                    onChange={console.log}
                     disabled={form.formState.isSubmitting} />
                 {form.formState.errors[name] && <span className="text-red-500">{form.formState.errors[name]?.message?.toString()}</span>}
             </div>

@@ -23,14 +23,12 @@ const EditMedium: NextPageWithLayout = () => {
 
     const mediumFields: FieldAttribute[] = [
         {
-            id: "name",
             name: "name",
             label: "Name of the Media",
             type: FieldType.TEXT,
             defaultValue: media.data?.name
         },
         {
-            id: "description",
             name: "description",
             label: "Description of the Media",
             type: FieldType.TEXT,
@@ -80,7 +78,7 @@ const EditMedium: NextPageWithLayout = () => {
                         <form onSubmit={mediumForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
                                 {mediumFields.map((field) => (
-                                    <div className="col-span-6 sm:col-span-3" key={field.id}>
+                                    <div className="col-span-6 sm:col-span-3" key={field.name}>
                                         <Field {...field} />
                                     </div>
                                 ))}

@@ -23,14 +23,12 @@ const EditCollection: NextPageWithLayout = () => {
 
     const collectionsFields: FieldAttribute[] = [
         {
-            id: "name",
             name: "name",
             label: "Name of the Collection",
             type: FieldType.TEXT,
             defaultValue: collection.data?.name
         },
         {
-            id: "description",
             name: "description",
             label: "Description of the Collection",
             type: FieldType.TEXT,
@@ -80,7 +78,7 @@ const EditCollection: NextPageWithLayout = () => {
                         <form onSubmit={collectionsForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
                                 {collectionsFields.map((field) => (
-                                    <div className="col-span-6 sm:col-span-3" key={field.id}>
+                                    <div className="col-span-6 sm:col-span-3" key={field.name}>
                                         <Field {...field} />
                                     </div>
                                 ))}

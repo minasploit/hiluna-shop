@@ -14,13 +14,11 @@ import { AddCollectionFormSchema } from "~/utils/schema";
 
 const collectionsFields: FieldAttribute[] = [
     {
-        id: "name",
         name: "name",
         label: "Name of the Collection",
         type: FieldType.TEXT,
     },
     {
-        id: "description",
         name: "description",
         label: "Description of the Collection",
         type: FieldType.TEXT,
@@ -69,7 +67,7 @@ const NewCollection: NextPageWithLayout = () => {
                         <form onSubmit={collectionForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
                                 {collectionsFields.map((field) => (
-                                    <div className="col-span-6 sm:col-span-3" key={field.id}>
+                                    <div className="col-span-6 sm:col-span-3" key={field.name}>
                                         <Field {...field} />
                                     </div>
                                 ))}

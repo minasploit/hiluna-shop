@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
+import 'react-quill/dist/quill.snow.css'
 import { Controller, useFormContext } from "react-hook-form";
 import { type RichInputFieldAttributes } from "./FieldAttributes";
 

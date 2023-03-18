@@ -8,7 +8,6 @@ import { type NextPageWithLayout } from "./_app";
 import { RadioGroup } from '@headlessui/react'
 import { FiCheckSquare, FiInfo, FiTrash } from "react-icons/fi";
 import type FieldAttribute from "~/components/form/FieldAttributes";
-import crypto from 'crypto'
 import { FieldType } from "~/components/form/FieldAttributes";
 import { AddOrderFormSchema } from "~/utils/schema";
 import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
@@ -44,14 +43,12 @@ const Checkout: NextPageWithLayout = () => {
     const orderMutation = api.order.create.useMutation();
 
     const phoneNumberField: FieldAttribute = {
-        id: crypto.randomBytes(16).toString('hex'),
         name: "phoneNumber",
         label: "Your phone number",
         type: FieldType.TEXT
     }
 
     const screenshotField: FieldAttribute = {
-        id: crypto.randomBytes(16).toString('hex'),
         name: "screenshot",
         label: "Provide a screenshot or image of the payment",
         inputFileRef: inputFileRef,
@@ -74,7 +71,7 @@ const Checkout: NextPageWithLayout = () => {
             if (!c.availableForSale && cartItemIds.map(cc => cc.id).includes(c.id)) {
                 // remove from cart
                 removeFromCart(c.id);
-                
+
                 toast(`Removed ${c.name} from your cart because it is no longer available for purchase.`, {
                     duration: 5000
                 });
@@ -281,9 +278,7 @@ const Checkout: NextPageWithLayout = () => {
                                                 {
                                                     selectedPaymentMethod?.id != 0 &&
                                                     <>
-                                                        {
-                                                            <Field {...screenshotField} />
-                                                        }
+                                                        <Field {...screenshotField} />
                                                     </>
                                                 }
                                             </div>

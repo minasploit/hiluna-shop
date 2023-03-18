@@ -7,14 +7,14 @@ import { FiArrowLeft, FiDollarSign, FiHome, FiImage, FiList, FiPenTool } from "r
 import SwitchTheme from "./SwitchTheme"
 import { useRouter } from "next/router";
 import Head from "next/head";
-import crypto from "crypto"
+import { v4 as uuidv4 } from 'uuid'
 
 const nav = [
     { id: 0, title: "Dashboard", icon: <FiHome className="text-xl" />, href: "/admin" },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", icon: <FiImage className="text-xl" />, href: "/admin/artworks" },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Orders", icon: <FiDollarSign className="text-xl" />, href: "/admin/orders" },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Medium", icon: <FiPenTool className="text-xl" />, href: "/admin/medium" },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", icon: <FiList className="text-xl" />, href: "/admin/collections" },
+    { id: uuidv4(), title: "Artworks", icon: <FiImage className="text-xl" />, href: "/admin/artworks" },
+    { id: uuidv4(), title: "Orders", icon: <FiDollarSign className="text-xl" />, href: "/admin/orders" },
+    { id: uuidv4(), title: "Medium", icon: <FiPenTool className="text-xl" />, href: "/admin/medium" },
+    { id: uuidv4(), title: "Collections", icon: <FiList className="text-xl" />, href: "/admin/collections" },
     // {
     //     id: 4, title: "Item 3", href: "item3",
     //     children: [

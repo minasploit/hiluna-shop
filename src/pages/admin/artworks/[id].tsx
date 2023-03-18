@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import { type z } from "zod";
 import Field from "~/components/form/Field";
 import type FieldAttribute from "~/components/form/FieldAttributes";
-import crypto from 'crypto';
 import { FieldType } from "~/components/form/FieldAttributes";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
@@ -30,49 +29,42 @@ const EditArtwork: NextPageWithLayout = () => {
 
     const artworkFields: FieldAttribute[] = [
         {
-            id: crypto.randomBytes(16).toString('hex'),
             name: "name",
             label: "Name of the Artwork",
             type: FieldType.TEXT,
             defaultValue: artwork.data?.name,
         },
         {
-            id: crypto.randomBytes(16).toString('hex'),
             name: "dimension",
             label: "Dimensions of the art",
             type: FieldType.TEXT,
             defaultValue: artwork.data?.dimension,
         },
         {
-            id: crypto.randomBytes(16).toString('hex'),
             name: "description",
             label: "Description",
             type: FieldType.RICHTEXT,
             defaultValue: artwork.data?.description,
         },
         {
-            id: crypto.randomBytes(16).toString('hex'),
             name: "featured",
             label: "Show this art on the home page?",
             type: FieldType.CHECKBOX,
             defaultValue: artwork.data?.featured,
         },
         {
-            id: crypto.randomBytes(16).toString('hex'),
             name: "availableForSale",
             label: "Is this art available for sale?",
             type: FieldType.CHECKBOX,
             defaultValue: artwork.data?.availableForSale,
         },
         {
-            id: crypto.randomBytes(16).toString('hex'),
             name: "price",
             label: "The price for the art?",
             type: FieldType.NUMBER,
             defaultValue: artwork.data?.price,
         },
         {
-            id: crypto.randomBytes(16).toString('hex'),
             name: "currency",
             label: "Currency",
             type: FieldType.SELECT,
@@ -83,7 +75,6 @@ const EditArtwork: NextPageWithLayout = () => {
             defaultValue: artwork.data?.currency,
         },
         {
-            id: crypto.randomBytes(16).toString('hex'),
             name: "orientation",
             label: "Orientation of the art",
             type: FieldType.SELECT,
@@ -94,7 +85,6 @@ const EditArtwork: NextPageWithLayout = () => {
             defaultValue: artwork.data?.orientation ?? "Portrait",
         },
         {
-            id: crypto.randomBytes(16).toString('hex'),
             name: "collectionId",
             label: "Collection",
             type: FieldType.SELECT,
@@ -206,7 +196,7 @@ const EditArtwork: NextPageWithLayout = () => {
                                 </div>
 
                                 {artworkFields.map((field) => (
-                                    <div className={clsx("col-span-6", field.name != "description" && "sm:col-span-3")} key={field.id}>
+                                    <div className={clsx("col-span-6", field.name != "description" && "sm:col-span-3")} key={field.name}>
                                         <Field {...field} />
                                     </div>
                                 ))}

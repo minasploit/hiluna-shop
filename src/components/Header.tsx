@@ -5,16 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTop } from "~/hooks/useTop";
 import SwitchTheme from "./SwitchTheme"
-import crypto from "crypto"
+import { v4 as uuidv4 } from 'uuid'
 import { Fragment } from "react";
 import { useRouter } from "next/router";
 import HeaderCartButton from "./HeaderCartButton";
 import { FiDollarSign, FiEye, FiHeart, FiImage, FiList, FiLogOut, FiUser } from "react-icons/fi";
 
 const nav = [
-    { id: crypto.randomBytes(16).toString('hex'), title: "Manage Site", icon: <FiEye className="text-xl" />, href: "/admin", adminOnly: true },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Artworks", icon: <FiImage className="text-xl" />, href: "/artworks", adminOnly: false },
-    { id: crypto.randomBytes(16).toString('hex'), title: "Collections", icon: <FiList className="text-xl" />, href: "/collections", adminOnly: false },
+    { id: uuidv4(), title: "Manage Site", icon: <FiEye className="text-xl" />, href: "/admin", adminOnly: true },
+    { id: uuidv4(), title: "Artworks", icon: <FiImage className="text-xl" />, href: "/artworks", adminOnly: false },
+    { id: uuidv4(), title: "Collections", icon: <FiList className="text-xl" />, href: "/collections", adminOnly: false },
     // {
     //     id: 3, title: "Item 3", href: "item3",
     //     children: [

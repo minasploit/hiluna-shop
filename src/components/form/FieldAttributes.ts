@@ -10,7 +10,7 @@ enum FieldType {
 }
 
 interface BaseFieldAttributes {
-    id: string;
+    // id: string;
     label: string;
     name: string;
     type: FieldType;
@@ -55,7 +55,7 @@ interface InputFieldAttributes extends BaseFieldAttributes {
 
 interface FileFieldAttributes extends BaseFieldAttributes {
     type: FieldType.FILE;
-    inputFileRef: React.MutableRefObject<HTMLInputElement | null>,
+    inputFileRef?: React.MutableRefObject<HTMLInputElement | null>,
     accept?: string,
     multiple?: boolean,
     required?: boolean
