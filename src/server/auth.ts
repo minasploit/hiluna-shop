@@ -34,6 +34,9 @@ export const authOptions: NextAuthOptions = {
 			return session;
 		},
 	},
+	pages: {
+		error: '/error'
+	},
 	adapter: PrismaAdapter(prisma),
 	providers: [
 		DiscordProvider({

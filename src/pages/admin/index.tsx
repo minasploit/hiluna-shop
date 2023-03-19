@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FiImage, FiList, FiPenTool, FiUsers } from "react-icons/fi";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "../_app";
@@ -7,8 +8,29 @@ const AdminPage: NextPageWithLayout = () => {
     const dashboardNumbers = api.dashboard.getDashboardNumbers.useQuery();
 
     return <>
-        <div className="flex justify-center items-start min-h-screen">
+        <div className="text-center min-h-screen">
+
             <div className="stats stats-vertical sm:stats-horizontal shadow gap-5 mt-10">
+                <div className="stat">
+                    <div className="stat-title">Active Orders</div>
+                    <div className="stat-value">{dashboardNumbers.data?.activeOrderCount.toLocaleString()}</div>
+                    <div className="stat-actions">
+                        <Link href={`/admin/orders`}>
+                            <button className="btn btn-sm btn-primary">Manage</button>
+                        </Link>
+                    </div>
+                </div>
+
+                <div className="stat">
+                    <div className="stat-title">Total Revenue</div>
+                    <div className="stat-value">{dashboardNumbers.data?.revenue.toLocaleString()} ETB</div>
+                    <div className="stat-actions">
+                        <Link href={`/admin/orders`}>
+                            <button className="btn btn-sm btn-secondary">View orders</button>
+                        </Link>
+                    </div>
+                </div>
+
                 <div className="stat">
                     <div className="stat-figure text-primary">
                         <FiUsers className="text-4xl" />

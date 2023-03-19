@@ -10,8 +10,6 @@ export const artworkRouter = createTRPCRouter({
     getOne: publicProcedure
         .input(z.number())
         .query(async ({ ctx, input }) => {
-            console.log(input);
-
             const res = await ctx.prisma.artwork.findFirst({
                 where: {
                     id: input

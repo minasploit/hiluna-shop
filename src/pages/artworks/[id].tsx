@@ -10,6 +10,8 @@ import { toast } from "react-hot-toast";
 import { type CartItem } from "../cart";
 import Image from "next/image";
 import { resolveResource } from "~/components/Functions";
+import Link from "next/link";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 const product = {
     // name: 'Zip Tote Basket',
@@ -70,7 +72,34 @@ const ArtworkDetail: NextPageWithLayout = () => {
     }
 
     return <>
-        <div className="">
+
+        {
+            (artwork.isLoading || !artwork.data) &&
+            <div className="flex items-center justify-center mt-12">
+                {
+                    artwork.isLoading &&
+                    <LoadingSpinner />
+                }
+
+                {
+                    (!artwork.data && !artwork.isLoading) &&
+                    <div className="card w-96 bg-base-100 shadow-xl border border-red-400">
+                        <div className="card-body">
+                            <h2 className="card-title">Error</h2>
+                            <p>The artwork selected doesn&apos;t exist.</p>
+                            <div className="card-actions justify-end mt-2">
+                                <Link href={`/artworks`}>
+                                    <button className="btn btn-primary btn-sm">Go back</button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        {
+            artwork.data &&
             <div className="max-w-2xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
                     {artwork.data ?
@@ -251,7 +280,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        }
     </>
 }
 

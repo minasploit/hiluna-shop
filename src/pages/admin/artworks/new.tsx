@@ -26,11 +26,6 @@ const NewArtwork: NextPageWithLayout = () => {
 
     const artworkFields: FieldAttribute[] = [
         {
-            name: "name",
-            label: "Name of the Artwork",
-            type: FieldType.TEXT
-        },
-        {
             name: "files",
             label: "File",
             type: FieldType.FILE,
@@ -38,6 +33,11 @@ const NewArtwork: NextPageWithLayout = () => {
             accept: "image/*",
             multiple: true,
             required: true
+        },
+        {
+            name: "name",
+            label: "Name of the Artwork",
+            type: FieldType.TEXT
         },
         {
             name: "dimension",
@@ -163,7 +163,7 @@ const NewArtwork: NextPageWithLayout = () => {
                         <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
                                 {artworkFields.map((field) => (
-                                    <div className={clsx("col-span-6", field.name != "description" && "sm:col-span-3")} key={field.name}>
+                                    <div className={clsx("col-span-6", !["description", "files"].includes(field.name) && "sm:col-span-3")} key={field.name}>
                                         <Field {...field} />
                                     </div>
                                 ))}

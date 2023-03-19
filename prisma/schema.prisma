@@ -66,6 +66,8 @@ model Order {
     phoneNumber   String
     paymentMethod PaymentMethod @default(CashOnDelivery)
     screenshotUrl String?
+    price         Int
+    currency      Currency      @default(ETB)
     orderStatus   OrderStatus
     orderedAt     DateTime      @default(now())
     updatedAt     DateTime      @updatedAt

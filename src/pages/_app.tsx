@@ -11,6 +11,7 @@ import Head from "next/head";
 import { type NextPage } from "next";
 import setLayoutDefinitions from "~/components/_setLayoutDefinitions";
 import { Toaster } from "react-hot-toast";
+import { useTheme } from "~/hooks/useTheme";
 
 export type NextPageWithLayout = NextPage & {
 	getLayout?: (page: ReactElement) => ReactNode;
@@ -24,6 +25,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
 	Component,
 	pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) => {
+	useTheme();
+
 	const [queryClient] = useState(
 		() =>
 			new QueryClient({

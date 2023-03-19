@@ -15,6 +15,8 @@ import { EditArtworkFormSchema } from "~/utils/schema";
 import Image from "next/image";
 import { resolveResource } from "~/components/Functions";
 import { type FtpUploadResult } from "~/pages/api/upload";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
+import Link from "next/link";
 
 const EditArtwork: NextPageWithLayout = () => {
     const router = useRouter()
@@ -163,66 +165,94 @@ const EditArtwork: NextPageWithLayout = () => {
             <title>Edit {artwork.data?.name} - Hiluna Art</title>
         </Head>
 
-        <div className="card shadow px-4 py-5 sm:rounded-lg sm:p-6 md:mt-8">
-            <div className="md:grid md:grid-cols-3 md:gap-6">
-                <div className="md:col-span-1">
-                    <h3 className="text-lg font-collections leading-6">Edit artwork</h3>
-                    <label className="label mt-2">
-                        <span className="label-text">Current artwork image</span>
-                    </label>
-                    <div className="flex justify-center">
-                        {
-                            artwork.data?.imageUrl &&
-                            <Image
-                                src={resolveResource(artwork.data?.imageUrl ?? "")}
-                                width={320} height={320} alt="Artwork image"
-                                priority
-                            />
-                        }
-                    </div>
-                </div>
+        {
+            (artwork.isLoading || !artwork.data) &&
+            <div className="flex items-center justify-center mt-12">
+                {
+                    artwork.isLoading &&
+                    <LoadingSpinner />
+                }
 
-                <div className="mt-5 md:mt-0 md:col-span-2">
-                    <FormProvider {...artworkForm}>
-                        <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
-                            <div className="grid grid-cols-6 gap-6">
-                                <div className="form-control w-full col-span-6">
-                                    <label className="label">
-                                        <span className="label-text">Pick an image for the artwork</span>
-                                    </label>
-                                    <input type="file" accept="image/*" className="file-input file-input-bordered file-input-primary w-full"
-                                        name="imageUrl" onChange={(files) => handleSelectedFile(files.target.files)}
-                                        disabled={artworkForm.formState.isSubmitting} />
+                {
+                    (!artwork.data && !artwork.isLoading) &&
+                    <div className="card w-96 bg-base-100 shadow-xl border border-red-400">
+                        <div className="card-body">
+                            <h2 className="card-title">Error</h2>
+                            <p>The artwork selected doesn&apos;t exist.</p>
+                            <div className="card-actions justify-end mt-2">
+                                <Link href={`/admin/artworks`}>
+                                    <button className="btn btn-primary btn-sm">Go back</button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        {
+            artwork.data &&
+            <div className="card shadow px-4 py-5 sm:rounded-lg sm:p-6 md:mt-8">
+                <div className="md:grid md:grid-cols-3 md:gap-6">
+                    <div className="md:col-span-1">
+                        <h3 className="text-lg font-collections leading-6">Edit artwork</h3>
+                        <label className="label mt-2">
+                            <span className="label-text">Current artwork image</span>
+                        </label>
+                        <div className="flex justify-center">
+                            {
+                                artwork.data.imageUrl &&
+                                <Image
+                                    src={resolveResource(artwork.data.imageUrl)}
+                                    width={320} height={320} alt="Artwork image"
+                                    priority
+                                />
+                            }
+                        </div>
+                    </div>
+
+                    <div className="mt-5 md:mt-0 md:col-span-2">
+                        <FormProvider {...artworkForm}>
+                            <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
+                                <div className="grid grid-cols-6 gap-6">
+                                    <div className="form-control w-full col-span-6">
+                                        <label className="label">
+                                            <span className="label-text">Pick an image for the artwork</span>
+                                        </label>
+                                        <input type="file" accept="image/*" className="file-input file-input-bordered file-input-primary w-full"
+                                            name="imageUrl" onChange={(files) => handleSelectedFile(files.target.files)}
+                                            disabled={artworkForm.formState.isSubmitting} />
+                                    </div>
+
+                                    {artworkFields.map((field) => (
+                                        <div className={clsx("col-span-6", field.name != "description" && "sm:col-span-3")} key={field.name}>
+                                            <Field {...field} />
+                                        </div>
+                                    ))}
                                 </div>
 
-                                {artworkFields.map((field) => (
-                                    <div className={clsx("col-span-6", field.name != "description" && "sm:col-span-3")} key={field.name}>
-                                        <Field {...field} />
-                                    </div>
-                                ))}
-                            </div>
+                                <div className="flex justify-end mt-4">
+                                    <button
+                                        type="button"
+                                        disabled={artworkForm.formState.isSubmitting}
+                                        className="btn btn-ghost"
+                                        onClick={() => router.push("/admin/artworks")}>
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={artworkForm.formState.isSubmitting}
+                                        className={clsx("ml-3 btn btn-primary", artworkForm.formState.isSubmitting && "loading")}>
+                                        {artworkForm.formState.isSubmitting ? "Saving..." : "Save"}
+                                    </button>
+                                </div>
+                            </form>
 
-                            <div className="flex justify-end mt-4">
-                                <button
-                                    type="button"
-                                    disabled={artworkForm.formState.isSubmitting}
-                                    className="btn btn-ghost"
-                                    onClick={() => router.push("/admin/artworks")}>
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={artworkForm.formState.isSubmitting}
-                                    className={clsx("ml-3 btn btn-primary", artworkForm.formState.isSubmitting && "loading")}>
-                                    {artworkForm.formState.isSubmitting ? "Saving..." : "Save"}
-                                </button>
-                            </div>
-                        </form>
-
-                    </FormProvider>
+                        </FormProvider>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </>
 }
 

@@ -90,6 +90,11 @@ const ManageCollection: NextPageWithLayout = () => {
                     }
                 </tbody>
             </table>
+
+            {
+                !collection.data?.length &&
+                <div className="text-center my-6 text-lg font-medium">No Collections</div>
+            }
         </div>
     </>
 }

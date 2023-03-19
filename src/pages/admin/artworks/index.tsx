@@ -91,8 +91,8 @@ const ManageArtworks: NextPageWithLayout = () => {
                                                 <Image
                                                     src={resolveResource(artwork.imageUrl)}
                                                     alt="Artwork image"
-                                                    width={36}
-                                                    height={36}
+                                                    width={90}
+                                                    height={90}
                                                 />
                                             </div>
                                         </div>
@@ -126,6 +126,11 @@ const ManageArtworks: NextPageWithLayout = () => {
                     }
                 </tbody>
             </table>
+
+            {
+                !artworks.data?.length &&
+                <div className="text-center my-6 text-lg font-medium">No Artworks</div>
+            }
         </div>
     </>
 }

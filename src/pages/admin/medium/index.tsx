@@ -90,6 +90,11 @@ const ManageMedium: NextPageWithLayout = () => {
                     }
                 </tbody>
             </table>
+
+            {
+                !medium.data?.length &&
+                <div className="text-center my-6 text-lg font-medium">No Medium</div>
+            }
         </div>
     </>
 }

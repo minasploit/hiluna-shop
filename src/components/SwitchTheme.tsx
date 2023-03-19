@@ -1,22 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FiMoon, FiSun } from "react-icons/fi";
-import { useLocalStorage } from "usehooks-ts";
-
-const lightTheme = "garden";
-const darkTheme = "halloween";
+import { useTheme } from "~/hooks/useTheme";
 
 const SwitchTheme = () => {
-    const [theme, setTheme] = useLocalStorage("theme", lightTheme);
-
-    const toggleTheme = () => {
-        setTheme(theme === darkTheme ? lightTheme : darkTheme);
-    };
-
-    useEffect(() => {
-        const body = document.body;
-
-        body.setAttribute("data-theme", theme);
-    }, [theme]);
+    const { theme, toggleTheme, lightTheme } = useTheme();
 
     return (
         <label className="swap swap-rotate btn btn-circle btn-ghost" onInput={toggleTheme}>
