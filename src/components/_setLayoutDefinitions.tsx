@@ -20,6 +20,7 @@ import ManageOrders from "~/pages/admin/orders";
 import Cart from "~/pages/cart";
 import Checkout from "~/pages/checkout";
 import Orders from "~/pages/orders";
+import ManageOrder from "~/pages/admin/orders/[id]";
 
 const UserLayoutPages = [
     Home,
@@ -42,7 +43,8 @@ const AdminLayoutPages = [
     ManageCollection,
     NewCollection,
     EditCollection,
-    ManageOrders
+    ManageOrders,
+    ManageOrder
 ];
 
 export default function setLayoutDefinitions() {

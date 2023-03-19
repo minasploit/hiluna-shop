@@ -2,10 +2,11 @@ import { Currency, OrderStatus, PaymentMethod, UserRole } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
+    adminProcedure,
     createTRPCRouter,
     protectedProcedure,
 } from "~/server/api/trpc";
-import { AddOrderSchema } from "~/utils/schema";
+import { AddOrderSchema, ChangeOrderStatusSchema } from "~/utils/schema";
 
 export const orderRouter = createTRPCRouter({
     create: protectedProcedure
@@ -77,6 +78,10 @@ export const orderRouter = createTRPCRouter({
         .input(z.number())
         .query(async ({ ctx, input }) => {
             const order = await ctx.prisma.order.findFirst({
+                include: {
+                    Artwork: true,
+                    OrderedBy: true
+                },
                 where: {
                     id: input
                 }
@@ -90,6 +95,20 @@ export const orderRouter = createTRPCRouter({
             }
 
             return order;
+        }),
+    changeOrderStatus: adminProcedure
+        .input(ChangeOrderStatusSchema)
+        .mutation(async ({ ctx, input }) => {
+            const res = await ctx.prisma.order.update({
+                where: {
+                    id: input.id
+                },
+                data: {
+                    orderStatus: input.orderStatus
+                }
+            })
+
+            return res;
         }),
     list: protectedProcedure
         .query(async ({ ctx }) => {

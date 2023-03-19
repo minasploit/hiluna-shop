@@ -1,5 +1,4 @@
 import { type NextPageWithLayout } from "~/pages/_app";
-import 'react-quill/dist/quill.snow.css'
 import { FormProvider, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

@@ -1,59 +1,19 @@
-import { Currency, PaymentMethod } from "@prisma/client";
+import { Currency, OrderStatus, PaymentMethod } from "@prisma/client";
+import clsx from "clsx";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import toast from "react-hot-toast";
 import { prettifyCamel, resolveResource } from "~/components/Functions";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 
 const ManageOrders: NextPageWithLayout = () => {
-    const [deleteArtworkId, setDeleteArtworkId] = useState(0);
-
     const orders = api.order.list.useQuery();
-    const deleteArtworkMutation = api.artwork.delete.useMutation();
-
-    async function deleteArtwork(id: number) {
-        const toastId = toast.loading("Deleting artwork...");
-
-        try {
-            await deleteArtworkMutation.mutateAsync(id);
-
-            toast.success("Artwork deleted", { id: toastId });
-
-            await orders.refetch()
-        } catch {
-            toast.error("Error deleting artwork", { id: toastId });
-        }
-    }
 
     return <>
         <Head>
             <title>Manage Orders - Hiluna Art</title>
         </Head>
-
-        <input type="checkbox" id="delete-modal" className="modal-toggle" />
-        <label htmlFor="delete-modal" className="modal cursor-pointer modal-bottom sm:modal-middle">
-            <label className="modal-box relative" htmlFor="">
-                <h3 className="text-lg font-bold">Confirm</h3>
-                <p className="py-4">Are you sure you want to delete this artwork?</p>
-
-                <div className="flex justify-end mt-4">
-                    <label
-                        htmlFor="delete-modal"
-                        className="btn btn-ghost">
-                        Cancel
-                    </label>
-                    <label
-                        htmlFor="delete-modal"
-                        className="ml-3 btn btn-error"
-                        onClick={() => deleteArtwork(deleteArtworkId)}>
-                        Delete
-                    </label>
-                </div>
-            </label>
-        </label>
 
         <div className="flex flex-col lg:flex-row justify-between items-center p-8">
             <div className="">
@@ -107,28 +67,32 @@ const ManageOrders: NextPageWithLayout = () => {
                                 <td>
                                     {order.currency == Currency.USD && `$${order.price}`}
                                     {order.currency == Currency.ETB && `${order.price} ${order.currency}`}
-                                    <br />
-                                    {/* <span className={clsx("badge", artwork.availableForSale ? "badge-primary" : "badge-ghost")}>
-                                        {artwork.availableForSale ? "Available for sale" : "Unavailable for sale"}
-                                    </span> */}
                                 </td>
                                 <td>{prettifyCamel(order.paymentMethod)}</td>
                                 <td>
                                     {order.paymentMethod == PaymentMethod.CashOnDelivery && <>Cash on delivery</>}
                                     {
                                         (order.paymentMethod != PaymentMethod.CashOnDelivery && order.screenshotUrl) &&
-                                        <Link className="link" href={resolveResource(order.screenshotUrl)}>
+                                        <Link className="link" href={resolveResource(order.screenshotUrl)} target={"_blank"}>
                                             Click to view
                                         </Link>
                                     }
                                 </td>
-                                <td>{order.orderStatus}</td>
+                                <td>
+                                    <span className={clsx(
+                                        order.orderStatus == OrderStatus.Ordered && "text-primary-focus",
+                                        order.orderStatus == OrderStatus.OrderedAndPaid && "text-primary",
+                                        order.orderStatus == OrderStatus.Cancelled && "text-error",
+                                        order.orderStatus == OrderStatus.Completed && "text-base",
+                                    )}>
+                                        {prettifyCamel(order.orderStatus)}
+                                    </span>
+                                </td>
                                 <td>{order.orderedAt.toDateString()}</td>
                                 <th className="text-end">
-                                    <Link href={`/admin/artworks/${order.Artwork.id}`}>
-                                        <button className="btn btn-outline btn-sm">Edit</button>
+                                    <Link href={`/admin/orders/${order.id}`}>
+                                        <button className="btn btn-sm btn-primary btn-outline">Details</button>
                                     </Link>
-                                    <label className="btn btn-error btn-sm ml-2" htmlFor="delete-modal" onClick={() => setDeleteArtworkId(order.Artwork.id)}>Delete</label>
                                 </th>
                             </tr>
                         ))

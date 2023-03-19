@@ -1,3 +1,4 @@
+import { OrderStatus } from "@prisma/client";
 import { z } from "zod";
 
 // =========== ORDER ===========
@@ -13,6 +14,10 @@ export const AddOrderSchema = z.object({
 export const AddOrderFormSchema = z.object(
     OrderSharedSchema
 )
+export const ChangeOrderStatusSchema = z.object({
+    id: z.number(),
+    orderStatus: z.enum(["Ordered", "OrderedAndPaid", "Cancelled", "Completed"])
+})
 
 // =========== ARTWORK ===========
 const ArtworkSharedSchema = {
