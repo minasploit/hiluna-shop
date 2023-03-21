@@ -4,6 +4,7 @@
  *
  * We also create a few inference helpers for input and output types.
  */
+import { QueryClient } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
@@ -21,6 +22,9 @@ const getBaseUrl = () => {
 export const api = createTRPCNext<AppRouter>({
 	config() {
 		return {
+			queryClientConfig: {
+				defaultOptions: { queries: { refetchOnWindowFocus: true } },
+			},
 			/**
 			 * Transformer used for data de-serialization from the server.
 			 *
@@ -42,7 +46,7 @@ export const api = createTRPCNext<AppRouter>({
 				httpBatchLink({
 					url: `${getBaseUrl()}/api/trpc`,
 				}),
-			],
+			]
 		};
 	},
 	/**

@@ -1,12 +1,11 @@
 import { type AppProps, type AppType } from "next/app";
 import { type Session } from "next-auth";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
-import { type ReactElement, type ReactNode, useState } from "react";
+import { type ReactElement, type ReactNode } from "react";
 import Head from "next/head";
 import { type NextPage } from "next";
 import setLayoutDefinitions from "~/components/_setLayoutDefinitions";
@@ -27,13 +26,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }: AppPropsWithLayout) => {
 	useTheme();
 
-	const [queryClient] = useState(
-		() =>
-			new QueryClient({
-				defaultOptions: { queries: { refetchOnWindowFocus: true } },
-			})
-	);
-
 	setLayoutDefinitions();
 
 	const getLayout = Component.getLayout ?? (page => page);
@@ -49,12 +41,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 			<Toaster />
 
 			<SessionProvider session={session}>
-				<QueryClientProvider client={queryClient}>
-					{getLayout(<Component {...pageProps} />)}
-				</QueryClientProvider>
+				{getLayout(<Component {...pageProps} />)}
 			</SessionProvider>
 		</>
-
 	);
 };
 
