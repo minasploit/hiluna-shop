@@ -6,7 +6,7 @@ const OrderSharedSchema = {
 }
 export const AddOrderSchema = z.object({
     ...OrderSharedSchema,
-    items: z.array(z.number()),
+    artworks: z.array(z.number()),
     paymentMethod: z.enum(["CashOnDelivery", "CBE", "Telebirr", "Bunna"]).default("CashOnDelivery"),
     screenshotUrl: z.string().nullable()
 })

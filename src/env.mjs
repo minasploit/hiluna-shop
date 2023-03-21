@@ -26,6 +26,8 @@ const server = z.object({
 	FTP_HOST: z.string().min(1),
 	FTP_USER: z.string().min(1),
 	FTP_PASS: z.string().min(1),
+	SMS_GATEWAY_API_URL: z.string().min(1),
+	SMS_GATEWAY_API_TOKEN: z.string().min(1),
 });
 
 /**
@@ -54,6 +56,8 @@ const processEnv = {
 	FTP_HOST: process.env.FTP_HOST,
 	FTP_USER: process.env.FTP_USER,
 	FTP_PASS: process.env.FTP_PASS,
+	SMS_GATEWAY_API_URL: process.env.SMS_GATEWAY_API_URL,
+	SMS_GATEWAY_API_TOKEN: process.env.SMS_GATEWAY_API_TOKEN,
 	// NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 

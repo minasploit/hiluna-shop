@@ -1,6 +1,7 @@
 import { Currency, OrderStatus, PaymentMethod, UserRole } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { sendSMSToUser } from "~/components/Functions";
 import {
     adminProcedure,
     createTRPCRouter,
@@ -15,7 +16,7 @@ export const orderRouter = createTRPCRouter({
             const artworksUnavailableForSale = await ctx.prisma.artwork.count({
                 where: {
                     id: {
-                        in: input.items
+                        in: input.artworks
                     },
                     availableForSale: false
                 }
@@ -34,7 +35,7 @@ export const orderRouter = createTRPCRouter({
             const artworks = await ctx.prisma.artwork.findMany({
                 where: {
                     id: {
-                        in: input.items
+                        in: input.artworks
                     }
                 },
                 select: {
@@ -44,42 +45,46 @@ export const orderRouter = createTRPCRouter({
                 }
             })
 
-            const res = await ctx.prisma.order.createMany({
-                data: input.items.map((i) => {
-                    return {
-                        phoneNumber: input.phoneNumber,
-                        artworkId: i,
-                        orderedById: ctx.session.user.id,
-                        paymentMethod: input.paymentMethod,
-                        screenshotUrl: input.screenshotUrl,
-                        price: (artworks.filter(a => a.id == i)[0])?.price ?? 0,
-                        currency: (artworks.filter(a => a.id == i)[0])?.currency ?? Currency.ETB,
-                        orderStatus: input.paymentMethod == PaymentMethod.CashOnDelivery ? OrderStatus.Ordered : OrderStatus.OrderedAndPaid
-                    }
-                }),
-                skipDuplicates: true
+            const total = artworks.map(a => a.price).reduce((a, b) => a + b)
+
+            // add new orders to the db
+            const order = await ctx.prisma.order.create({
+                data: {
+                    phoneNumber: input.phoneNumber,
+                    // artworkId: i,
+                    orderedById: ctx.session.user.id,
+                    paymentMethod: input.paymentMethod,
+                    screenshotUrl: input.screenshotUrl,
+                    price: total,
+                    currency: Currency.ETB,
+                    orderStatus: input.paymentMethod == PaymentMethod.CashOnDelivery ? OrderStatus.Ordered : OrderStatus.OrderedAndPaid
+                }
             });
 
-            // set the artworks as unavailable for sale
+            // set the order on artworks and mark them as unavailable for sale
             await ctx.prisma.artwork.updateMany({
                 data: {
-                    availableForSale: false
+                    availableForSale: false,
+                    orderId: order.id
                 },
                 where: {
                     id: {
-                        in: input.items
+                        in: input.artworks
                     }
                 }
             })
 
-            return res;
+            // send order placed sms to user
+            await sendSMSToUser(input.phoneNumber, `${order.id} at Hiluna Art`, "shopping_1");
+
+            return order;
         }),
     getOne: protectedProcedure
         .input(z.number())
         .query(async ({ ctx, input }) => {
             const order = await ctx.prisma.order.findFirst({
                 include: {
-                    Artwork: true,
+                    Artworks: true,
                     OrderedBy: true
                 },
                 where: {
@@ -99,23 +104,36 @@ export const orderRouter = createTRPCRouter({
     changeOrderStatus: adminProcedure
         .input(ChangeOrderStatusSchema)
         .mutation(async ({ ctx, input }) => {
-            const res = await ctx.prisma.order.update({
+            const previousOrderStatus = await ctx.prisma.order.findFirst({
+                select: {
+                    orderStatus: true
+                },
+                where: {
+                    id: input.id
+                }
+            });
+
+            const order = await ctx.prisma.order.update({
                 where: {
                     id: input.id
                 },
                 data: {
                     orderStatus: input.orderStatus
                 }
-            })
+            });
 
-            return res;
+            // send sms if the order status goes from ordered to (ordered_and_paid, completed)
+            if (previousOrderStatus?.orderStatus == OrderStatus.Ordered && order.orderStatus != OrderStatus.Cancelled)
+                await sendSMSToUser(order.phoneNumber, `${order.id} at Hiluna Art`, "shopping");
+
+            return order;
         }),
     list: protectedProcedure
         .query(async ({ ctx }) => {
             if (ctx.session.user.role == UserRole.USER) {
                 const res = await ctx.prisma.order.findMany({
                     include: {
-                        Artwork: true,
+                        Artworks: true,
                         OrderedBy: true
                     },
                     where: {
@@ -128,7 +146,7 @@ export const orderRouter = createTRPCRouter({
 
             const res = await ctx.prisma.order.findMany({
                 include: {
-                    Artwork: true,
+                    Artworks: true,
                     OrderedBy: true
                 }
             })

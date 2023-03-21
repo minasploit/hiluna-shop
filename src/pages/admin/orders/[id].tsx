@@ -52,7 +52,7 @@ const ManageOrder: NextPageWithLayout = () => {
             setSelected(data);
             await order.refetch();
 
-            toast.success("Changed order status", { id: toastId })
+            toast.success("Order status changed.", { id: toastId })
         } catch {
             toast.error("Error changing order status", { id: toastId })
         }
@@ -169,25 +169,29 @@ const ManageOrder: NextPageWithLayout = () => {
                 <div className="border-t border-gray-500 px-4 py-5 sm:px-6">
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="sm:col-span-1">
-                            <dt className="text-sm font-medium">Artwork</dt>
+                            <dt className="text-sm font-medium">Artworks</dt>
                             <dd className="mt-2">
-                                <div className="flex items-center space-x-3">
-                                    <div className="avatar">
-                                        <div className="mask mask-squircle w-12 h-12">
-                                            <Image
-                                                src={resolveResource(order.data.Artwork.imageUrl)}
-                                                alt="Artwork image"
-                                                width={90}
-                                                height={90}
-                                            />
+                                {
+                                    order.data.Artworks.map(artwork => (
+                                        <div className="flex items-center space-x-3" key={artwork.id}>
+                                            <div className="avatar">
+                                                <div className="mask mask-squircle w-12 h-12">
+                                                    <Image
+                                                        src={resolveResource(artwork.imageUrl)}
+                                                        alt="Artwork image"
+                                                        width={90}
+                                                        height={90}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="font-medium">
+                                                    {artwork.name}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div className="font-medium">
-                                            {order.data.Artwork.name}
-                                        </div>
-                                    </div>
-                                </div>
+                                    ))
+                                }
                             </dd>
                         </div>
                         <div className="sm:col-span-1">

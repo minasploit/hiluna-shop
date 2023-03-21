@@ -122,7 +122,7 @@ const Checkout: NextPageWithLayout = () => {
             }
 
             await orderMutation.mutateAsync({
-                items: cartItemIds.map(c => c.id),
+                artworks: cartItemIds.map(c => c.id),
                 phoneNumber: data.phoneNumber,
                 screenshotUrl: url,
                 paymentMethod: selectedPaymentMethod?.value

@@ -11,6 +11,7 @@ CREATE TABLE `Artwork` (
     `currency` ENUM('ETB', 'USD') NOT NULL DEFAULT 'ETB',
     `orientation` ENUM('Portrait', 'Landscape') NULL,
     `collectionId` INTEGER NULL,
+    `orderId` INTEGER NULL,
     `createdById` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -43,7 +44,6 @@ CREATE TABLE `Collection` (
 -- CreateTable
 CREATE TABLE `Order` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `artworkId` INTEGER NOT NULL,
     `orderedById` VARCHAR(191) NOT NULL,
     `phoneNumber` VARCHAR(191) NOT NULL,
     `paymentMethod` ENUM('CashOnDelivery', 'CBE', 'Telebirr', 'Bunna') NOT NULL DEFAULT 'CashOnDelivery',
@@ -123,13 +123,13 @@ CREATE TABLE `_ArtworkAndMedia` (
 ALTER TABLE `Artwork` ADD CONSTRAINT `Artwork_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collection`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Artwork` ADD CONSTRAINT `Artwork_orderId_fkey` FOREIGN KEY (`orderId`) REFERENCES `Order`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Artwork` ADD CONSTRAINT `Artwork_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Order` ADD CONSTRAINT `Order_orderedById_fkey` FOREIGN KEY (`orderedById`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Order` ADD CONSTRAINT `Order_artworkId_fkey` FOREIGN KEY (`artworkId`) REFERENCES `Artwork`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Account` ADD CONSTRAINT `Account_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

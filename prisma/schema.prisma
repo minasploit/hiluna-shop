@@ -22,13 +22,14 @@ model Artwork {
     currency         Currency     @default(ETB)
     orientation      Orientation?
     collectionId     Int?
+    orderId          Int?
     createdById      String
     createdAt        DateTime     @default(now())
     updatedAt        DateTime     @updatedAt
     Collection       Collection?  @relation(fields: [collectionId], references: [id])
+    Order            Order?       @relation(fields: [orderId], references: [id])
     CreatedBy        User         @relation(fields: [createdById], references: [id])
     Media            Media[]      @relation("ArtworkAndMedia")
-    Order            Order[]
 }
 
 enum Currency {
@@ -61,7 +62,6 @@ model Collection {
 
 model Order {
     id            Int           @id @default(autoincrement())
-    artworkId     Int
     orderedById   String
     phoneNumber   String
     paymentMethod PaymentMethod @default(CashOnDelivery)
@@ -72,7 +72,7 @@ model Order {
     orderedAt     DateTime      @default(now())
     updatedAt     DateTime      @updatedAt
     OrderedBy     User          @relation(fields: [orderedById], references: [id])
-    Artwork       Artwork       @relation(fields: [artworkId], references: [id])
+    Artworks      Artwork[]
 }
 
 enum PaymentMethod {
