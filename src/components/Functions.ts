@@ -1,4 +1,4 @@
-import { File, FileType, type Artwork } from "@prisma/client"
+import { type File, FileType, type Artwork } from "@prisma/client"
 import { env } from "~/env.mjs"
 
 export function resolveResource(imageUrl: string): string {
