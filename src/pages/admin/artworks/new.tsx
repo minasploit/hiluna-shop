@@ -27,11 +27,12 @@ const NewArtwork: NextPageWithLayout = () => {
     const artworkFields: FieldAttribute[] = [
         {
             name: "files",
-            label: "Pick an image for the artwork",
+            label: "Pick images/videos for the artwork",
             type: FieldType.FILE,
             inputFileRef,
-            accept: "image/*",
-            required: true
+            accept: "image/*,video/*",
+            required: true,
+            multiple: true
         },
         {
             name: "name",
@@ -138,7 +139,7 @@ const NewArtwork: NextPageWithLayout = () => {
 
             const res = await artworkMutation.mutateAsync({
                 ...data,
-                imageUrl: result.urls[0]?.fileId,
+                files: result.urls.map(u => u.fileId),
                 medium: artworkForm.getValues("medium")?.map(m => Number(m.value)) ?? []
             });
 
@@ -161,7 +162,7 @@ const NewArtwork: NextPageWithLayout = () => {
             <div className="md:grid md:grid-cols-3 md:gap-6">
                 <div className="md:col-span-1">
                     <h3 className="text-lg font-medium leading-6">New artwork</h3>
-                    <p className="mt-1 text-sm">Show your art to the world</p>
+                    <p className="mt-2 text-sm">Show your art to the world</p>
                 </div>
 
                 <div className="mt-5 md:mt-0 md:col-span-2">

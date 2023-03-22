@@ -33,7 +33,7 @@ const ArtworkSharedSchema = {
 export const AddArtworkSchema = z.object({
     ...ArtworkSharedSchema,
     medium: z.array(z.number()).optional(),
-    imageUrl: z.number().min(2),
+    files: z.array(z.number()).optional(),
 })
 export const AddArtworkFormSchema = z.object({
     ...ArtworkSharedSchema,
@@ -44,18 +44,19 @@ export const AddArtworkFormSchema = z.object({
             disabled: z.boolean()
         })
     ).optional(),
+    files: z.array(z.number()).optional()
     // imageUrl: z.string()
 })
 export const EditArtworkSchema = z.object({
     ...ArtworkSharedSchema,
     id: z.number(),
-    imageUrl: z.number(),
+    files: z.array(z.number()).optional(),
     medium: z.array(z.number()).optional(),
 })
 export const EditArtworkFormSchema = z.object({
     ...ArtworkSharedSchema,
     id: z.number(),
-    imageUrl: z.number().nullable().optional(),
+    // imageUrl: z.number().nullable().optional(),
     medium: z.array(
         z.object({
             value: z.string(),
@@ -63,6 +64,7 @@ export const EditArtworkFormSchema = z.object({
             disabled: z.boolean()
         })
     ).nullable(),
+    files: z.array(z.number()).optional(),
 })
 
 // =========== MEDIA ===========

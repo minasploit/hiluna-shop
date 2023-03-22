@@ -177,7 +177,7 @@ const ManageOrder: NextPageWithLayout = () => {
                                             <div className="avatar">
                                                 <div className="mask mask-squircle w-12 h-12">
                                                     <Image
-                                                        src={resolveResource(artwork.Image.fileUrl)}
+                                                        src={resolveResource(artwork.Files[0]?.fileUrl ?? "")}
                                                         alt="Artwork image"
                                                         width={90}
                                                         height={90}
@@ -241,7 +241,7 @@ const ManageOrder: NextPageWithLayout = () => {
                             </dd>
                         </div>
                         <div className="sm:col-span-2 lg:col-span-3">
-                            <dt className="text-sm font-medium">Screenshot</dt>
+                            <dt className="text-sm font-medium">Payment Screenshot</dt>
                             <dd className="mt-1 text-sm">
                                 <ul role="list" className="border border-gray-400 rounded-md divide-y divide-gray-400">
                                     {

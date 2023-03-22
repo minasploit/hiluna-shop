@@ -21,7 +21,7 @@ export const artworkRouter = createTRPCRouter({
                             name: true
                         }
                     },
-                    Image: true
+                    Files: true
                 }
             })
 
@@ -32,7 +32,7 @@ export const artworkRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const res = await ctx.prisma.artwork.findMany({
                 include: {
-                    Image: true
+                    Files: true
                 },
                 where: {
                     id: {
@@ -64,7 +64,7 @@ export const artworkRouter = createTRPCRouter({
         .query(async ({ ctx }) => {
             const res = await ctx.prisma.artwork.findMany({
                 include: {
-                    Image: true,
+                    Files: true,
                     Collection: true,
                     Medium: {
                         select: {
@@ -87,12 +87,16 @@ export const artworkRouter = createTRPCRouter({
             };
 
             delete artwork.medium;
+            delete artwork.files;
 
             const res = await ctx.prisma.artwork.create({
                 data: {
                     ...artwork,
                     Medium: {
                         connect: input.medium?.map(m => ({ id: m }))
+                    },
+                    Files: {
+                        connect: input.files?.map(f => ({ id: f }))
                     }
                 }
             });
@@ -107,8 +111,9 @@ export const artworkRouter = createTRPCRouter({
                 createdById: ctx.session.user.id,
                 collectionId: input.collectionId == 0 ? null : input.collectionId
             }
-            
+
             delete artwork.medium;
+            delete artwork.files;
 
             const res = await ctx.prisma.artwork.update({
                 where: {
@@ -121,10 +126,13 @@ export const artworkRouter = createTRPCRouter({
                     ...artwork,
                     Medium: {
                         set: input.medium?.map(m => ({ id: m }))
+                    },
+                    Files: {
+                        set: input.files?.map(f => ({ id: f }))
                     }
                 }
             });
-            
+
 
             return res;
         }),

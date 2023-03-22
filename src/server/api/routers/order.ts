@@ -88,7 +88,7 @@ export const orderRouter = createTRPCRouter({
                 include: {
                     Artworks: {
                         include: {
-                            Image: true
+                            Files: true
                         }
                     },
                     OrderedBy: true,
@@ -142,7 +142,7 @@ export const orderRouter = createTRPCRouter({
                     include: {
                         Artworks: {
                             include: {
-                                Image: true
+                                Files: true
                             }
                         },
                         OrderedBy: true,
@@ -160,7 +160,7 @@ export const orderRouter = createTRPCRouter({
                 include: {
                     Artworks: {
                         include: {
-                            Image: true
+                            Files: true
                         }
                     },
                     OrderedBy: true,

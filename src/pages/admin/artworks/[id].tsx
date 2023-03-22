@@ -17,6 +17,7 @@ import { resolveResource } from "~/components/Functions";
 import { type FtpUploadResult } from "~/pages/api/upload";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import Link from "next/link";
+import { FileType } from "@prisma/client";
 
 const EditArtwork: NextPageWithLayout = () => {
     const router = useRouter()
@@ -33,10 +34,11 @@ const EditArtwork: NextPageWithLayout = () => {
     const artworkFields: FieldAttribute[] = [
         {
             name: "files",
-            label: "Pick a new image for the artwork",
+            label: "Pick new images/videos for the artwork",
             type: FieldType.FILE,
             inputFileRef,
-            accept: "image/*",
+            accept: "image/*,video/*",
+            multiple: true,
             required: false
         },
         {
@@ -130,14 +132,14 @@ const EditArtwork: NextPageWithLayout = () => {
 
     useEffect(() => {
         artworkForm.setValue("id", Number(id))
-        artworkForm.setValue("imageUrl", artwork.data?.imageUrl)
-    }, [id, artworkForm, artwork.data?.imageUrl]);
+        artworkForm.setValue("files", artwork.data?.Files?.map(f => f.id))
+    }, [id, artworkForm, artwork.data?.Files]);
 
     const onSubmit: SubmitHandler<EditArtworksFormSchemaType> = async (data) => {
         const toastId = toast.loading("Editing artwork...");
 
         try {
-            let url = artwork.data?.imageUrl ?? 0;
+            let urls = artwork.data?.Files.map(f => f.id);
 
             if (inputFileRef.current?.files?.length) {
                 const formData = new FormData();
@@ -157,12 +159,12 @@ const EditArtwork: NextPageWithLayout = () => {
                     return;
                 }
 
-                url = result.urls[0]?.fileId;
+                urls = result.urls.map(u => u.fileId);
             }
 
             const res = await artworkMutation.mutateAsync({
                 ...data,
-                imageUrl: url,
+                files: urls,
                 medium: artworkForm.getValues("medium")?.map(m => Number(m.value)) ?? []
             });
 
@@ -215,17 +217,34 @@ const EditArtwork: NextPageWithLayout = () => {
                 <div className="md:grid md:grid-cols-3 md:gap-6">
                     <div className="md:col-span-1">
                         <h3 className="text-lg font-collections leading-6">Edit artwork</h3>
-                        <label className="label mt-2">
-                            <span className="label-text">Current artwork image</span>
+                        <label className="label my-2">
+                            <span className="label-text">Current artwork files</span>
                         </label>
-                        <div className="flex justify-center">
+                        <div className="flex items-center flex-col">
                             {
-                                artwork.data.imageUrl &&
-                                <Image
-                                    src={resolveResource(artwork.data.Image.fileUrl)}
-                                    width={320} height={320} alt="Artwork image"
-                                    priority
-                                />
+                                artwork.data.Files &&
+                                artwork.data.Files.map(f => (
+                                    <>
+                                        {
+                                            f.fileType == FileType.Image &&
+                                            <Image
+                                                src={resolveResource(f.fileUrl ?? "")}
+                                                width={320} height={320} alt="Artwork image"
+                                                priority
+                                                key={f.id}
+                                            />
+                                        }
+                                        {
+                                            f.fileType == FileType.Video &&
+                                            <video controls>
+                                                <source src={resolveResource(f.fileUrl)} type="video/mp4" />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        }
+
+                                        <br />
+                                    </>
+                                ))
                             }
                         </div>
                     </div>

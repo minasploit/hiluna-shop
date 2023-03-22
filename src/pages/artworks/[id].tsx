@@ -3,7 +3,7 @@ import { type NextPageWithLayout } from "../_app";
 import { FiHeart, FiStar } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
-import { Currency } from "@prisma/client";
+import { Currency, FileType } from "@prisma/client";
 import parse from 'html-react-parser'
 import { useLocalStorage } from "usehooks-ts";
 import { toast } from "react-hot-toast";
@@ -12,6 +12,7 @@ import Image from "next/image";
 import { resolveResource } from "~/components/Functions";
 import Link from "next/link";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
+import { Tab } from "@headlessui/react";
 
 const product = {
     // name: 'Zip Tote Basket',
@@ -102,9 +103,84 @@ const ArtworkDetail: NextPageWithLayout = () => {
             artwork.data &&
             <div className="max-w-2xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-                    {artwork.data ?
+                    <Tab.Group as="div" className="flex flex-col-reverse">
+                        {/* Image selector */}
+                        <div className="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
+                            <Tab.List className="grid grid-cols-4 gap-6">
+                                {artwork.data.Files.map((file) => (
+                                    <Tab
+                                        key={file.id}
+                                        className="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50"
+                                    >
+                                        {({ selected }) => (
+                                            <>
+                                                <span className="sr-only">Artwork file</span>
+                                                <span className="absolute inset-0 rounded-md overflow-hidden">
+                                                    {
+                                                        file.fileType === FileType.Image &&
+                                                        <Image
+                                                            src={resolveResource(file.fileUrl)}
+                                                            alt="Artwork image"
+                                                            priority={true}
+                                                            width={120} height={120}
+                                                            className="w-full h-full object-center object-cover sm:rounded-lg"
+                                                        />
+                                                    }
+                                                    {
+                                                        file.fileType === FileType.Video &&
+                                                        <video className="w-full h-full object-center object-cover sm:rounded-lg">
+                                                            <source src={resolveResource(file.fileUrl)} type="video/mp4" />
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    }
+                                                    {/* <img src={resolveResource(file.fileUrl)} alt="" className="w-full h-full object-center object-cover" /> */}
+                                                </span>
+                                                <span
+                                                    className={clsx(
+                                                        selected ? 'ring-primary' : 'ring-transparent',
+                                                        'absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none'
+                                                    )}
+                                                    aria-hidden="true"
+                                                />
+                                            </>
+                                        )}
+                                    </Tab>
+                                ))}
+                            </Tab.List>
+                        </div>
+
+                        <Tab.Panels className="w-full aspect-w-1 aspect-h-1">
+                            {artwork.data.Files.map((file) => (
+                                <Tab.Panel key={file.id}>
+                                    {
+                                        file.fileType === FileType.Image &&
+                                        <Image
+                                            src={resolveResource(file.fileUrl)}
+                                            alt="Artwork thumbnail"
+                                            priority={true}
+                                            width={720} height={720}
+                                            className="w-full h-full object-center object-cover sm:rounded-lg"
+                                        />
+                                    }
+                                    {
+                                        file.fileType === FileType.Video &&
+                                        <video controls className="w-full h-full object-center object-cover sm:rounded-lg">
+                                            <source src={resolveResource(file.fileUrl)} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    }
+                                    {/* <img
+                                        src={image.src}
+                                        alt={image.alt}
+                                        className="w-full h-full object-center object-cover sm:rounded-lg"
+                                    /> */}
+                                </Tab.Panel>
+                            ))}
+                        </Tab.Panels>
+                    </Tab.Group>
+                    {/* {artwork.data ?
                         <Image
-                            src={resolveResource(artwork.data.Image.fileUrl)}
+                            src={resolveResource(artwork.data.Files[0]?.fileUrl)}
                             alt="Artwork image"
                             priority={true}
                             width={720} height={720}
@@ -112,7 +188,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                         />
                         :
                         <>Loading...</>
-                    }
+                    } */}
 
                     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                         <h1 className="text-3xl font-extrabold tracking-tight">{artwork.data?.name}</h1>

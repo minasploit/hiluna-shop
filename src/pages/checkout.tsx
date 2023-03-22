@@ -297,9 +297,9 @@ const Checkout: NextPageWithLayout = () => {
                                         {cartItems.data?.map((item) => (
                                             <li key={item.id} className="flex py-6 px-4 sm:px-6">
                                                 <div className="flex-shrink-0">
-                                                    {item.imageUrl &&
+                                                    {item.Files &&
                                                         <Image
-                                                            src={resolveResource(item.Image.fileUrl)}
+                                                            src={resolveResource(item.Files[0]?.fileUrl ?? "")}
                                                             alt="Artwork image"
                                                             width={80} height={80}
                                                             className="w-20 rounded-md" />

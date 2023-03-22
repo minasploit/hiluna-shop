@@ -50,7 +50,7 @@ const ManageOrders: NextPageWithLayout = () => {
                                                 <div className="avatar">
                                                     <div className="mask mask-squircle w-12 h-12">
                                                         <Image
-                                                            src={resolveResource(artwork.Image.fileUrl)}
+                                                            src={resolveResource(artwork.Files[0]?.fileUrl ?? "")}
                                                             alt="Artwork image"
                                                             width={90}
                                                             height={90}

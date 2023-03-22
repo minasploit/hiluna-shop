@@ -89,12 +89,17 @@ const ManageArtworks: NextPageWithLayout = () => {
                                     <div className="flex items-center space-x-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
-                                                <Image
-                                                    src={resolveResource(artwork.Image.fileUrl)}
-                                                    alt="Artwork image"
-                                                    width={90}
-                                                    height={90}
-                                                />
+                                                {
+                                                    artwork.Files.map(f => (
+                                                        <Image
+                                                            key={f.id}
+                                                            src={resolveResource(f.fileUrl)}
+                                                            alt="Artwork image"
+                                                            width={90}
+                                                            height={90}
+                                                        />
+                                                    ))
+                                                }
                                             </div>
                                         </div>
                                         <div>
