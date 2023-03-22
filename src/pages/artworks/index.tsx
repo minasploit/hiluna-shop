@@ -24,19 +24,27 @@ const Artworks: NextPageWithLayout = () => {
                                     alt={artwork.name}
                                     className="w-full h-full object-center object-cover group-hover:opacity-75"
                                     width={220} height={220}
+                                    priority={true}
                                 />
                             </div>
                             <h3 className="mt-4 text-lg font-medium">{artwork.name}</h3>
                             {
-                                artwork.availableForSale ? 
-                                <p className="mt-1 inline">{artwork.price.toLocaleString()} ETB</p>
-                                :
-                                <p className="mt-1 text-sm inline">Not available for sale</p>
+                                artwork.availableForSale ?
+                                    <p className="mt-1 inline">{artwork.price.toLocaleString()} ETB</p>
+                                    :
+                                    <p className="mt-1 text-sm inline">Not available for sale</p>
                             }
                             {
                                 cartItemIds.map(c => c.id).includes(artwork.id) &&
                                 <span className="badge ml-2">In your cart</span>
                             }
+                            <div className="mt-1">
+                                {artwork.Medium.map(m => (
+                                    <span className="badge badge-primary mx-1" key={m.id}>
+                                        {m.name}
+                                    </span>
+                                ))}
+                            </div>
                         </a>
                     ))}
                 </div>

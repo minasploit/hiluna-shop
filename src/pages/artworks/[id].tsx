@@ -150,7 +150,15 @@ const ArtworkDetail: NextPageWithLayout = () => {
                             </div>
                         </div>
 
-                        <div className="mt-6">
+                        <div className="my-3">
+                            {artwork.data.Medium.map(m => (
+                                <span className="badge badge-lg badge-primary mx-1" key={m.id}>
+                                    {m.name}
+                                </span>
+                            ))}
+                        </div>
+
+                        <div className="">
                             <h3 className="sr-only">Description</h3>
 
                             <div
