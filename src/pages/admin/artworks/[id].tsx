@@ -241,9 +241,6 @@ const EditArtwork: NextPageWithLayout = () => {
                                             disabled={artworkForm.formState.isSubmitting} />
                                     </div>
 
-                                    <pre className="col-span-3">{JSON.stringify(artworkForm.watch(), null, 2)}</pre>
-                                    <pre className="col-span-3">{JSON.stringify(artworkForm.formState.errors, null, 2)}</pre>
-
                                     {artworkFields.map((field) => (
                                         <div className={clsx("col-span-6", !["description", "medium"].includes(field.name) && "sm:col-span-3")} key={field.name}>
                                             <Field {...field} />
