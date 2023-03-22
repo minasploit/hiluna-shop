@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { type NextPageWithLayout } from "../_app";
-import { FiHeart, FiStar } from "react-icons/fi";
+import { FiHeart, FiPlayCircle, FiStar } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { Currency, FileType } from "@prisma/client";
@@ -116,25 +116,32 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                             <>
                                                 <span className="sr-only">Artwork file</span>
                                                 <span className="absolute inset-0 rounded-md overflow-hidden">
-                                                    {
-                                                        file.fileType === FileType.Image &&
-                                                        <Image
-                                                            src={resolveResource(file.fileUrl)}
-                                                            alt="Artwork image"
-                                                            priority={true}
-                                                            width={120} height={120}
-                                                            className="w-full h-full object-center object-cover sm:rounded-lg"
-                                                        />
-                                                    }
-                                                    {
-                                                        file.fileType === FileType.Video &&
-                                                        <video className="w-full h-full object-center object-cover sm:rounded-lg">
-                                                            <source src={resolveResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
-                                                            Your browser does not support the video tag.
-                                                        </video>
-                                                    }
-                                                    {/* <img src={resolveResource(file.fileUrl)} alt="" className="w-full h-full object-center object-cover" /> */}
+                                                    <div className="relative">
+                                                        {
+                                                            file.fileType === FileType.Image &&
+                                                            <Image
+                                                                src={resolveResource(file.fileUrl)}
+                                                                alt="Artwork image"
+                                                                priority={true}
+                                                                width={120} height={120}
+                                                                className="w-full h-full object-center object-cover sm:rounded-lg"
+                                                            />
+                                                        }
+                                                        {
+                                                            file.fileType === FileType.Video &&
+                                                            <video className="w-full h-full object-center object-cover sm:rounded-lg">
+                                                                <source src={resolveResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
+                                                                Your browser does not support the video tag.
+                                                            </video>
+                                                        }
+                                                    </div>
                                                 </span>
+                                                {
+                                                    file.fileType === FileType.Video &&
+                                                    <div className="absolute">
+                                                        <FiPlayCircle className="w-10 h-10 text-white" />
+                                                    </div>
+                                                }
                                                 <span
                                                     className={clsx(
                                                         selected ? 'ring-primary' : 'ring-transparent',
