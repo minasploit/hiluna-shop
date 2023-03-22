@@ -1,3 +1,4 @@
+import { File, FileType, type Artwork } from "@prisma/client"
 import { env } from "~/env.mjs"
 
 export function resolveResource(imageUrl: string): string {
@@ -21,4 +22,14 @@ export async function sendSMSToUser(phoneNumber: string, message: string, templa
             template_id: template_id
         }),
     })
+}
+
+export function getArtworkImage(artwork: Artwork & {
+    Files: File[]
+}): string {
+    const images = artwork.Files.filter(f => f.fileType == FileType.Image);
+    if (images.length == 0)
+        return ""
+
+    return images[0]?.fileUrl ?? ""
 }

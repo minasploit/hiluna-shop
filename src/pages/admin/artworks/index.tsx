@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiCheckCircle } from "react-icons/fi";
-import { resolveResource } from "~/components/Functions";
+import { getArtworkImage, resolveResource } from "~/components/Functions";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 
@@ -89,17 +89,12 @@ const ManageArtworks: NextPageWithLayout = () => {
                                     <div className="flex items-center space-x-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
-                                                {
-                                                    artwork.Files.map(f => (
-                                                        <Image
-                                                            key={f.id}
-                                                            src={resolveResource(f.fileUrl)}
-                                                            alt="Artwork image"
-                                                            width={90}
-                                                            height={90}
-                                                        />
-                                                    ))
-                                                }
+                                                <Image
+                                                    src={resolveResource(getArtworkImage(artwork))}
+                                                    alt="Artwork image"
+                                                    width={90}
+                                                    height={90}
+                                                />
                                             </div>
                                         </div>
                                         <div>

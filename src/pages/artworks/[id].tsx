@@ -107,52 +107,54 @@ const ArtworkDetail: NextPageWithLayout = () => {
                         {/* Image selector */}
                         <div className="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
                             <Tab.List className="grid grid-cols-4 gap-6">
-                                {artwork.data.Files.map((file) => (
-                                    <Tab
-                                        key={file.id}
-                                        className="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50"
-                                    >
-                                        {({ selected }) => (
-                                            <>
-                                                <span className="sr-only">Artwork file</span>
-                                                <span className="absolute inset-0 rounded-md overflow-hidden">
-                                                    <div className="relative">
-                                                        {
-                                                            file.fileType === FileType.Image &&
-                                                            <Image
-                                                                src={resolveResource(file.fileUrl)}
-                                                                alt="Artwork image"
-                                                                priority={true}
-                                                                width={120} height={120}
-                                                                className="w-full h-full object-center object-cover sm:rounded-lg"
-                                                            />
-                                                        }
-                                                        {
-                                                            file.fileType === FileType.Video &&
-                                                            <video className="w-full h-full object-center object-cover sm:rounded-lg">
-                                                                <source src={resolveResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
-                                                                Your browser does not support the video tag.
-                                                            </video>
-                                                        }
-                                                    </div>
-                                                </span>
-                                                {
-                                                    file.fileType === FileType.Video &&
-                                                    <div className="absolute">
-                                                        <FiPlayCircle className="w-10 h-10 text-white" />
-                                                    </div>
-                                                }
-                                                <span
-                                                    className={clsx(
-                                                        selected ? 'ring-primary' : 'ring-transparent',
-                                                        'absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none'
-                                                    )}
-                                                    aria-hidden="true"
-                                                />
-                                            </>
-                                        )}
-                                    </Tab>
-                                ))}
+                                {artwork.data.Files
+                                    .sort((a) => (a.fileType == FileType.Image) ? -1 : 1)
+                                    .map((file) => (
+                                        <Tab
+                                            key={file.id}
+                                            className="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50"
+                                        >
+                                            {({ selected }) => (
+                                                <>
+                                                    <span className="sr-only">Artwork file</span>
+                                                    <span className="absolute inset-0 rounded-md overflow-hidden">
+                                                        <div className="relative">
+                                                            {
+                                                                file.fileType === FileType.Image &&
+                                                                <Image
+                                                                    src={resolveResource(file.fileUrl)}
+                                                                    alt="Artwork image"
+                                                                    priority={true}
+                                                                    width={120} height={120}
+                                                                    className="w-full h-full object-center object-cover sm:rounded-lg"
+                                                                />
+                                                            }
+                                                            {
+                                                                file.fileType === FileType.Video &&
+                                                                <video className="w-full h-full object-center object-cover sm:rounded-lg">
+                                                                    <source src={resolveResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
+                                                                    Your browser does not support the video tag.
+                                                                </video>
+                                                            }
+                                                        </div>
+                                                    </span>
+                                                    {
+                                                        file.fileType === FileType.Video &&
+                                                        <div className="absolute">
+                                                            <FiPlayCircle className="w-10 h-10 text-white" />
+                                                        </div>
+                                                    }
+                                                    <span
+                                                        className={clsx(
+                                                            selected ? 'ring-primary' : 'ring-transparent',
+                                                            'absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none'
+                                                        )}
+                                                        aria-hidden="true"
+                                                    />
+                                                </>
+                                            )}
+                                        </Tab>
+                                    ))}
                             </Tab.List>
                         </div>
 
