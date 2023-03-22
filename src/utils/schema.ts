@@ -47,14 +47,22 @@ export const AddArtworkFormSchema = z.object({
     // imageUrl: z.string()
 })
 export const EditArtworkSchema = z.object({
+    ...ArtworkSharedSchema,
     id: z.number(),
     imageUrl: z.string(),
-    ...ArtworkSharedSchema,
+    medium: z.array(z.number()).optional(),
 })
 export const EditArtworkFormSchema = z.object({
+    ...ArtworkSharedSchema,
     id: z.number(),
     imageUrl: z.string().nullable().optional(),
-    ...ArtworkSharedSchema,
+    medium: z.array(
+        z.object({
+            value: z.string(),
+            label: z.string(),
+            disabled: z.boolean()
+        })
+    ).nullable(),
 })
 
 // =========== MEDIA ===========
@@ -64,8 +72,8 @@ const MediaSharedSchema = {
 }
 export const AddMediaFormSchema = z.object(MediaSharedSchema)
 export const EditMediaFormSchema = z.object({
+    ...MediaSharedSchema,
     id: z.number(),
-    ...MediaSharedSchema
 })
 
 // =========== COLLECTION ===========
@@ -75,6 +83,6 @@ const CollectionSharedSchema = {
 }
 export const AddCollectionFormSchema = z.object(CollectionSharedSchema)
 export const EditCollectionFormSchema = z.object({
+    ...CollectionSharedSchema,
     id: z.number(),
-    ...CollectionSharedSchema
 })

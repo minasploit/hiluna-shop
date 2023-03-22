@@ -22,10 +22,11 @@ const EditArtwork: NextPageWithLayout = () => {
     const router = useRouter()
     const { id } = router.query;
 
-    const artwork = api.artwork.getOne.useQuery(Number(id))
+    const artwork = api.artwork.getOne.useQuery(Number(id), { enabled: id != null })
 
     const artworkMutation = api.artwork.edit.useMutation();
     const collections = api.collection.list.useQuery();
+    const medium = api.medium.list.useQuery();
 
     const [imageFile, setImageFile] = useState<File>()
 
@@ -47,6 +48,19 @@ const EditArtwork: NextPageWithLayout = () => {
             label: "Description",
             type: FieldType.RICHTEXT,
             defaultValue: artwork.data?.description,
+        },
+        {
+            name: "medium",
+            label: "Medium",
+            type: FieldType.MULTITAG,
+            options: medium.data?.map(m => ({ value: m.id.toString(), label: m.name })) ?? [],
+            defaultValue: artwork.data?.Medium.map(m => (
+                {
+                    "value": m.id.toString(),
+                    "label": m.name,
+                    "disabled": false
+                }
+            ))
         },
         {
             name: "featured",
@@ -146,8 +160,11 @@ const EditArtwork: NextPageWithLayout = () => {
 
             const res = await artworkMutation.mutateAsync({
                 ...data,
-                imageUrl: url
+                imageUrl: url,
+                medium: artworkForm.getValues("medium")?.map(m => Number(m.value)) ?? []
             });
+
+            await artwork.refetch();
 
             artworkForm.reset(res);
 
@@ -224,8 +241,11 @@ const EditArtwork: NextPageWithLayout = () => {
                                             disabled={artworkForm.formState.isSubmitting} />
                                     </div>
 
+                                    <pre className="col-span-3">{JSON.stringify(artworkForm.watch(), null, 2)}</pre>
+                                    <pre className="col-span-3">{JSON.stringify(artworkForm.formState.errors, null, 2)}</pre>
+
                                     {artworkFields.map((field) => (
-                                        <div className={clsx("col-span-6", field.name != "description" && "sm:col-span-3")} key={field.name}>
+                                        <div className={clsx("col-span-6", !["description", "medium"].includes(field.name) && "sm:col-span-3")} key={field.name}>
                                             <Field {...field} />
                                         </div>
                                     ))}

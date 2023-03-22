@@ -13,6 +13,14 @@ export const artworkRouter = createTRPCRouter({
             const res = await ctx.prisma.artwork.findFirst({
                 where: {
                     id: input
+                },
+                include: {
+                    Medium: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    }
                 }
             })
 
@@ -83,16 +91,29 @@ export const artworkRouter = createTRPCRouter({
     edit: adminProcedure
         .input(EditArtworkSchema)
         .mutation(async ({ ctx, input }) => {
+            const artwork = {
+                ...input,
+                createdById: ctx.session.user.id,
+                collectionId: input.collectionId == 0 ? null : input.collectionId
+            }
+            
+            delete artwork.medium;
+
             const res = await ctx.prisma.artwork.update({
                 where: {
                     id: input.id
                 },
+                include: {
+                    Medium: true
+                },
                 data: {
-                    ...input,
-                    createdById: ctx.session.user.id,
-                    collectionId: input.collectionId == 0 ? null : input.collectionId
+                    ...artwork,
+                    Medium: {
+                        set: input.medium?.map(m => ({ id: m }))
+                    }
                 }
             });
+            
 
             return res;
         }),

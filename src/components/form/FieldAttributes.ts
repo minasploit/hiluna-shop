@@ -1,5 +1,5 @@
 import type React from "react";
-import { type Options } from "react-tailwindcss-select/dist/components/type";
+import { type SelectValue, type Options } from "react-tailwindcss-select/dist/components/type";
 
 enum FieldType {
     TEXT = "text",
@@ -66,6 +66,7 @@ interface FileFieldAttributes extends BaseFieldAttributes {
 interface MultiTagFieldAttributes extends BaseFieldAttributes {
     type: FieldType.MULTITAG;
     options: Options;
+    defaultValue?: SelectValue;
 }
 
 type FieldAttribute = InputFieldAttributes | SelectFieldAttributes | CheckboxFieldAttributes | NumberFieldAttributes | RichInputFieldAttributes | FileFieldAttributes | MultiTagFieldAttributes;

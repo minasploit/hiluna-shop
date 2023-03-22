@@ -4,20 +4,22 @@ import Select from "react-tailwindcss-select";
 import { type SelectValue } from "react-tailwindcss-select/dist/components/type";
 import { type MultiTagFieldAttributes } from "./FieldAttributes";
 
-const MultiTagField: React.FC<MultiTagFieldAttributes> = ({ label, name, options }) => {
+const MultiTagField: React.FC<MultiTagFieldAttributes> = ({ label, name, options, defaultValue }) => {
 
     const form = useFormContext();
     const [value, setValue] = useState<SelectValue>([]);
 
     useEffect(() => {
-        // form.register(name);
+        form.register(name);
     }, [form, name]);
 
     useEffect(() => {
-        if (!form.formState.isDirty)
-            form.setValue(name, [], {
+        if (!form.formState.isDirty) {
+            setValue(defaultValue ?? [])
+            form.setValue(name, defaultValue, {
                 shouldDirty: false
             });
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
