@@ -90,7 +90,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
                                                 <Image
-                                                    src={resolveResource(artwork.imageUrl)}
+                                                    src={resolveResource(artwork.Image.fileUrl)}
                                                     alt="Artwork image"
                                                     width={90}
                                                     height={90}

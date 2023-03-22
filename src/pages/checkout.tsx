@@ -92,7 +92,7 @@ const Checkout: NextPageWithLayout = () => {
         const toastId = toast.loading("Placing order...");
 
         try {
-            let url: string | null = null;
+            let url: number | null = null;
 
             if (selectedPaymentMethod?.id != 0) {
                 if (!inputFileRef.current?.files?.length) {
@@ -118,7 +118,7 @@ const Checkout: NextPageWithLayout = () => {
                 }
 
                 // set screenshot url
-                url = result.urls[0]?.newName
+                url = result.urls[0]?.fileId
             }
 
             await orderMutation.mutateAsync({
@@ -299,7 +299,7 @@ const Checkout: NextPageWithLayout = () => {
                                                 <div className="flex-shrink-0">
                                                     {item.imageUrl &&
                                                         <Image
-                                                            src={resolveResource(item.imageUrl)}
+                                                            src={resolveResource(item.Image.fileUrl)}
                                                             alt="Artwork image"
                                                             width={80} height={80}
                                                             className="w-20 rounded-md" />

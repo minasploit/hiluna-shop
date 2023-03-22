@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
 }
@@ -13,7 +10,7 @@ datasource db {
 model Artwork {
     id               Int          @id @default(autoincrement())
     name             String
-    imageUrl         String
+    imageUrl         Int
     dimension        String
     description      String       @db.Text
     featured         Boolean
@@ -27,18 +24,9 @@ model Artwork {
     updatedAt        DateTime     @updatedAt
     Collection       Collection?  @relation(fields: [collectionId], references: [id])
     CreatedBy        User         @relation(fields: [createdById], references: [id])
+    Image            File         @relation(fields: [imageUrl], references: [id])
     Orders           Order[]      @relation("ArtworkAndOrder")
     Medium           Media[]      @relation("ArtworkAndMedia")
-}
-
-enum Currency {
-    ETB
-    USD
-}
-
-enum Orientation {
-    Portrait
-    Landscape
 }
 
 model Media {
@@ -64,14 +52,33 @@ model Order {
     orderedById   String
     phoneNumber   String
     paymentMethod PaymentMethod @default(CashOnDelivery)
-    screenshotUrl String?
+    screenshotUrl Int?
     price         Int
     currency      Currency      @default(ETB)
     orderStatus   OrderStatus
     orderedAt     DateTime      @default(now())
     updatedAt     DateTime      @updatedAt
     OrderedBy     User          @relation(fields: [orderedById], references: [id])
+    Screenshot    File?         @relation(fields: [screenshotUrl], references: [id])
     Artworks      Artwork[]     @relation("ArtworkAndOrder")
+}
+
+model File {
+    id       Int       @id @default(autoincrement())
+    fileUrl  String
+    fileType FileType
+    Order    Order[]
+    Artwork  Artwork[]
+}
+
+enum Currency {
+    ETB
+    USD
+}
+
+enum Orientation {
+    Portrait
+    Landscape
 }
 
 enum PaymentMethod {
@@ -86,6 +93,12 @@ enum OrderStatus {
     OrderedAndPaid
     Completed
     Cancelled
+}
+
+enum FileType {
+    Image
+    Video
+    Unknown
 }
 
 // Necessary for Next auth

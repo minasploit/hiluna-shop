@@ -50,7 +50,7 @@ const ManageOrders: NextPageWithLayout = () => {
                                                 <div className="avatar">
                                                     <div className="mask mask-squircle w-12 h-12">
                                                         <Image
-                                                            src={resolveResource(artwork.imageUrl)}
+                                                            src={resolveResource(artwork.Image.fileUrl)}
                                                             alt="Artwork image"
                                                             width={90}
                                                             height={90}
@@ -76,8 +76,8 @@ const ManageOrders: NextPageWithLayout = () => {
                                 <td>
                                     {order.paymentMethod == PaymentMethod.CashOnDelivery && <>Cash on delivery</>}
                                     {
-                                        (order.paymentMethod != PaymentMethod.CashOnDelivery && order.screenshotUrl) &&
-                                        <Link className="link" href={resolveResource(order.screenshotUrl)} target={"_blank"}>
+                                        (order.paymentMethod != PaymentMethod.CashOnDelivery && order.Screenshot) &&
+                                        <Link className="link" href={resolveResource(order.Screenshot.fileUrl ?? "")} target={"_blank"}>
                                             Click to view
                                         </Link>
                                     }

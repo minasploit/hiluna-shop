@@ -3,6 +3,7 @@ import formidable, { type File } from 'formidable';
 import { v4 as uuidv4 } from 'uuid';
 import { env } from '~/env.mjs';
 import * as ftp from "basic-ftp"
+import { FileType, PrismaClient } from '@prisma/client'
 
 export const config = {
     api: {
@@ -14,6 +15,7 @@ type ProcessedFiles = Array<[string, File]>;
 type FileFtpUrl = {
     originalName: string,
     newName: string,
+    fileId: number
 }
 
 export interface FtpUploadResult {
@@ -56,6 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 password: env.FTP_PASS
             })
 
+            const prisma = new PrismaClient()
             const urls: FileFtpUrl[] = []
 
             for (const uploadedFile of files) {
@@ -73,9 +76,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 await client.uploadFrom(file.filepath, `/${newFileName}`);
 
+                const fileOnDb = await prisma.file.create({
+                    data: {
+                        fileUrl: newFileName,
+                        fileType: FileType.Image,
+                    }
+                })
+
                 urls.push({
                     originalName: file.originalFilename,
-                    newName: newFileName
+                    newName: newFileName,
+                    fileId: fileOnDb.id
                 });
             }
 

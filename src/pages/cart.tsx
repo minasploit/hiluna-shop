@@ -63,7 +63,7 @@ const Cart: NextPageWithLayout = () => {
                                 <li key={item.id} className="flex py-6 sm:py-10">
                                     <div className="flex-shrink-0">
                                         <Image
-                                            src={resolveResource(item.imageUrl)}
+                                            src={resolveResource(item.Image.fileUrl)}
                                             alt={item.description}
                                             width={180} height={180}
                                             className="w-24 h-24 rounded-md object-center object-cover sm:w-48 sm:h-48"

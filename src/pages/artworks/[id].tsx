@@ -104,8 +104,9 @@ const ArtworkDetail: NextPageWithLayout = () => {
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
                     {artwork.data ?
                         <Image
-                            src={resolveResource(artwork.data.imageUrl)}
+                            src={resolveResource(artwork.data.Image.fileUrl)}
                             alt="Artwork image"
+                            priority={true}
                             width={720} height={720}
                             className="w-full h-full object-center object-cover sm:rounded-lg"
                         />

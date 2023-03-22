@@ -177,7 +177,7 @@ const ManageOrder: NextPageWithLayout = () => {
                                             <div className="avatar">
                                                 <div className="mask mask-squircle w-12 h-12">
                                                     <Image
-                                                        src={resolveResource(artwork.imageUrl)}
+                                                        src={resolveResource(artwork.Image.fileUrl)}
                                                         alt="Artwork image"
                                                         width={90}
                                                         height={90}
@@ -249,13 +249,13 @@ const ManageOrder: NextPageWithLayout = () => {
                                         <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                                             <div className="w-0 flex-1 flex items-center">
                                                 <FiPaperclip className="flex-shrink-0 h-5 w-5 text-gray-500" aria-hidden="true" />
-                                                <span className="ml-2 flex-1 w-0 truncate">{order.data.screenshotUrl}</span>
+                                                <span className="ml-2 flex-1 w-0 truncate">{order.data.Screenshot?.fileUrl}</span>
                                             </div>
                                             <div className="ml-4 flex-shrink-0">
                                                 <a href="#" >
 
                                                 </a>
-                                                <Link href={resolveResource(order.data.screenshotUrl)}
+                                                <Link href={resolveResource(order.data.Screenshot?.fileUrl ?? "")}
                                                     target="_blank"
                                                     className="font-medium text-primary">
                                                     View

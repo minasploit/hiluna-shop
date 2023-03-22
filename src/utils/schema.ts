@@ -8,7 +8,7 @@ export const AddOrderSchema = z.object({
     ...OrderSharedSchema,
     artworks: z.array(z.number()),
     paymentMethod: z.enum(["CashOnDelivery", "CBE", "Telebirr", "Bunna"]).default("CashOnDelivery"),
-    screenshotUrl: z.string().nullable()
+    screenshotUrl: z.number().nullable()
 })
 export const AddOrderFormSchema = z.object(
     OrderSharedSchema
@@ -33,7 +33,7 @@ const ArtworkSharedSchema = {
 export const AddArtworkSchema = z.object({
     ...ArtworkSharedSchema,
     medium: z.array(z.number()).optional(),
-    imageUrl: z.string().min(2),
+    imageUrl: z.number().min(2),
 })
 export const AddArtworkFormSchema = z.object({
     ...ArtworkSharedSchema,
@@ -49,13 +49,13 @@ export const AddArtworkFormSchema = z.object({
 export const EditArtworkSchema = z.object({
     ...ArtworkSharedSchema,
     id: z.number(),
-    imageUrl: z.string(),
+    imageUrl: z.number(),
     medium: z.array(z.number()).optional(),
 })
 export const EditArtworkFormSchema = z.object({
     ...ArtworkSharedSchema,
     id: z.number(),
-    imageUrl: z.string().nullable().optional(),
+    imageUrl: z.number().nullable().optional(),
     medium: z.array(
         z.object({
             value: z.string(),

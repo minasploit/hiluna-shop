@@ -138,7 +138,7 @@ const NewArtwork: NextPageWithLayout = () => {
 
             const res = await artworkMutation.mutateAsync({
                 ...data,
-                imageUrl: result.urls[0]?.newName,
+                imageUrl: result.urls[0]?.fileId,
                 medium: artworkForm.getValues("medium")?.map(m => Number(m.value)) ?? []
             });
 
@@ -148,7 +148,7 @@ const NewArtwork: NextPageWithLayout = () => {
 
             await router.push("/admin/artworks");
         } catch {
-            toast.success("Error saving artwork...", { id: toastId });
+            toast.error("Error saving artwork...", { id: toastId });
         }
     };
 

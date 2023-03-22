@@ -86,8 +86,13 @@ export const orderRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const order = await ctx.prisma.order.findFirst({
                 include: {
-                    Artworks: true,
-                    OrderedBy: true
+                    Artworks: {
+                        include: {
+                            Image: true
+                        }
+                    },
+                    OrderedBy: true,
+                    Screenshot: true
                 },
                 where: {
                     id: input
@@ -135,8 +140,13 @@ export const orderRouter = createTRPCRouter({
             if (ctx.session.user.role == UserRole.USER) {
                 const res = await ctx.prisma.order.findMany({
                     include: {
-                        Artworks: true,
-                        OrderedBy: true
+                        Artworks: {
+                            include: {
+                                Image: true
+                            }
+                        },
+                        OrderedBy: true,
+                        Screenshot: true
                     },
                     where: {
                         orderedById: ctx.session.user.id
@@ -148,8 +158,13 @@ export const orderRouter = createTRPCRouter({
 
             const res = await ctx.prisma.order.findMany({
                 include: {
-                    Artworks: true,
-                    OrderedBy: true
+                    Artworks: {
+                        include: {
+                            Image: true
+                        }
+                    },
+                    OrderedBy: true,
+                    Screenshot: true
                 }
             })
 

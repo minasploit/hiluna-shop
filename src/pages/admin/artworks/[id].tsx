@@ -137,7 +137,7 @@ const EditArtwork: NextPageWithLayout = () => {
         const toastId = toast.loading("Editing artwork...");
 
         try {
-            let url = artwork.data?.imageUrl ?? ""
+            let url = artwork.data?.imageUrl ?? 0;
 
             if (inputFileRef.current?.files?.length) {
                 const formData = new FormData();
@@ -157,7 +157,7 @@ const EditArtwork: NextPageWithLayout = () => {
                     return;
                 }
 
-                url = result.urls[0]?.newName;
+                url = result.urls[0]?.fileId;
             }
 
             const res = await artworkMutation.mutateAsync({
@@ -222,7 +222,7 @@ const EditArtwork: NextPageWithLayout = () => {
                             {
                                 artwork.data.imageUrl &&
                                 <Image
-                                    src={resolveResource(artwork.data.imageUrl)}
+                                    src={resolveResource(artwork.data.Image.fileUrl)}
                                     width={320} height={320} alt="Artwork image"
                                     priority
                                 />

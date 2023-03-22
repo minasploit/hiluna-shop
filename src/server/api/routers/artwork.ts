@@ -12,7 +12,7 @@ export const artworkRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const res = await ctx.prisma.artwork.findFirst({
                 where: {
-                    id: input
+                    id: input,
                 },
                 include: {
                     Medium: {
@@ -20,7 +20,8 @@ export const artworkRouter = createTRPCRouter({
                             id: true,
                             name: true
                         }
-                    }
+                    },
+                    Image: true
                 }
             })
 
@@ -30,6 +31,9 @@ export const artworkRouter = createTRPCRouter({
         .input(z.array(z.number()))
         .query(async ({ ctx, input }) => {
             const res = await ctx.prisma.artwork.findMany({
+                include: {
+                    Image: true
+                },
                 where: {
                     id: {
                         in: input
@@ -60,6 +64,7 @@ export const artworkRouter = createTRPCRouter({
         .query(async ({ ctx }) => {
             const res = await ctx.prisma.artwork.findMany({
                 include: {
+                    Image: true,
                     Collection: true,
                     Medium: {
                         select: {
