@@ -74,6 +74,7 @@ model File {
     id       Int       @id @default(autoincrement())
     fileUrl  String
     fileType FileType
+    mimeType String?
     Order    Order[]
     Artwork  Artwork[] @relation("ArtworksAndFiles")
 

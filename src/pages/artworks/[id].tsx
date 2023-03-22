@@ -129,7 +129,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                                     {
                                                         file.fileType === FileType.Video &&
                                                         <video className="w-full h-full object-center object-cover sm:rounded-lg">
-                                                            <source src={resolveResource(file.fileUrl)} type="video/mp4" />
+                                                            <source src={resolveResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
                                                             Your browser does not support the video tag.
                                                         </video>
                                                     }
@@ -165,30 +165,14 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                     {
                                         file.fileType === FileType.Video &&
                                         <video controls className="w-full h-full object-center object-cover sm:rounded-lg">
-                                            <source src={resolveResource(file.fileUrl)} type="video/mp4" />
+                                            <source src={resolveResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
                                             Your browser does not support the video tag.
                                         </video>
                                     }
-                                    {/* <img
-                                        src={image.src}
-                                        alt={image.alt}
-                                        className="w-full h-full object-center object-cover sm:rounded-lg"
-                                    /> */}
                                 </Tab.Panel>
                             ))}
                         </Tab.Panels>
                     </Tab.Group>
-                    {/* {artwork.data ?
-                        <Image
-                            src={resolveResource(artwork.data.Files[0]?.fileUrl)}
-                            alt="Artwork image"
-                            priority={true}
-                            width={720} height={720}
-                            className="w-full h-full object-center object-cover sm:rounded-lg"
-                        />
-                        :
-                        <>Loading...</>
-                    } */}
 
                     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                         <h1 className="text-3xl font-extrabold tracking-tight">{artwork.data?.name}</h1>

@@ -237,7 +237,7 @@ const EditArtwork: NextPageWithLayout = () => {
                                         {
                                             f.fileType == FileType.Video &&
                                             <video controls>
-                                                <source src={resolveResource(f.fileUrl)} type="video/mp4" />
+                                                <source src={resolveResource(f.fileUrl)} type={f.mimeType ?? "video/mp4"} />
                                                 Your browser does not support the video tag.
                                             </video>
                                         }

@@ -79,7 +79,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 const fileOnDb = await prisma.file.create({
                     data: {
                         fileUrl: newFileName,
-                        fileType: FileType.Image,
+                        fileType:
+                            file.mimetype?.includes("image") ? FileType.Image :
+                                file.mimetype?.includes("video") ? FileType.Video :
+                                    FileType.Unknown,
+                        mimeType: file.mimetype
+
                     }
                 })
 
