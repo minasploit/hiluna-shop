@@ -1,5 +1,5 @@
 import type React from "react";
-import { Options, SelectValue } from "react-tailwindcss-select/dist/components/type";
+import { type Options } from "react-tailwindcss-select/dist/components/type";
 
 enum FieldType {
     TEXT = "text",
