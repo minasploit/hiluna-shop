@@ -140,7 +140,7 @@ const NewArtwork: NextPageWithLayout = () => {
             const res = await artworkMutation.mutateAsync({
                 ...data,
                 imageUrl: result.urls[0]?.newName,
-                medium: artworkForm.getValues("medium").map(m => Number(m.value))
+                medium: artworkForm.getValues("medium")?.map(m => Number(m.value)) ?? []
             });
 
             artworkForm.reset(res);
