@@ -6,10 +6,10 @@
 
 */
 -- AlterTable
-ALTER TABLE `artwork` MODIFY `imageUrl` INTEGER NOT NULL;
+ALTER TABLE `Artwork` MODIFY `imageUrl` INTEGER NOT NULL;
 
 -- AlterTable
-ALTER TABLE `order` MODIFY `screenshotUrl` INTEGER NULL;
+ALTER TABLE `Order` MODIFY `screenshotUrl` INTEGER NULL;
 
 -- CreateTable
 CREATE TABLE `File` (
