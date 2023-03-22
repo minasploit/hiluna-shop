@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { type z } from "zod";
@@ -28,9 +28,17 @@ const EditArtwork: NextPageWithLayout = () => {
     const collections = api.collection.list.useQuery();
     const medium = api.medium.list.useQuery();
 
-    const [imageFile, setImageFile] = useState<File>()
+    const inputFileRef = useRef<HTMLInputElement | null>(null);
 
     const artworkFields: FieldAttribute[] = [
+        {
+            name: "files",
+            label: "Pick a new image for the artwork",
+            type: FieldType.FILE,
+            inputFileRef,
+            accept: "image/*",
+            required: false
+        },
         {
             name: "name",
             label: "Name of the Artwork",
@@ -125,23 +133,17 @@ const EditArtwork: NextPageWithLayout = () => {
         artworkForm.setValue("imageUrl", artwork.data?.imageUrl)
     }, [id, artworkForm, artwork.data?.imageUrl]);
 
-    const handleSelectedFile = (files: FileList | null) => {
-        if (files && files[0] && files[0].size < 10000000) {
-            setImageFile(files[0])
-        } else {
-            toast.error("file size too large");
-        }
-    }
-
     const onSubmit: SubmitHandler<EditArtworksFormSchemaType> = async (data) => {
         const toastId = toast.loading("Editing artwork...");
 
         try {
             let url = artwork.data?.imageUrl ?? ""
 
-            if (imageFile) {
+            if (inputFileRef.current?.files?.length) {
                 const formData = new FormData();
-                formData.append('file', imageFile);
+                Object.values(inputFileRef.current.files).forEach(file => {
+                    formData.append('file', file);
+                })
 
                 const response = await fetch('/api/upload', {
                     method: 'POST',
@@ -232,17 +234,8 @@ const EditArtwork: NextPageWithLayout = () => {
                         <FormProvider {...artworkForm}>
                             <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
                                 <div className="grid grid-cols-6 gap-6">
-                                    <div className="form-control w-full col-span-6">
-                                        <label className="label">
-                                            <span className="label-text">Pick an image for the artwork</span>
-                                        </label>
-                                        <input type="file" accept="image/*" className="file-input file-input-bordered file-input-primary w-full"
-                                            name="imageUrl" onChange={(files) => handleSelectedFile(files.target.files)}
-                                            disabled={artworkForm.formState.isSubmitting} />
-                                    </div>
-
                                     {artworkFields.map((field) => (
-                                        <div className={clsx("col-span-6", !["description", "medium"].includes(field.name) && "sm:col-span-3")} key={field.name}>
+                                        <div className={clsx("col-span-6", !["description", "files", "medium"].includes(field.name) && "sm:col-span-3")} key={field.name}>
                                             <Field {...field} />
                                         </div>
                                     ))}

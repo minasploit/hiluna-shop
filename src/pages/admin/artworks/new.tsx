@@ -13,7 +13,7 @@ import { toast } from "react-hot-toast";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { type FtpUploadResult } from "~/pages/api/upload";
-import React from "react";
+import { useRef } from "react";
 
 const NewArtwork: NextPageWithLayout = () => {
     const router = useRouter();
@@ -22,16 +22,15 @@ const NewArtwork: NextPageWithLayout = () => {
     const collections = api.collection.list.useQuery();
     const medium = api.medium.list.useQuery();
 
-    const inputFileRef = React.useRef<HTMLInputElement | null>(null);
+    const inputFileRef = useRef<HTMLInputElement | null>(null);
 
     const artworkFields: FieldAttribute[] = [
         {
             name: "files",
-            label: "File",
+            label: "Pick an image for the artwork",
             type: FieldType.FILE,
             inputFileRef,
             accept: "image/*",
-            multiple: true,
             required: true
         },
         {
