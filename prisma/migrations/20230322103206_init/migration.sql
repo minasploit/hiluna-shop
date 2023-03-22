@@ -1,8 +1,8 @@
 -- CreateTable
-CREATE TABLE `Artwork` (
+CREATE TABLE `Artworks` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `imageUrl` VARCHAR(191) NOT NULL,
+    `imageUrl` INTEGER NOT NULL,
     `dimension` VARCHAR(191) NOT NULL,
     `description` TEXT NOT NULL,
     `featured` BOOLEAN NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE `Artwork` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Media` (
+CREATE TABLE `Medium` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `description` TEXT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE `Media` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Collection` (
+CREATE TABLE `Collections` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `description` TEXT NULL,
@@ -41,12 +41,12 @@ CREATE TABLE `Collection` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Order` (
+CREATE TABLE `Orders` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `orderedById` VARCHAR(191) NOT NULL,
     `phoneNumber` VARCHAR(191) NOT NULL,
     `paymentMethod` ENUM('CashOnDelivery', 'CBE', 'Telebirr', 'Bunna') NOT NULL DEFAULT 'CashOnDelivery',
-    `screenshotUrl` VARCHAR(191) NULL,
+    `screenshotUrl` INTEGER NULL,
     `price` INTEGER NOT NULL,
     `currency` ENUM('ETB', 'USD') NOT NULL DEFAULT 'ETB',
     `orderStatus` ENUM('Ordered', 'OrderedAndPaid', 'Completed', 'Cancelled') NOT NULL,
@@ -57,7 +57,16 @@ CREATE TABLE `Order` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Account` (
+CREATE TABLE `Files` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `fileUrl` VARCHAR(191) NOT NULL,
+    `fileType` ENUM('Image', 'Video', 'Unknown') NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Accounts` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `type` VARCHAR(191) NOT NULL,
@@ -71,23 +80,23 @@ CREATE TABLE `Account` (
     `id_token` TEXT NULL,
     `session_state` VARCHAR(191) NULL,
 
-    UNIQUE INDEX `Account_provider_providerAccountId_key`(`provider`, `providerAccountId`),
+    UNIQUE INDEX `Accounts_provider_providerAccountId_key`(`provider`, `providerAccountId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Session` (
+CREATE TABLE `Sessions` (
     `id` VARCHAR(191) NOT NULL,
     `sessionToken` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `expires` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Session_sessionToken_key`(`sessionToken`),
+    UNIQUE INDEX `Sessions_sessionToken_key`(`sessionToken`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `User` (
+CREATE TABLE `Users` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `email` VARCHAR(191) NULL,
@@ -95,61 +104,67 @@ CREATE TABLE `User` (
     `image` VARCHAR(191) NULL,
     `role` ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
 
-    UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `Users_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `VerificationToken` (
+CREATE TABLE `VerificationTokens` (
     `identifier` VARCHAR(191) NOT NULL,
     `token` VARCHAR(191) NOT NULL,
     `expires` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `VerificationToken_token_key`(`token`),
-    UNIQUE INDEX `VerificationToken_identifier_token_key`(`identifier`, `token`)
+    UNIQUE INDEX `VerificationTokens_token_key`(`token`),
+    UNIQUE INDEX `VerificationTokens_identifier_token_key`(`identifier`, `token`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_ArtworkAndOrder` (
+CREATE TABLE `_ArtworksAndOrders` (
     `A` INTEGER NOT NULL,
     `B` INTEGER NOT NULL,
 
-    UNIQUE INDEX `_ArtworkAndOrder_AB_unique`(`A`, `B`),
-    INDEX `_ArtworkAndOrder_B_index`(`B`)
+    UNIQUE INDEX `_ArtworksAndOrders_AB_unique`(`A`, `B`),
+    INDEX `_ArtworksAndOrders_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_ArtworkAndMedia` (
+CREATE TABLE `_ArtworksAndMedium` (
     `A` INTEGER NOT NULL,
     `B` INTEGER NOT NULL,
 
-    UNIQUE INDEX `_ArtworkAndMedia_AB_unique`(`A`, `B`),
-    INDEX `_ArtworkAndMedia_B_index`(`B`)
+    UNIQUE INDEX `_ArtworksAndMedium_AB_unique`(`A`, `B`),
+    INDEX `_ArtworksAndMedium_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Artwork` ADD CONSTRAINT `Artwork_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collection`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Artworks` ADD CONSTRAINT `Artworks_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collections`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Artwork` ADD CONSTRAINT `Artwork_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Artworks` ADD CONSTRAINT `Artworks_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `Users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Order` ADD CONSTRAINT `Order_orderedById_fkey` FOREIGN KEY (`orderedById`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Artworks` ADD CONSTRAINT `Artworks_imageUrl_fkey` FOREIGN KEY (`imageUrl`) REFERENCES `Files`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Account` ADD CONSTRAINT `Account_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Orders` ADD CONSTRAINT `Orders_orderedById_fkey` FOREIGN KEY (`orderedById`) REFERENCES `Users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Session` ADD CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Orders` ADD CONSTRAINT `Orders_screenshotUrl_fkey` FOREIGN KEY (`screenshotUrl`) REFERENCES `Files`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_ArtworkAndOrder` ADD CONSTRAINT `_ArtworkAndOrder_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artwork`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Accounts` ADD CONSTRAINT `Accounts_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_ArtworkAndOrder` ADD CONSTRAINT `_ArtworkAndOrder_B_fkey` FOREIGN KEY (`B`) REFERENCES `Order`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Sessions` ADD CONSTRAINT `Sessions_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_ArtworkAndMedia` ADD CONSTRAINT `_ArtworkAndMedia_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artwork`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_ArtworksAndOrders` ADD CONSTRAINT `_ArtworksAndOrders_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artworks`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_ArtworkAndMedia` ADD CONSTRAINT `_ArtworkAndMedia_B_fkey` FOREIGN KEY (`B`) REFERENCES `Media`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_ArtworksAndOrders` ADD CONSTRAINT `_ArtworksAndOrders_B_fkey` FOREIGN KEY (`B`) REFERENCES `Orders`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ArtworksAndMedium` ADD CONSTRAINT `_ArtworksAndMedium_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artworks`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ArtworksAndMedium` ADD CONSTRAINT `_ArtworksAndMedium_B_fkey` FOREIGN KEY (`B`) REFERENCES `Medium`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

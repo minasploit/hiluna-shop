@@ -25,8 +25,10 @@ model Artwork {
     Collection       Collection?  @relation(fields: [collectionId], references: [id])
     CreatedBy        User         @relation(fields: [createdById], references: [id])
     Image            File         @relation(fields: [imageUrl], references: [id])
-    Orders           Order[]      @relation("ArtworkAndOrder")
-    Medium           Media[]      @relation("ArtworkAndMedia")
+    Orders           Order[]      @relation("ArtworksAndOrders")
+    Medium           Media[]      @relation("ArtworksAndMedium")
+
+    @@map("Artworks")
 }
 
 model Media {
@@ -35,7 +37,9 @@ model Media {
     description String?   @db.Text
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
-    Artworks    Artwork[] @relation("ArtworkAndMedia")
+    Artworks    Artwork[] @relation("ArtworksAndMedium")
+
+    @@map("Medium")
 }
 
 model Collection {
@@ -45,6 +49,8 @@ model Collection {
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
     artworks    Artwork[]
+
+    @@map("Collections")
 }
 
 model Order {
@@ -60,7 +66,9 @@ model Order {
     updatedAt     DateTime      @updatedAt
     OrderedBy     User          @relation(fields: [orderedById], references: [id])
     Screenshot    File?         @relation(fields: [screenshotUrl], references: [id])
-    Artworks      Artwork[]     @relation("ArtworkAndOrder")
+    Artworks      Artwork[]     @relation("ArtworksAndOrders")
+
+    @@map("Orders")
 }
 
 model File {
@@ -69,6 +77,8 @@ model File {
     fileType FileType
     Order    Order[]
     Artwork  Artwork[]
+
+    @@map("Files")
 }
 
 enum Currency {
@@ -118,6 +128,7 @@ model Account {
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@map("Accounts")
 }
 
 model Session {
@@ -126,6 +137,8 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("Sessions")
 }
 
 model User {
@@ -139,6 +152,8 @@ model User {
     sessions        Session[]
     createdArtworks Artwork[]
     Order           Order[]
+
+    @@map("Users")
 }
 
 enum UserRole {
@@ -152,4 +167,5 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+    @@map("VerificationTokens")
 }
