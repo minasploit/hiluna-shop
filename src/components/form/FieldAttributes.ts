@@ -1,4 +1,5 @@
 import type React from "react";
+import { Options, SelectValue } from "react-tailwindcss-select/dist/components/type";
 
 enum FieldType {
     TEXT = "text",
@@ -6,7 +7,8 @@ enum FieldType {
     CHECKBOX = "checkbox",
     NUMBER = "number",
     RICHTEXT = "richtext",
-    FILE = "file"
+    FILE = "file",
+    MULTITAG = "multitag",
 }
 
 interface BaseFieldAttributes {
@@ -61,7 +63,12 @@ interface FileFieldAttributes extends BaseFieldAttributes {
     required?: boolean
 }
 
-type FieldAttribute = InputFieldAttributes | SelectFieldAttributes | CheckboxFieldAttributes | NumberFieldAttributes | RichInputFieldAttributes | FileFieldAttributes;
+interface MultiTagFieldAttributes extends BaseFieldAttributes {
+    type: FieldType.MULTITAG;
+    options: Options;
+}
+
+type FieldAttribute = InputFieldAttributes | SelectFieldAttributes | CheckboxFieldAttributes | NumberFieldAttributes | RichInputFieldAttributes | FileFieldAttributes | MultiTagFieldAttributes;
 
 export default FieldAttribute;
-export { FieldType, type InputFieldAttributes, type SelectFieldAttributes, type CheckboxFieldAttributes, type NumberFieldAttributes, type RichInputFieldAttributes, type FileFieldAttributes };
+export { FieldType, type InputFieldAttributes, type SelectFieldAttributes, type CheckboxFieldAttributes, type NumberFieldAttributes, type RichInputFieldAttributes, type FileFieldAttributes, type MultiTagFieldAttributes };

@@ -29,7 +29,7 @@ model Artwork {
     Collection       Collection?  @relation(fields: [collectionId], references: [id])
     Order            Order?       @relation(fields: [orderId], references: [id])
     CreatedBy        User         @relation(fields: [createdById], references: [id])
-    Media            Media[]      @relation("ArtworkAndMedia")
+    Medium            Media[]      @relation("ArtworkAndMedia")
 }
 
 enum Currency {

@@ -7,6 +7,7 @@ import { FieldType } from "./FieldAttributes";
 import NumberField from "./NumberField";
 import RichInputField from "./RichInputField";
 import FileField from "./FileField";
+import MultiTagField from "./MultiTagField";
 
 const Field: React.FC<FieldAttribute> = (props) => {
     switch (props.type) {
@@ -22,6 +23,8 @@ const Field: React.FC<FieldAttribute> = (props) => {
             return <RichInputField {...props} />;
         case FieldType.FILE:
             return <FileField {...props} />;
+        case FieldType.MULTITAG:
+            return <MultiTagField {...props} />;
         default:
             throw new Error("Invalid Field Type");
     }

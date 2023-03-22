@@ -32,10 +32,18 @@ const ArtworkSharedSchema = {
 }
 export const AddArtworkSchema = z.object({
     ...ArtworkSharedSchema,
+    medium: z.array(z.number()).optional(),
     imageUrl: z.string().min(2),
 })
 export const AddArtworkFormSchema = z.object({
     ...ArtworkSharedSchema,
+    medium: z.array(
+        z.object({
+            value: z.string(),
+            label: z.string(),
+            disabled: z.boolean()
+        })
+    ),
     // imageUrl: z.string()
 })
 export const EditArtworkSchema = z.object({

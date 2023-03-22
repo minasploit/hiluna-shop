@@ -61,11 +61,20 @@ export const artworkRouter = createTRPCRouter({
     create: adminProcedure
         .input(AddArtworkSchema)
         .mutation(async ({ ctx, input }) => {
+            const artwork = {
+                ...input,
+                createdById: ctx.session.user.id,
+                collectionId: input.collectionId == 0 ? null : input.collectionId,
+            };
+
+            delete artwork.medium;
+
             const res = await ctx.prisma.artwork.create({
                 data: {
-                    ...input,
-                    createdById: ctx.session.user.id,
-                    collectionId: input.collectionId == 0 ? null : input.collectionId
+                    ...artwork,
+                    Medium: {
+                        connect: input.medium?.map(m => ({ id: m }))
+                    }
                 }
             });
 

@@ -20,6 +20,7 @@ const NewArtwork: NextPageWithLayout = () => {
 
     const artworkMutation = api.artwork.create.useMutation();
     const collections = api.collection.list.useQuery();
+    const medium = api.medium.list.useQuery();
 
     const inputFileRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -47,6 +48,12 @@ const NewArtwork: NextPageWithLayout = () => {
             name: "description",
             label: "Description",
             type: FieldType.RICHTEXT,
+        },
+        {
+            name: "medium",
+            label: "Medium",
+            type: FieldType.MULTITAG,
+            options: medium.data?.map(m => ({ value: m.id.toString(), label: m.name })) ?? []
         },
         {
             name: "featured",
@@ -96,7 +103,7 @@ const NewArtwork: NextPageWithLayout = () => {
                 }) ?? []
             ],
             defaultValue: 0
-        },
+        }
     ]
 
     type AddArtworkFormSchemaType = z.infer<typeof AddArtworkFormSchema>;
@@ -132,7 +139,8 @@ const NewArtwork: NextPageWithLayout = () => {
 
             const res = await artworkMutation.mutateAsync({
                 ...data,
-                imageUrl: result.urls[0]?.newName
+                imageUrl: result.urls[0]?.newName,
+                medium: artworkForm.getValues("medium").map(m => Number(m.value))
             });
 
             artworkForm.reset(res);
@@ -162,7 +170,7 @@ const NewArtwork: NextPageWithLayout = () => {
                         <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
                                 {artworkFields.map((field) => (
-                                    <div className={clsx("col-span-6", !["description", "files"].includes(field.name) && "sm:col-span-3")} key={field.name}>
+                                    <div className={clsx("col-span-6", !["description", "files", "medium"].includes(field.name) && "sm:col-span-3")} key={field.name}>
                                         <Field {...field} />
                                     </div>
                                 ))}
