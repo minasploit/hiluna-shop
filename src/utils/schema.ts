@@ -43,7 +43,7 @@ export const AddArtworkFormSchema = z.object({
             label: z.string(),
             disabled: z.boolean()
         })
-    ).nullable(),
+    ).optional(),
     // imageUrl: z.string()
 })
 export const EditArtworkSchema = z.object({
