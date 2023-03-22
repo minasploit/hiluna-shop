@@ -57,15 +57,17 @@ export const orderRouter = createTRPCRouter({
                     screenshotUrl: input.screenshotUrl,
                     price: total,
                     currency: Currency.ETB,
-                    orderStatus: input.paymentMethod == PaymentMethod.CashOnDelivery ? OrderStatus.Ordered : OrderStatus.OrderedAndPaid
+                    orderStatus: input.paymentMethod == PaymentMethod.CashOnDelivery ? OrderStatus.Ordered : OrderStatus.OrderedAndPaid,
+                    Artworks: {
+                        connect: input.artworks.map(id => ({ id }))
+                    }
                 }
             });
 
-            // set the order on artworks and mark them as unavailable for sale
+            // mark the artworks as unavailable for sale
             await ctx.prisma.artwork.updateMany({
                 data: {
-                    availableForSale: false,
-                    orderId: order.id
+                    availableForSale: false
                 },
                 where: {
                     id: {

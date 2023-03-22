@@ -29,7 +29,7 @@ const Artworks: NextPageWithLayout = () => {
                             <h3 className="mt-4 text-lg font-medium">{artwork.name}</h3>
                             {
                                 artwork.availableForSale ? 
-                                <p className="mt-1 inline">{artwork.price} ETB</p>
+                                <p className="mt-1 inline">{artwork.price.toLocaleString()} ETB</p>
                                 :
                                 <p className="mt-1 text-sm inline">Not available for sale</p>
                             }

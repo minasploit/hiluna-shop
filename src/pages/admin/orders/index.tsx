@@ -69,8 +69,8 @@ const ManageOrders: NextPageWithLayout = () => {
                                 <td>{order.OrderedBy.name}</td>
                                 <td>{order.phoneNumber}</td>
                                 <td>
-                                    {order.currency == Currency.USD && `$${order.price}`}
-                                    {order.currency == Currency.ETB && `${order.price} ${order.currency}`}
+                                    {order.currency == Currency.USD && `$${order.price.toLocaleString()}`}
+                                    {order.currency == Currency.ETB && `${order.price.toLocaleString()} ${order.currency}`}
                                 </td>
                                 <td>{prettifyCamel(order.paymentMethod)}</td>
                                 <td>

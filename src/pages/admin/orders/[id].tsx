@@ -224,8 +224,8 @@ const ManageOrder: NextPageWithLayout = () => {
                         <div className="sm:col-span-1">
                             <dt className="text-sm font-medium">Price</dt>
                             <dd className="mt-1">
-                                {order.data.currency == Currency.USD && `$${order.data.price}`}
-                                {order.data.currency == Currency.ETB && `${order.data.price} ${order.data.currency}`}
+                                {order.data.currency == Currency.USD && `$${order.data.price.toLocaleString()}`}
+                                {order.data.currency == Currency.ETB && `${order.data.price.toLocaleString()} ${order.data.currency}`}
                             </dd>
                         </div>
                         <div className="sm:col-span-1">

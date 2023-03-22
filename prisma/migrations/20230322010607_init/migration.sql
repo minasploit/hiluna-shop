@@ -11,7 +11,6 @@ CREATE TABLE `Artwork` (
     `currency` ENUM('ETB', 'USD') NOT NULL DEFAULT 'ETB',
     `orientation` ENUM('Portrait', 'Landscape') NULL,
     `collectionId` INTEGER NULL,
-    `orderId` INTEGER NULL,
     `createdById` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -111,6 +110,15 @@ CREATE TABLE `VerificationToken` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `_ArtworkAndOrder` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_ArtworkAndOrder_AB_unique`(`A`, `B`),
+    INDEX `_ArtworkAndOrder_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `_ArtworkAndMedia` (
     `A` INTEGER NOT NULL,
     `B` INTEGER NOT NULL,
@@ -123,9 +131,6 @@ CREATE TABLE `_ArtworkAndMedia` (
 ALTER TABLE `Artwork` ADD CONSTRAINT `Artwork_collectionId_fkey` FOREIGN KEY (`collectionId`) REFERENCES `Collection`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Artwork` ADD CONSTRAINT `Artwork_orderId_fkey` FOREIGN KEY (`orderId`) REFERENCES `Order`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `Artwork` ADD CONSTRAINT `Artwork_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -136,6 +141,12 @@ ALTER TABLE `Account` ADD CONSTRAINT `Account_userId_fkey` FOREIGN KEY (`userId`
 
 -- AddForeignKey
 ALTER TABLE `Session` ADD CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ArtworkAndOrder` ADD CONSTRAINT `_ArtworkAndOrder_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artwork`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ArtworkAndOrder` ADD CONSTRAINT `_ArtworkAndOrder_B_fkey` FOREIGN KEY (`B`) REFERENCES `Order`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_ArtworkAndMedia` ADD CONSTRAINT `_ArtworkAndMedia_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artwork`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

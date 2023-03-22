@@ -116,8 +116,8 @@ const ManageArtworks: NextPageWithLayout = () => {
                                 </td>
                                 <td>{artwork.orientation}</td>
                                 <td>
-                                    {artwork.currency == Currency.USD && `$${artwork.price}`}
-                                    {artwork.currency == Currency.ETB && `${artwork.price} ${artwork.currency}`}
+                                    {artwork.currency == Currency.USD && `$${artwork.price.toLocaleString()}`}
+                                    {artwork.currency == Currency.ETB && `${artwork.price.toLocaleString()} ${artwork.currency}`}
                                     <br />
                                     <span className={clsx("badge", artwork.availableForSale ? "badge-primary" : "badge-ghost")}>
                                         {artwork.availableForSale ? "Available for sale" : "Unavailable for sale"}
