@@ -73,8 +73,9 @@ const ManageArtworks: NextPageWithLayout = () => {
                     <tr>
                         <th></th>
                         <th>Name</th>
-                        <th>Orientation</th>
                         <th>Dimension</th>
+                        <th>Medium</th>
+                        <th>Orientation</th>
                         <th>Price</th>
                         <th></th>
                     </tr>
@@ -105,8 +106,15 @@ const ManageArtworks: NextPageWithLayout = () => {
                                         </div>
                                     </div>
                                 </td>
-                                <td>{artwork.orientation}</td>
                                 <td>{artwork.dimension}</td>
+                                <td>
+                                    {artwork.Medium.map(m => (
+                                        <span className="badge mx-1" key={m.id}>
+                                            {m.name}
+                                        </span>
+                                    ))}
+                                </td>
+                                <td>{artwork.orientation}</td>
                                 <td>
                                     {artwork.currency == Currency.USD && `$${artwork.price}`}
                                     {artwork.currency == Currency.ETB && `${artwork.price} ${artwork.currency}`}
