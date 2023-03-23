@@ -1,6 +1,6 @@
 import { Currency } from "@prisma/client";
 import toast from "react-hot-toast";
-import { FiHelpCircle, FiLock, FiUserCheck, FiX } from "react-icons/fi"
+import { FiCheck, FiHelpCircle, FiLock, FiUserCheck, FiX } from "react-icons/fi"
 import { useLocalStorage } from "usehooks-ts";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./_app"
@@ -71,8 +71,8 @@ const Cart: NextPageWithLayout = () => {
                                     </div>
 
                                     <div className="ml-4 flex-1 flex flex-col justify-between sm:ml-6">
-                                        <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
-                                            <div>
+                                        <div className="relative pr-9 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:pr-0">
+                                            <div className="sm:col-span-3">
                                                 <div className="flex justify-between">
                                                     <h3 className="text-lg">
                                                         <a href={`/artworks/${item.id}`} className="font-medium">
@@ -80,21 +80,21 @@ const Cart: NextPageWithLayout = () => {
                                                         </a>
                                                     </h3>
                                                 </div>
-                                                {/* <div className="mt-1 flex text-sm">
-                                                    <p className="">{item.color}</p>
-                                                    {item.size ? (
-                                                        <p className="ml-4 pl-4 border-l border-gray-200">{item.size}</p>
+                                                <div className="mt-1 flex text-sm">
+                                                    <p className="">{item.orientation}</p>
+                                                    {item.Collection ? (
+                                                        <p className="ml-4 pl-4 border-l border-gray-500">{item.Collection.name}</p>
                                                     ) : null}
-                                                </div> */}
+                                                </div>
                                                 <p className="mt-1 text-sm font-medium">
                                                     {item.currency == Currency.USD && `$${item.price.toLocaleString()}`}
                                                     {item.currency == Currency.ETB && `${item.price.toLocaleString()} ${item.currency}`}
                                                 </p>
                                             </div>
 
-                                            <div className="mt-4 sm:mt-0 sm:pr-9">
+                                            <div className="mt-4 sm:mt-0 sm:pr-9 sm:col-span-1">
                                                 <div className="absolute top-0 right-0">
-                                                    <button type="button" className="-m-2 btn btn-circle btn-outline inline-flex" onClick={() => { removeFromCart(item.id); toast.success("Removed from cart"); }}>
+                                                    <button type="button" className="-m-2 btn btn-sm btn-circle btn-outline inline-flex" onClick={() => { removeFromCart(item.id); toast.success("Removed from cart"); }}>
                                                         <span className="sr-only">Remove</span>
                                                         <FiX className="h-5 w-5" aria-hidden="true" />
                                                     </button>
@@ -103,9 +103,9 @@ const Cart: NextPageWithLayout = () => {
                                         </div>
 
                                         <p className="mt-4 flex text-sm space-x-2">
-                                            hi
+                                            <FiCheck className="flex-shrink-0 h-5 w-5 text-green-500" aria-hidden="true" />
 
-                                            {/* <span>{item.inStock ? 'In stock' : `Ships in ${item.leadTime ?? ""}`}</span> */}
+                                            <span>In stock</span>
                                         </p>
                                     </div>
                                 </li>

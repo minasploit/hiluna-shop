@@ -32,7 +32,8 @@ export const artworkRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const res = await ctx.prisma.artwork.findMany({
                 include: {
-                    Files: true
+                    Files: true,
+                    Collection: true
                 },
                 where: {
                     id: {
