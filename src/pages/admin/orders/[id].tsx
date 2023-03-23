@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiCheck, FiChevronDown, FiPaperclip } from "react-icons/fi";
-import { getArtworkImage, prettifyCamel, resolveResource } from "~/components/Functions";
+import { getArtworkImage, prettifyCamel, resolveUploadResource } from "~/components/Functions";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
@@ -90,7 +90,7 @@ const ManageOrder: NextPageWithLayout = () => {
 
         {
             order.data &&
-            <div className="shadow-xl overflow-hidden sm:rounded-lg md:mt-8">
+            <div className="shadow-xl sm:rounded-lg md:mt-8">
                 <div className="flex px-4 py-5 sm:px-6 justify-between">
                     <div>
                         <h3 className="text-lg leading-6 font-medium">Order Information</h3>
@@ -177,7 +177,7 @@ const ManageOrder: NextPageWithLayout = () => {
                                             <div className="avatar">
                                                 <div className="mask mask-squircle w-12 h-12">
                                                     <Image
-                                                        src={resolveResource(getArtworkImage(artwork))}
+                                                        src={resolveUploadResource(getArtworkImage(artwork))}
                                                         alt="Artwork image"
                                                         width={90}
                                                         height={90}
@@ -255,7 +255,7 @@ const ManageOrder: NextPageWithLayout = () => {
                                                 <a href="#" >
 
                                                 </a>
-                                                <Link href={resolveResource(order.data.Screenshot?.fileUrl ?? "")}
+                                                <Link href={resolveUploadResource(order.data.Screenshot?.fileUrl ?? "")}
                                                     target="_blank"
                                                     className="font-medium text-primary">
                                                     View

@@ -39,11 +39,16 @@ const config = {
 				hostname: "*.googleapis.com",
 				pathname: "/**",
 				port: ""
-			}
-			,
+			},
 			{
 				protocol: "https",
 				hostname: "*.hiluna.art",
+				pathname: "/**",
+				port: ""
+			},
+			{
+				protocol: "https",
+				hostname: "tailwindui.com",
 				pathname: "/**",
 				port: ""
 			}

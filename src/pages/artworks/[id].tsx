@@ -9,7 +9,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { toast } from "react-hot-toast";
 import { type CartItem } from "../cart";
 import Image from "next/image";
-import { resolveResource } from "~/components/Functions";
+import { resolveUploadResource } from "~/components/Functions";
 import Link from "next/link";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { Tab } from "@headlessui/react";
@@ -122,7 +122,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                                             {
                                                                 file.fileType === FileType.Image &&
                                                                 <Image
-                                                                    src={resolveResource(file.fileUrl)}
+                                                                    src={resolveUploadResource(file.fileUrl)}
                                                                     alt="Artwork image"
                                                                     priority={true}
                                                                     width={120} height={120}
@@ -132,7 +132,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                                             {
                                                                 file.fileType === FileType.Video &&
                                                                 <video className="w-full h-full object-center object-cover sm:rounded-lg">
-                                                                    <source src={resolveResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
+                                                                    <source src={resolveUploadResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
                                                                     Your browser does not support the video tag.
                                                                 </video>
                                                             }
@@ -164,7 +164,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                     {
                                         file.fileType === FileType.Image &&
                                         <Image
-                                            src={resolveResource(file.fileUrl)}
+                                            src={resolveUploadResource(file.fileUrl)}
                                             alt="Artwork thumbnail"
                                             priority={true}
                                             width={720} height={720}
@@ -174,7 +174,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                     {
                                         file.fileType === FileType.Video &&
                                         <video controls className="w-full h-full object-center object-cover sm:rounded-lg">
-                                            <source src={resolveResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
+                                            <source src={resolveUploadResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
                                             Your browser does not support the video tag.
                                         </video>
                                     }

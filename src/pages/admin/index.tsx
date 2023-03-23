@@ -8,7 +8,7 @@ const AdminPage: NextPageWithLayout = () => {
     const dashboardNumbers = api.dashboard.getDashboardNumbers.useQuery();
 
     return <>
-        <div className="text-center min-h-screen">
+        <div className="text-center min-h-screen overflow-x-auto">
 
             <div className="stats stats-vertical sm:stats-horizontal shadow gap-5 mt-10">
                 <div className="stat">

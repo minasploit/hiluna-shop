@@ -1,8 +1,12 @@
 import { type File, FileType, type Artwork } from "@prisma/client"
 import { env } from "~/env.mjs"
 
-export function resolveResource(imageUrl: string): string {
+export function resolveUploadResource(imageUrl: string): string {
     return `https://media.hiluna.art/uploads/${imageUrl}`
+}
+
+export function resolveStaticResource(imageUrl: string): string {
+    return `https://media.hiluna.art/static/${imageUrl}`
 }
 
 export function prettifyCamel(str: string): string {

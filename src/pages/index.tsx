@@ -1,5 +1,6 @@
 import { type NextPageWithLayout } from "./_app";
 import Artwall from "~/components/Artwall";
+import Image from "next/image";
 
 const Home: NextPageWithLayout = () => {
 
@@ -29,10 +30,11 @@ const Home: NextPageWithLayout = () => {
 
 							<div className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:grid-rows-2 sm:gap-x-6 lg:gap-8">
 								<div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
-									<img
-										src="https://tailwindui.com/img/ecommerce-images/home-page-03-featured-category.jpg"
-										alt="Two models wearing women's black cotton crewneck tee and off-white cotton crewneck tee."
+									<Image
+										width={500} height={500}
 										className="object-center object-cover group-hover:opacity-75"
+										src={"https://tailwindui.com/img/ecommerce-images/home-page-03-featured-category.jpg"}
+										alt={"Two models wearing women's black cotton crewneck tee and off-white cotton crewneck tee"}
 									/>
 									<div aria-hidden="true" className="bg-gradient-to-b from-transparent to-black opacity-50" />
 									<div className="p-6 flex items-end">
@@ -50,10 +52,11 @@ const Home: NextPageWithLayout = () => {
 									</div>
 								</div>
 								<div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-none sm:h-full">
-									<img
-										src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg"
-										alt="Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters."
+									<Image
+										width={500} height={500}
 										className="object-center object-cover group-hover:opacity-75 sm:absolute sm:inset-0 sm:w-full sm:h-full"
+										src={"https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg"}
+										alt={"Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters."}
 									/>
 									<div
 										aria-hidden="true"
@@ -74,10 +77,11 @@ const Home: NextPageWithLayout = () => {
 									</div>
 								</div>
 								<div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-none sm:h-full">
-									<img
-										src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-02.jpg"
-										alt="Walnut desk organizer set with white modular trays, next to porcelain mug on wooden desk."
+									<Image
+										width={500} height={500}
 										className="object-center object-cover group-hover:opacity-75 sm:absolute sm:inset-0 sm:w-full sm:h-full"
+										src={"https://tailwindui.com/img/ecommerce-images/home-page-03-category-02.jpg"}
+										alt={"Walnut desk organizer set with white modular trays, next to porcelain mug on wooden desk."}
 									/>
 									<div
 										aria-hidden="true"

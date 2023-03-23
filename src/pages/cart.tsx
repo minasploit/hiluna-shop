@@ -1,6 +1,6 @@
 import { Currency } from "@prisma/client";
 import toast from "react-hot-toast";
-import { FiCheck, FiHelpCircle, FiLock, FiUserCheck, FiX } from "react-icons/fi"
+import { FiCheck, FiLock, FiUserCheck, FiX } from "react-icons/fi"
 import { useLocalStorage } from "usehooks-ts";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./_app"
@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { getArtworkImage, resolveResource } from "~/components/Functions";
+import { getArtworkImage, resolveUploadResource } from "~/components/Functions";
 
 export interface CartItem {
     id: number;
@@ -63,7 +63,7 @@ const Cart: NextPageWithLayout = () => {
                                 <li key={item.id} className="flex py-6 sm:py-10">
                                     <div className="flex-shrink-0">
                                         <Image
-                                            src={resolveResource(getArtworkImage(item))}
+                                            src={resolveUploadResource(getArtworkImage(item))}
                                             alt={item.description}
                                             width={180} height={180}
                                             className="w-24 h-24 rounded-md object-center object-cover sm:w-48 sm:h-48"
@@ -142,7 +142,7 @@ const Cart: NextPageWithLayout = () => {
                                         {subTotal.toLocaleString()} ETB
                                     </dd>
                                 </div>
-                                <div className="border-t border-gray-500 pt-4 flex items-center justify-between">
+                                {/* <div className="border-t border-gray-500 pt-4 flex items-center justify-between">
                                     <dt className="flex items-center text-sm">
                                         <span>Shipping</span>
                                         <div className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500 tooltip tooltip-right cursor-pointer"
@@ -152,7 +152,7 @@ const Cart: NextPageWithLayout = () => {
                                         </div>
                                     </dt>
                                     <dd className="text-sm font-medium">Free (0 ETB)</dd>
-                                </div>
+                                </div> */}
                                 <div className="border-t border-gray-500 pt-4 flex items-center justify-between">
                                     <dt className="text-base font-medium">Order total</dt>
                                     <dd className="text-base font-medium">{total.toLocaleString()} ETB</dd>

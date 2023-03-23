@@ -13,7 +13,7 @@ import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 import { EditArtworkFormSchema } from "~/utils/schema";
 import Image from "next/image";
-import { resolveResource } from "~/components/Functions";
+import { resolveUploadResource } from "~/components/Functions";
 import { type FtpUploadResult } from "~/pages/api/upload";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import Link from "next/link";
@@ -228,7 +228,7 @@ const EditArtwork: NextPageWithLayout = () => {
                                         {
                                             f.fileType == FileType.Image &&
                                             <Image
-                                                src={resolveResource(f.fileUrl ?? "")}
+                                                src={resolveUploadResource(f.fileUrl ?? "")}
                                                 width={320} height={320} alt="Artwork image"
                                                 priority
                                                 key={f.id}
@@ -237,7 +237,7 @@ const EditArtwork: NextPageWithLayout = () => {
                                         {
                                             f.fileType == FileType.Video &&
                                             <video controls>
-                                                <source src={resolveResource(f.fileUrl)} type={f.mimeType ?? "video/mp4"} />
+                                                <source src={resolveUploadResource(f.fileUrl)} type={f.mimeType ?? "video/mp4"} />
                                                 Your browser does not support the video tag.
                                             </video>
                                         }
