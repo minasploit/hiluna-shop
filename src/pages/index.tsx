@@ -304,52 +304,52 @@ const Home: NextPageWithLayout = () => {
 										<div className="ml-24 flex space-x-6 min-w-max sm:ml-3 lg:space-x-8">
 											<div className="flex space-x-6 sm:flex-col sm:space-x-0 sm:space-y-6 lg:space-y-8">
 												<div className="flex-shrink-0">
-													<img
+													<Image
 														className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
 														src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg"
-														alt=""
+														alt="Footer artwork image" width={300} height={300}
 													/>
 												</div>
 
 												<div className="mt-6 flex-shrink-0 sm:mt-0">
-													<img
+													<Image
 														className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
 														src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-02.jpg"
-														alt=""
+														alt="Footer artwork image" width={300} height={300}
 													/>
 												</div>
 											</div>
 											<div className="flex space-x-6 sm:-mt-20 sm:flex-col sm:space-x-0 sm:space-y-6 lg:space-y-8">
 												<div className="flex-shrink-0">
-													<img
+													<Image
 														className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
 														src="https://tailwindui.com/img/ecommerce-images/home-page-03-favorite-01.jpg"
-														alt=""
+														alt="Footer artwork image" width={300} height={300}
 													/>
 												</div>
 
 												<div className="mt-6 flex-shrink-0 sm:mt-0">
-													<img
+													<Image
 														className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
 														src="https://tailwindui.com/img/ecommerce-images/home-page-03-favorite-02.jpg"
-														alt=""
+														alt="Footer artwork image" width={300} height={300}
 													/>
 												</div>
 											</div>
 											<div className="flex space-x-6 sm:flex-col sm:space-x-0 sm:space-y-6 lg:space-y-8">
 												<div className="flex-shrink-0">
-													<img
+													<Image
 														className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
 														src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg"
-														alt=""
+														alt="Footer artwork image" width={300} height={300}
 													/>
 												</div>
 
 												<div className="mt-6 flex-shrink-0 sm:mt-0">
-													<img
+													<Image
 														className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
 														src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-02.jpg"
-														alt=""
+														alt="Footer artwork image" width={300} height={300}
 													/>
 												</div>
 											</div>
