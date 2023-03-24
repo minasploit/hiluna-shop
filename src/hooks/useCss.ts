@@ -13,6 +13,10 @@ const css = `
     background-color: #2f2f2f;
 }
 
+[data-theme="halloween"] #sale-heading {
+    color: #ffffff;
+}
+
 #divvvv {
     backdrop-filter:blur(10px);
     -webkit-mask: -webkit-gradient(
@@ -226,15 +230,15 @@ const css = `
 }
 
 .cube:nth-child(7) {
-    width: calc(var(--productWidth)*1.5);
-    padding-bottom: calc(var(--productWidth) * 1.70);
+    width: calc(var(--productWidth)*2.5);
+    padding-bottom: calc(var(--productWidth) * 1.60);
 
-    animation-name: example;
-    animation-duration: 4.00s;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    animation-timing-function: ease-in-out;
-    animation-play-state: running;
+    // animation-name: example;
+    // animation-duration: 4.00s;
+    // animation-iteration-count: infinite;
+    // animation-direction: alternate;
+    // animation-timing-function: ease-in-out;
+    // animation-play-state: running;
 
 }
 
@@ -244,8 +248,8 @@ const css = `
 }
 
 .cube:nth-child(12) {
-    width: calc(var(--productWidth)*2.5);
-    padding-bottom: calc(var(--productWidth) * 1.60);
+    width: calc(var(--productWidth)*1.5);
+    padding-bottom: calc(var(--productWidth) * 1.70);
 }
 
 .cube[data-orientation='1'] {

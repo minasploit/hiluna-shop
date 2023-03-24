@@ -1,4 +1,6 @@
 import useCss from "~/hooks/useCss";
+import { resolveStaticResource } from "./Functions";
+import Image from "next/image";
 
 const Artwall = () => {
     const style = useCss;
@@ -106,8 +108,22 @@ const Artwall = () => {
 
 
                             <div id="" className="cube" data-orientation="0" onMouseOver={onMouseOver}>
-                                <div className="cubeFace cubeFaceFront"><img className=" lazyloaded" src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/1/being-normal-is-boring-balazs-solti.jpg" data-src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/1/being-normal-is-boring-balazs-solti.jpg" /></div>
-                                <div className="cubeFace cubeFaceBack"><img className=" lazyloaded" src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/2/santa-lion-balazs-solti.jpg" data-src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/2/santa-lion-balazs-solti.jpg" /></div>
+                                <div className="cubeFace cubeFaceFront">
+                                    <Image
+                                        src={resolveStaticResource("5.jpg")}
+                                        alt="Artwork image"
+                                        width={800} height={400}
+                                        priority
+                                    />
+                                </div>
+                                <div className="cubeFace cubeFaceBack">
+                                    <Image
+                                        src={resolveStaticResource("6.jpg")}
+                                        alt="Artwork image"
+                                        width={800} height={400}
+                                        priority
+                                    />
+                                </div>
                                 <div className="cubeFace cubeFaceRight"></div>
                                 <div className="cubeFace cubeFaceLeft"></div>
                                 <div className="cubeFace cubeFaceTop"></div>
@@ -116,8 +132,22 @@ const Artwall = () => {
 
 
                             <div id="" className="cube" data-orientation="0" onMouseOver={onMouseOver}>
-                                <div className="cubeFace cubeFaceFront"><img className=" lazyloaded" src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/1/lovely-leopard-balazs-solti.jpg" data-src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/1/lovely-leopard-balazs-solti.jpg" /></div>
-                                <div className="cubeFace cubeFaceBack"><img className=" lazyloaded" src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/1/im-not-your-clown-balazs-solti.jpg" data-src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/1/im-not-your-clown-balazs-solti.jpg" /></div>
+                                <div className="cubeFace cubeFaceFront">
+                                    <Image
+                                        src={resolveStaticResource("1.jpg")}
+                                        alt="Artwork image"
+                                        width={800} height={400}
+                                        priority
+                                    />
+                                </div>
+                                <div className="cubeFace cubeFaceBack">
+                                    <Image
+                                        src={resolveStaticResource("3.jpg")}
+                                        alt="Artwork image"
+                                        width={800} height={400}
+                                        priority
+                                    />
+                                </div>
                                 <div className="cubeFace cubeFaceRight"></div>
                                 <div className="cubeFace cubeFaceLeft"></div>
                                 <div className="cubeFace cubeFaceTop"></div>
@@ -126,7 +156,7 @@ const Artwall = () => {
 
 
                             <div id="" className="cube" data-orientation="0" onMouseOver={onMouseOver}>
-                                <div className="cubeFace cubeFaceFront"><img className=" lazyloaded" src="https://render.fineartamerica.com/images/rendered/default/print/images-medium-5/hipster-lion-balazs-solti.jpg" data-src="https://render.fineartamerica.com/images/rendered/default/print/images-medium-5/hipster-lion-balazs-solti.jpg" /></div>
+                                <div className="cubeFace cubeFaceFront"><img className=" lazyloaded" src={resolveStaticResource("3.jpg")} data-src={resolveStaticResource("3.jpg")} /></div>
                                 <div className="cubeFace cubeFaceBack"><img className=" lazyloaded" src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/2/xmas-cat-balazs-solti.jpg" data-src="https://render.fineartamerica.com/images/rendered/default/print/images/artworkimages/medium/2/xmas-cat-balazs-solti.jpg" /></div>
                                 <div className="cubeFace cubeFaceRight"></div>
                                 <div className="cubeFace cubeFaceLeft"></div>

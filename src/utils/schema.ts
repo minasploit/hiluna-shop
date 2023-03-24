@@ -1,3 +1,4 @@
+import { Currency, OrderStatus, Orientation, PaymentMethod } from "@prisma/client";
 import { z } from "zod";
 
 // =========== ORDER ===========
@@ -7,7 +8,7 @@ const OrderSharedSchema = {
 export const AddOrderSchema = z.object({
     ...OrderSharedSchema,
     artworks: z.array(z.number()),
-    paymentMethod: z.enum(["CashOnDelivery", "CBE", "Telebirr", "Bunna"]).default("CashOnDelivery"),
+    paymentMethod: z.nativeEnum(PaymentMethod).default(PaymentMethod.CashOnDelivery),
     screenshotUrl: z.number().nullable()
 })
 export const AddOrderFormSchema = z.object(
@@ -15,7 +16,7 @@ export const AddOrderFormSchema = z.object(
 )
 export const ChangeOrderStatusSchema = z.object({
     id: z.number(),
-    orderStatus: z.enum(["Ordered", "OrderedAndPaid", "Cancelled", "Completed"])
+    orderStatus: z.nativeEnum(OrderStatus)
 })
 
 // =========== ARTWORK ===========
@@ -26,9 +27,9 @@ const ArtworkSharedSchema = {
     featured: z.boolean().default(false),
     availableForSale: z.boolean().default(false),
     price: z.number().default(0),
-    currency: z.enum(["ETB", "USD"]).default("ETB"),
+    currency: z.nativeEnum(Currency).default(Currency.ETB),
     collectionId: z.number().nullable(),
-    orientation: z.enum(["Portrait", "Landscape"]).nullable()
+    orientation: z.nativeEnum(Orientation).nullable()
 }
 export const AddArtworkSchema = z.object({
     ...ArtworkSharedSchema,

@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { type z } from "zod";
@@ -222,16 +222,15 @@ const EditArtwork: NextPageWithLayout = () => {
                         </label>
                         <div className="flex items-center flex-col">
                             {
-                                artwork.data.Files &&
                                 artwork.data.Files.map(f => (
-                                    <>
+                                    <Fragment key={f.id}>
                                         {
                                             f.fileType == FileType.Image &&
                                             <Image
-                                                src={resolveUploadResource(f.fileUrl ?? "")}
+                                                src={resolveUploadResource(f.fileUrl)}
                                                 width={320} height={320} alt="Artwork image"
+                                                className="w-auto"
                                                 priority
-                                                key={f.id}
                                             />
                                         }
                                         {
@@ -243,7 +242,7 @@ const EditArtwork: NextPageWithLayout = () => {
                                         }
 
                                         <br />
-                                    </>
+                                    </Fragment>
                                 ))
                             }
                         </div>
