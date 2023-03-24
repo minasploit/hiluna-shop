@@ -61,10 +61,7 @@ const Header = () => {
 
                 <ul className="menu menu-horizontal px-1 ml-3 hidden md:flex">
                     {nav.map(item => {
-                        if (item.id == 0)
-                            return <></>
-
-                        if (item.adminOnly && session?.user.role != UserRole.ADMIN)
+                        if ((item.adminOnly && session?.user.role != UserRole.ADMIN) || item.id == 0)
                             return <Fragment key={item.id}></Fragment>
 
                         return <li key={item.id}>
