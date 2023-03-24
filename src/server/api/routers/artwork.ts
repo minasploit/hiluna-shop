@@ -44,6 +44,19 @@ export const artworkRouter = createTRPCRouter({
 
             return res;
         }),
+    getFavorites: publicProcedure
+        .query(async ({ ctx }) => {
+            const res = await ctx.prisma.artwork.findMany({
+                where: {
+                    featured: true
+                },
+                include: {
+                    Files: true
+                }
+            })
+
+            return res;
+        }),
     getCartItems: publicProcedure
         .input(z.array(z.number()))
         .query(async ({ ctx, input }) => {

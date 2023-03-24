@@ -1,35 +1,9 @@
 import { type NextPageWithLayout } from "./_app";
 import Artwall from "~/components/Artwall";
 import Image from "next/image";
-import { resolveStaticResource } from "~/components/Functions";
-
-const favorites = [
-	{
-		id: 1,
-		name: 'Black Basic Tee',
-		price: '$32',
-		href: '#',
-		imageSrc: resolveStaticResource("2.jpg"),
-		imageAlt: "Model wearing women's black cotton crewneck tee.",
-	},
-	{
-		id: 2,
-		name: 'Off-White Basic Tee',
-		price: '$32',
-		href: '#',
-		imageSrc: resolveStaticResource("5.jpg"),
-		imageAlt: "Model wearing women's off-white cotton crewneck tee.",
-	},
-	{
-		id: 3,
-		name: 'Mountains Artwork Tee',
-		price: '$36',
-		href: '#',
-		imageSrc: resolveStaticResource("6.jpg"),
-		imageAlt:
-			"Model wearing women's burgundy red crewneck artwork tee with small white triangle overlapping larger black triangle.",
-	},
-]
+import { getArtworkImage, resolveStaticResource, resolveUploadResource } from "~/components/Functions";
+import { api } from "~/utils/api";
+import { Currency } from "@prisma/client";
 
 const testimonials = [
 	{
@@ -53,6 +27,8 @@ const testimonials = [
 ]
 
 const Home: NextPageWithLayout = () => {
+
+	const favorites = api.artwork.getFavorites.useQuery();
 
 	return (
 		<>
@@ -186,9 +162,10 @@ const Home: NextPageWithLayout = () => {
 					{/* Decorative background image and gradient */}
 					<div aria-hidden="true" className="absolute inset-0">
 						<div className="absolute inset-0 max-w-7xl mx-auto overflow-hidden xl:px-8">
-							<img
-								src="https://tailwindui.com/img/ecommerce-images/home-page-02-sale-full-width.jpg"
-								alt=""
+							<Image
+								width={700} height={700}
+								src={resolveStaticResource("home-page-02-sale-full-width.png")}
+								alt="Featured artworks"
 								className="w-full h-full object-center object-cover"
 							/>
 						</div>
@@ -272,22 +249,26 @@ const Home: NextPageWithLayout = () => {
 						</div>
 
 						<div className="mt-6 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-y-0 sm:gap-x-6 lg:gap-x-8">
-							{favorites.map((favorite) => (
+							{favorites.data?.map((favorite) => (
 								<div key={favorite.id} className="group relative">
 									<div className="w-full h-96 rounded-lg overflow-hidden group-hover:opacity-75 sm:h-auto sm:aspect-w-2 sm:aspect-h-3">
-										<img
-											src={favorite.imageSrc}
-											alt={favorite.imageAlt}
+										<Image
+											src={resolveUploadResource(getArtworkImage(favorite))}
+											alt="Favorite artwork image"
 											className="w-full h-full object-center object-cover"
+											width={500} height={500}
 										/>
 									</div>
 									<h3 className="mt-4 text-base font-semibold">
-										<a href={favorite.href}>
+										<a href={`/artworks/${favorite.id}`}>
 											<span className="absolute inset-0" />
 											{favorite.name}
 										</a>
 									</h3>
-									<p className="mt-1 text-sm opacity-80">{favorite.price}</p>
+									<p className="mt-1 text-sm opacity-80">
+										{favorite.currency == Currency.USD && `$${favorite.price.toLocaleString()}`}
+										{favorite.currency == Currency.ETB && `${favorite.price.toLocaleString()} ${favorite.currency}`}
+									</p>
 								</div>
 							))}
 						</div>
