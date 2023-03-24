@@ -77,7 +77,11 @@ const ManageCollection: NextPageWithLayout = () => {
                         collection.data?.map((collection, index) => (
                             <tr key={collection.id}>
                                 <th>{index + 1}</th>
-                                <td>{collection.name}</td>
+                                <td>
+                                    <Link href={`/admin/collections/${collection.id}`}>
+                                        {collection.name}
+                                    </Link>
+                                </td>
                                 <td>{collection.description}</td>
                                 <th className="flex gap-2 justify-end">
                                     <Link href={`/admin/collections/${collection.id}`}>

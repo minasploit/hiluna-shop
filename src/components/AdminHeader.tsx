@@ -7,16 +7,15 @@ import { FiArrowLeft, FiDollarSign, FiHome, FiImage, FiList, FiPenTool } from "r
 import SwitchTheme from "./SwitchTheme"
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { v4 as uuidv4 } from 'uuid'
 
 const nav = [
     { id: 0, title: "Dashboard", icon: <FiHome className="text-xl" />, href: "/admin" },
-    { id: uuidv4(), title: "Artworks", icon: <FiImage className="text-xl" />, href: "/admin/artworks" },
-    { id: uuidv4(), title: "Orders", icon: <FiDollarSign className="text-xl" />, href: "/admin/orders" },
-    { id: uuidv4(), title: "Medium", icon: <FiPenTool className="text-xl" />, href: "/admin/medium" },
-    { id: uuidv4(), title: "Collections", icon: <FiList className="text-xl" />, href: "/admin/collections" },
+    { id: 1, title: "Artworks", icon: <FiImage className="text-xl" />, href: "/admin/artworks" },
+    { id: 2, title: "Orders", icon: <FiDollarSign className="text-xl" />, href: "/admin/orders" },
+    { id: 3, title: "Medium", icon: <FiPenTool className="text-xl" />, href: "/admin/medium" },
+    { id: 4, title: "Collections", icon: <FiList className="text-xl" />, href: "/admin/collections" },
     // {
-    //     id: 4, title: "Item 3", href: "item3",
+    //     id: 5, title: "Item 3", href: "item3",
     //     children: [
     //         { id: 1, title: "Item 1", href: "item1" },
     //         { id: 2, title: "Item 2", href: "item2" }
@@ -45,7 +44,7 @@ const AdminHeader = () => {
             <title>Manage - Hiluna Art</title>
         </Head>
 
-        <div className={clsx("navbar fixed z-10 backdrop-blur-lg border-t-8 border-primary", !top && `shadow`)}>
+        <div className={clsx("navbar fixed z-20 backdrop-blur-lg border-t-8 border-primary", !top && `shadow`)}>
             <div className="flex-1 justify-between">
                 <div className="block md:hidden">
                     <div className="dropdown">
@@ -65,7 +64,7 @@ const AdminHeader = () => {
 
                 <Link href="/" className="btn btn-outline normal-case text-xl gap-2">
                     <FiArrowLeft />
-                    Back to Hiluna Art
+                    Hiluna Art
                 </Link>
 
                 <ul className="menu menu-horizontal px-1 ml-3 hidden md:flex">

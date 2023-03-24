@@ -1,7 +1,7 @@
 import { type NextPageWithLayout } from "./_app";
 import Artwall from "~/components/Artwall";
 import Image from "next/image";
-import Footer from "~/components/Footer";
+import { resolveStaticResource } from "~/components/Functions";
 
 const favorites = [
 	{
@@ -9,7 +9,7 @@ const favorites = [
 		name: 'Black Basic Tee',
 		price: '$32',
 		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-03-favorite-01.jpg',
+		imageSrc: resolveStaticResource("2.jpg"),
 		imageAlt: "Model wearing women's black cotton crewneck tee.",
 	},
 	{
@@ -17,7 +17,7 @@ const favorites = [
 		name: 'Off-White Basic Tee',
 		price: '$32',
 		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-03-favorite-02.jpg',
+		imageSrc: resolveStaticResource("5.jpg"),
 		imageAlt: "Model wearing women's off-white cotton crewneck tee.",
 	},
 	{
@@ -25,7 +25,7 @@ const favorites = [
 		name: 'Mountains Artwork Tee',
 		price: '$36',
 		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-03-favorite-03.jpg',
+		imageSrc: resolveStaticResource("6.jpg"),
 		imageAlt:
 			"Model wearing women's burgundy red crewneck artwork tee with small white triangle overlapping larger black triangle.",
 	},
@@ -239,7 +239,7 @@ const Home: NextPageWithLayout = () => {
 											viewBox="0 0 24 18"
 											xmlns="http://www.w3.org/2000/svg"
 											aria-hidden="true"
-											className="flex-shrink-0"
+											className="flex-shrink-0 opacity-70"
 										>
 											<path
 												d="M0 18h8.7v-5.555c-.024-3.906 1.113-6.841 2.892-9.68L6.452 0C3.188 2.644-.026 7.86 0 12.469V18zm12.408 0h8.7v-5.555C21.083 8.539 22.22 5.604 24 2.765L18.859 0c-3.263 2.644-6.476 7.86-6.451 12.469V18z"
@@ -263,10 +263,10 @@ const Home: NextPageWithLayout = () => {
 				<section aria-labelledby="favorites-heading">
 					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 						<div className="sm:flex sm:items-baseline sm:justify-between">
-							<h2 id="favorites-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
+							<h2 id="favorites-heading" className="text-2xl font-extrabold tracking-tight">
 								Our Favorites
 							</h2>
-							<a href="#" className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block">
+							<a href="#" className="hidden text-sm font-semibold text-primary sm:block">
 								Browse all favorites<span aria-hidden="true"> &rarr;</span>
 							</a>
 						</div>
@@ -281,19 +281,19 @@ const Home: NextPageWithLayout = () => {
 											className="w-full h-full object-center object-cover"
 										/>
 									</div>
-									<h3 className="mt-4 text-base font-semibold text-gray-900">
+									<h3 className="mt-4 text-base font-semibold">
 										<a href={favorite.href}>
 											<span className="absolute inset-0" />
 											{favorite.name}
 										</a>
 									</h3>
-									<p className="mt-1 text-sm text-gray-500">{favorite.price}</p>
+									<p className="mt-1 text-sm opacity-80">{favorite.price}</p>
 								</div>
 							))}
 						</div>
 
 						<div className="mt-6 sm:hidden">
-							<a href="#" className="block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+							<a href="#" className="block text-sm font-semibold text-primary">
 								Browse all favorites<span aria-hidden="true"> &rarr;</span>
 							</a>
 						</div>
@@ -303,7 +303,7 @@ const Home: NextPageWithLayout = () => {
 				{/* CTA section */}
 				<section aria-labelledby="sale-heading">
 					<div className="pt-32 overflow-hidden sm:pt-14">
-						<div className="bg-gray-800">
+						<div className="bg-primary">
 							<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 								<div className="relative pt-48 pb-16 sm:pb-24">
 									<div>

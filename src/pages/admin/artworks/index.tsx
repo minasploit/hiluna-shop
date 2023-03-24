@@ -86,25 +86,27 @@ const ManageArtworks: NextPageWithLayout = () => {
                             <tr key={artwork.id}>
                                 <th>{index + 1}</th>
                                 <td>
-                                    <div className="flex items-center space-x-3">
-                                        <div className="avatar">
-                                            <div className="mask mask-squircle w-12 h-12">
-                                                <Image
-                                                    src={resolveUploadResource(getArtworkImage(artwork))}
-                                                    alt="Artwork image"
-                                                    width={90}
-                                                    height={90}
-                                                />
+                                    <Link href={`/admin/artworks/${artwork.id}`}>
+                                        <div className="flex items-center space-x-3">
+                                            <div className="avatar">
+                                                <div className="mask mask-squircle w-12 h-12">
+                                                    <Image
+                                                        src={resolveUploadResource(getArtworkImage(artwork))}
+                                                        alt="Artwork image"
+                                                        width={90}
+                                                        height={90}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="font-bold">
+                                                    {artwork.name}
+                                                    {artwork.featured && <FiCheckCircle className="inline ml-2 text-primary" />}
+                                                </div>
+                                                <div className="text-sm opacity-50">{artwork.Collection?.name}</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <div className="font-bold">
-                                                {artwork.name}
-                                                {artwork.featured && <FiCheckCircle className="inline ml-2 text-primary" />}
-                                            </div>
-                                            <div className="text-sm opacity-50">{artwork.Collection?.name}</div>
-                                        </div>
-                                    </div>
+                                    </Link>
                                 </td>
                                 <td>{artwork.dimension}</td>
                                 <td>

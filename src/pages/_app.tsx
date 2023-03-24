@@ -11,7 +11,6 @@ import { type NextPage } from "next";
 import setLayoutDefinitions from "~/components/_setLayoutDefinitions";
 import { Toaster } from "react-hot-toast";
 import { useTheme } from "~/hooks/useTheme";
-import Footer from "~/components/Footer";
 
 export type NextPageWithLayout = NextPage & {
 	getLayout?: (page: ReactElement) => ReactNode;
@@ -44,8 +43,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
 			<SessionProvider session={session}>
 				{getLayout(<Component {...pageProps} />)}
 			</SessionProvider>
-
-			<Footer />
 		</>
 	);
 };

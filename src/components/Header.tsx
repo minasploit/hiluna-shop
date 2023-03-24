@@ -5,16 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTop } from "~/hooks/useTop";
 import SwitchTheme from "./SwitchTheme"
-import { v4 as uuidv4 } from 'uuid'
 import { Fragment } from "react";
 import { useRouter } from "next/router";
 import HeaderCartButton from "./HeaderCartButton";
 import { FiDollarSign, FiEye, FiHeart, FiImage, FiList, FiLogOut, FiUser } from "react-icons/fi";
 
 const nav = [
-    { id: uuidv4(), title: "Manage Site", icon: <FiEye className="text-xl" />, href: "/admin", adminOnly: true },
-    { id: uuidv4(), title: "Artworks", icon: <FiImage className="text-xl" />, href: "/artworks", adminOnly: false },
-    { id: uuidv4(), title: "Collections", icon: <FiList className="text-xl" />, href: "/collections", adminOnly: false },
+    { id: 0, title: "Manage Site", icon: <FiEye className="text-xl" />, href: "/admin", adminOnly: true },
+    { id: 1, title: "Artworks", icon: <FiImage className="text-xl" />, href: "/artworks", adminOnly: false },
+    { id: 2, title: "Collections", icon: <FiList className="text-xl" />, href: "/collections", adminOnly: false },
     // {
     //     id: 3, title: "Item 3", href: "item3",
     //     children: [
@@ -31,7 +30,7 @@ const Header = () => {
     const top = useTop();
 
     return <>
-        <div className={clsx("navbar fixed z-10 backdrop-blur-lg", !top && `shadow`)}>
+        <div className={clsx("navbar fixed z-20 backdrop-blur-lg", !top && `shadow`)}>
             <div className="flex-1">
                 <div className="navbar-start block md:hidden">
                     <div className="dropdown">
@@ -62,6 +61,9 @@ const Header = () => {
 
                 <ul className="menu menu-horizontal px-1 ml-3 hidden md:flex">
                     {nav.map(item => {
+                        if (item.id == 0)
+                            return <></>
+
                         if (item.adminOnly && session?.user.role != UserRole.ADMIN)
                             return <Fragment key={item.id}></Fragment>
 
@@ -85,6 +87,12 @@ const Header = () => {
                 </ul>
             </div>
             <div className="flex-none">
+                <div className="hidden sm:block">
+                    <Link className="swap swap-rotate btn btn-circle btn-ghost" href="/admin">
+                        <FiEye className="w-5 h-5" />
+                    </Link>
+                </div>
+
                 <div className="hidden sm:block">
                     <SwitchTheme />
                 </div>

@@ -44,27 +44,29 @@ const ManageOrders: NextPageWithLayout = () => {
                             <tr key={order.id}>
                                 <th>{index + 1}</th>
                                 <td>
-                                    {
-                                        order.Artworks.map(artwork => (
-                                            <div className="flex items-center space-x-3" key={artwork.id}>
-                                                <div className="avatar">
-                                                    <div className="mask mask-squircle w-12 h-12">
-                                                        <Image
-                                                            src={resolveUploadResource(getArtworkImage(artwork))}
-                                                            alt="Artwork image"
-                                                            width={90}
-                                                            height={90}
-                                                        />
+                                    <Link href={`/admin/orders/${order.id}`} className="flex flex-col gap-2">
+                                        {
+                                            order.Artworks.map(artwork => (
+                                                <div className="flex items-center space-x-3" key={artwork.id}>
+                                                    <div className="avatar">
+                                                        <div className="mask mask-squircle w-12 h-12">
+                                                            <Image
+                                                                src={resolveUploadResource(getArtworkImage(artwork))}
+                                                                alt="Artwork image"
+                                                                width={90}
+                                                                height={90}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-bold">
+                                                            {artwork.name}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <div className="font-bold">
-                                                        {artwork.name}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
+                                            ))
+                                        }
+                                    </Link>
                                 </td>
                                 <td>{order.OrderedBy.name}</td>
                                 <td>{order.phoneNumber}</td>

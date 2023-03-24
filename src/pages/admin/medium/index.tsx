@@ -77,7 +77,11 @@ const ManageMedium: NextPageWithLayout = () => {
                         medium.data?.map((media, index) => (
                             <tr key={media.id}>
                                 <th>{index + 1}</th>
-                                <td>{media.name}</td>
+                                <td>
+                                    <Link href={`/admin/medium/${media.id}`}>
+                                        {media.name}
+                                    </Link>
+                                </td>
                                 <td>{media.description}</td>
                                 <th className="flex gap-2 justify-end">
                                     <Link href={`/admin/medium/${media.id}`}>
