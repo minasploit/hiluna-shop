@@ -121,7 +121,7 @@ const Checkout: NextPageWithLayout = () => {
                 url = result.urls[0]?.fileId
             }
 
-            await orderMutation.mutateAsync({
+            const order = await orderMutation.mutateAsync({
                 artworks: cartItemIds.map(c => c.id),
                 phoneNumber: data.phoneNumber,
                 screenshotUrl: url,
@@ -134,7 +134,7 @@ const Checkout: NextPageWithLayout = () => {
 
             setCartItemIds([]);
 
-            await router.push("/orders");
+            await router.push(`/orders?orderId=${order.id}`);
         } catch {
             toast.error("Error placing order...", { id: toastId });
         }
