@@ -28,7 +28,7 @@ const Orders: NextPageWithLayout = () => {
             <div className="max-w-xl">
                 <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Order history</h1>
                 <p className="mt-1 text-sm">
-                    Check the status of recent orders, manage returns, and download invoices.
+                    Check the status of recent orders, and manage returns.
                 </p>
             </div>
 
@@ -83,11 +83,11 @@ const Orders: NextPageWithLayout = () => {
                             </div>
 
                             <table className="mt-4 w-full sm:mt-6">
-                                <caption className="sr-only">Products</caption>
+                                <caption className="sr-only">Artworks</caption>
                                 <thead className="sr-only text-sm text-left sm:not-sr-only">
                                     <tr>
                                         <th scope="col" className="sm:w-2/5 lg:w-1/3 pr-8 py-3 font-normal">
-                                            Product
+                                            Artwork
                                         </th>
                                         <th scope="col" className="hidden w-1/5 pr-8 py-3 font-normal sm:table-cell">
                                             Price
@@ -107,7 +107,7 @@ const Orders: NextPageWithLayout = () => {
                                                 <div className="flex items-center">
                                                     <Image
                                                         src={resolveUploadResource(getArtworkImage(artwork))}
-                                                        alt="Product Image" width={100} height={100}
+                                                        alt="Artwork Image" width={100} height={100}
                                                         className="w-16 h-16 object-center object-cover rounded mr-6"
                                                     />
                                                     <div>
@@ -126,7 +126,7 @@ const Orders: NextPageWithLayout = () => {
                                             <td className="hidden py-6 pr-8 sm:table-cell">{prettifyCamel(order.orderStatus)}</td>
                                             <td className="py-6 font-medium text-right whitespace-nowrap">
                                                 <a href={`/artworks/${artwork.id}`} className="text-primary">
-                                                    View<span className="hidden lg:inline"> Product</span>
+                                                    View<span className="hidden lg:inline"> Artwork</span>
                                                     <span className="sr-only">, {artwork.name}</span>
                                                 </a>
                                             </td>

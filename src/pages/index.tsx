@@ -266,8 +266,15 @@ const Home: NextPageWithLayout = () => {
 										</a>
 									</h3>
 									<p className="mt-1 text-sm opacity-80">
-										{favorite.currency == Currency.USD && `$${favorite.price.toLocaleString()}`}
-										{favorite.currency == Currency.ETB && `${favorite.price.toLocaleString()} ${favorite.currency}`}
+										{
+											favorite.availableForSale ?
+												<>
+													{favorite.currency == Currency.USD && `$${favorite.price.toLocaleString()}`}
+													{favorite.currency == Currency.ETB && `${favorite.price.toLocaleString()} ${favorite.currency}`}
+												</>
+												:
+												<p className="mt-1 text-sm inline">Not available for sale</p>
+										}
 									</p>
 								</div>
 							))}

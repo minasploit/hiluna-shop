@@ -21,6 +21,7 @@ import Cart from "~/pages/cart";
 import Checkout from "~/pages/checkout";
 import Orders from "~/pages/orders";
 import ManageOrder from "~/pages/admin/orders/[id]";
+import Test from "~/pages/test";
 
 const UserLayoutPages = [
     Home,
@@ -29,7 +30,8 @@ const UserLayoutPages = [
     Collections,
     Cart,
     Checkout,
-    Orders
+    Orders,
+    Test
 ];
 
 const AdminLayoutPages = [
