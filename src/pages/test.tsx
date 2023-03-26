@@ -4,6 +4,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { getArtworkImage, resolveUploadResource } from "~/components/Functions";
 import { type NextPageWithLayout } from "./_app";
 import { type CartItem } from "./cart";
+import Link from "next/link";
 
 const Test: NextPageWithLayout = () => {
 
@@ -17,7 +18,7 @@ const Test: NextPageWithLayout = () => {
 
                 <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                     {artworks.data?.map((artwork) => (
-                        <a key={artwork.id} href={`/artworks/${artwork.id}`} className="group">
+                        <Link key={artwork.id} href={`/artworks/${artwork.id}`} className="group">
                             <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                                 <Image
                                     src={resolveUploadResource(getArtworkImage(artwork))}
@@ -45,7 +46,7 @@ const Test: NextPageWithLayout = () => {
                                     </span>
                                 ))}
                             </div>
-                        </a>
+                        </Link>
                     ))}
                 </div>
             </div>

@@ -106,10 +106,10 @@ const Header = () => {
                         </label>
                         <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                             {/* <li>
-                                <a className="justify-between">
+                                <button className="justify-between">
                                     Profile
                                     <span className="badge">New</span>
-                                </a>
+                                </button>
                             </li> */}
                             <li><button onClick={() => router.push("/profile")}>
                                 <FiUser className="text-lg" /> Profile</button>

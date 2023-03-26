@@ -114,26 +114,25 @@ const Orders: NextPageWithLayout = () => {
                                 <tbody className="border-b border-gray-500 divide-y divide-gray-500 text-sm sm:border-t">
                                     {order.OrderedArtworks.map((orderedArtwork) => (
                                         <tr key={`${order.id} ${orderedArtwork.artworkId}`}>
-                                            <td className="py-6 pr-8 relative hover:opacity-75">
-                                                <div className="flex items-center">
-                                                    <Image
-                                                        src={resolveUploadResource(getArtworkImage(orderedArtwork.Artwork))}
-                                                        alt="Artwork Image" width={100} height={100}
-                                                        className="w-16 h-16 object-center object-cover rounded mr-6"
-                                                    />
-                                                    <div>
-                                                        <div className="font-medium">
-                                                            <a href={`/artworks/${orderedArtwork.artworkId}`}>
-                                                                <span aria-hidden={true} className="absolute inset-0" />
+                                            <td className="py-6 pr-8 hover:opacity-75">
+                                                <Link href={`/artworks/${orderedArtwork.artworkId}`}>
+                                                    <div className="flex items-center">
+                                                        <Image
+                                                            src={resolveUploadResource(getArtworkImage(orderedArtwork.Artwork))}
+                                                            alt="Artwork Image" width={100} height={100}
+                                                            className="w-16 h-16 object-center object-cover rounded mr-6"
+                                                        />
+                                                        <div>
+                                                            <div className="font-medium">
                                                                 {orderedArtwork.Artwork.name}
-                                                            </a>
-                                                        </div>
-                                                        <div className="mt-1 sm:hidden">
-                                                            {orderedArtwork.currency == Currency.USD && `$${orderedArtwork.price.toLocaleString()}`}
-                                                            {orderedArtwork.currency == Currency.ETB && `${orderedArtwork.price.toLocaleString()} ${orderedArtwork.currency}`}
+                                                            </div>
+                                                            <div className="mt-1 sm:hidden">
+                                                                {orderedArtwork.currency == Currency.USD && `$${orderedArtwork.price.toLocaleString()}`}
+                                                                {orderedArtwork.currency == Currency.ETB && `${orderedArtwork.price.toLocaleString()} ${orderedArtwork.currency}`}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </Link>
                                             </td>
                                             <td className="hidden py-6 pr-8 sm:table-cell">
                                                 {orderedArtwork.currency == Currency.USD && `$${orderedArtwork.price.toLocaleString()}`}
@@ -141,10 +140,10 @@ const Orders: NextPageWithLayout = () => {
                                             </td>
                                             <td className="hidden py-6 pr-8 sm:table-cell">{prettifyCamel(order.orderStatus)}</td>
                                             <td className="py-6 font-medium text-right whitespace-nowrap">
-                                                <a href={`/artworks/${orderedArtwork.Artwork.id}`} className="text-primary">
+                                                <Link href={`/artworks/${orderedArtwork.Artwork.id}`} className="text-primary">
                                                     View<span className="hidden lg:inline"> Artwork</span>
                                                     <span className="sr-only">, {orderedArtwork.Artwork.name}</span>
-                                                </a>
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}

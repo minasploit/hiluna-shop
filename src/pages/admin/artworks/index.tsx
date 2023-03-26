@@ -86,7 +86,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                             <tr key={artwork.id}>
                                 <th>{index + 1}</th>
                                 <td>
-                                    <Link href={`/admin/artworks/${artwork.id}`}>
+                                    <Link href={`/admin/artworks/${artwork.id}`} className="hover:opacity-75">
                                         <div className="flex items-center space-x-3">
                                             <div className="avatar">
                                                 <div className="mask mask-squircle w-12 h-12">

@@ -10,6 +10,7 @@ import Image from "next/image";
 import { type NextPageWithLayout } from "../_app";
 import { useLocalStorage } from "usehooks-ts";
 import { type CartItem } from "../cart";
+import Link from "next/link";
 
 const filters = [
     {
@@ -198,52 +199,58 @@ const Artworks: NextPageWithLayout = () => {
                         </h2>
 
                         <div className="columns-1 gap-y-4 sm:columns-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:columns-3">
+                            {
+                                artworks.data?.length == 0 &&
+                                <div className="flex justify-between items-center p-4">
+                                    <h2 className="text-lg font-medium">
+                                        No artworks published yet.
+                                    </h2>
+                                </div>
+                            }
                             {artworks.data?.map((artwork) => (
-                                <div
-                                    key={artwork.id}
-                                    className="group relative bg-base-200 border border-gray-200 rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8"
-                                >
-                                    <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none">
-                                        <Image
-                                            src={resolveUploadResource(getArtworkImage(artwork))}
-                                            alt={artwork.name} width={500} height={500}
-                                            className="w-full h-full object-center object-cover sm:w-full sm:h-full"
-                                        />
-                                    </div>
-                                    <div className="flex-1 p-4 space-y-2 flex flex-col">
-                                        <h3 className="text-sm font-medium">
-                                            <a href={`/artworks/${artwork.id}`}>
-                                                <span aria-hidden="true" className="absolute inset-0" />
+                                <Link href={`/artworks/${artwork.id}`} key={artwork.id}>
+                                    <div
+                                        className="group relative bg-base-200 border border-gray-200 rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8"
+                                    >
+                                        <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none">
+                                            <Image
+                                                src={resolveUploadResource(getArtworkImage(artwork))}
+                                                alt={artwork.name} width={500} height={500}
+                                                className="w-full h-full object-center object-cover sm:w-full sm:h-full"
+                                            />
+                                        </div>
+                                        <div className="flex-1 p-4 space-y-2 flex flex-col">
+                                            <h3 className="text-sm font-medium">
                                                 {artwork.name}
-                                            </a>
-                                        </h3>
-                                        <div className="text-sm opacity-70">{parse(artwork.description)}</div>
-                                        <div className="flex-1 flex flex-col justify-end">
-                                            <p className="text-sm opacity-70 mb-1">
-                                                {artwork.Medium.map(m => (
-                                                    <span className="badge badge-primary mx-1" key={m.id}>
-                                                        {m.name}
-                                                    </span>
-                                                ))}
-                                            </p>
-                                            <p className="text-base font-medium">
-                                                {
-                                                    artwork.availableForSale ?
-                                                        <>
-                                                            {artwork.currency == Currency.USD && `$${artwork.price.toLocaleString()}`}
-                                                            {artwork.currency == Currency.ETB && `${artwork.price.toLocaleString()} ${artwork.currency}`}
-                                                        </>
-                                                        :
-                                                        <p className="mt-1 text-sm inline">Not available for sale</p>
-                                                }
-                                                {
-                                                    cartItemIds.map(c => c.id).includes(artwork.id) &&
-                                                    <span className="badge ml-2">In your cart</span>
-                                                }
-                                            </p>
+                                            </h3>
+                                            <div className="text-sm opacity-70">{parse(artwork.description)}</div>
+                                            <div className="flex-1 flex flex-col justify-end">
+                                                <p className="text-sm opacity-70 mb-1">
+                                                    {artwork.Medium.map(m => (
+                                                        <span className="badge badge-primary mx-1" key={m.id}>
+                                                            {m.name}
+                                                        </span>
+                                                    ))}
+                                                </p>
+                                                <p className="text-base font-medium">
+                                                    {
+                                                        artwork.availableForSale ?
+                                                            <>
+                                                                {artwork.currency == Currency.USD && `$${artwork.price.toLocaleString()}`}
+                                                                {artwork.currency == Currency.ETB && `${artwork.price.toLocaleString()} ${artwork.currency}`}
+                                                            </>
+                                                            :
+                                                            <p className="mt-1 text-sm inline">Not available for sale</p>
+                                                    }
+                                                    {
+                                                        cartItemIds.map(c => c.id).includes(artwork.id) &&
+                                                        <span className="badge ml-2">In your cart</span>
+                                                    }
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </section>

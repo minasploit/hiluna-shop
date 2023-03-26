@@ -75,9 +75,9 @@ const Cart: NextPageWithLayout = () => {
                                             <div className="sm:col-span-3">
                                                 <div className="flex justify-between">
                                                     <h3 className="text-lg">
-                                                        <a href={`/artworks/${item.id}`} className="font-medium">
+                                                        <Link href={`/artworks/${item.id}`} className="font-medium">
                                                             {item.name}
-                                                        </a>
+                                                        </Link>
                                                     </h3>
                                                 </div>
                                                 <div className="mt-1 flex text-sm">

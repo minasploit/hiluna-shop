@@ -173,30 +173,29 @@ const ManageOrder: NextPageWithLayout = () => {
                             <dd className="grid mt-2 gap-2">
                                 {
                                     order.data.OrderedArtworks.map(orderedArtwork => (
-                                        <div className="flex items-center space-x-3 relative hover:opacity-80" key={orderedArtwork.artworkId}>
-                                            <div className="avatar">
-                                                <div className="mask mask-squircle w-12 h-12">
-                                                    <Image
-                                                        src={resolveUploadResource(getArtworkImage(orderedArtwork.Artwork))}
-                                                        alt="Artwork image"
-                                                        width={90}
-                                                        height={90}
-                                                    />
+                                        <Link href={`/artworks/${orderedArtwork.artworkId}`} key={orderedArtwork.artworkId}>
+                                            <div className="flex items-center space-x-3 hover:opacity-80" >
+                                                <div className="avatar">
+                                                    <div className="mask mask-squircle w-12 h-12">
+                                                        <Image
+                                                            src={resolveUploadResource(getArtworkImage(orderedArtwork.Artwork))}
+                                                            alt="Artwork image"
+                                                            width={90}
+                                                            height={90}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <div className="font-medium">
-                                                    <a href={`/artworks/${orderedArtwork.artworkId}`}>
-                                                        <span aria-hidden="true" className="absolute inset-0" />
+                                                <div>
+                                                    <div className="font-medium">
                                                         {orderedArtwork.Artwork.name}
-                                                    </a>
+                                                    </div>
+                                                </div>
+                                                <div className="flex-1 text-right font-semibold sm:pr-8">
+                                                    {orderedArtwork.currency == Currency.USD && `$${orderedArtwork.price.toLocaleString()}`}
+                                                    {orderedArtwork.currency == Currency.ETB && `${orderedArtwork.price.toLocaleString()} ${orderedArtwork.currency}`}
                                                 </div>
                                             </div>
-                                            <div className="flex-1 text-right font-semibold sm:pr-8">
-                                                {orderedArtwork.currency == Currency.USD && `$${orderedArtwork.price.toLocaleString()}`}
-                                                {orderedArtwork.currency == Currency.ETB && `${orderedArtwork.price.toLocaleString()} ${orderedArtwork.currency}`}
-                                            </div>
-                                        </div>
+                                        </Link>
                                     ))
                                 }
                             </dd>
@@ -259,9 +258,6 @@ const ManageOrder: NextPageWithLayout = () => {
                                                 <span className="ml-2 flex-1 w-0 truncate">{order.data.Screenshot?.fileUrl}</span>
                                             </div>
                                             <div className="ml-4 flex-shrink-0">
-                                                <a href="#" >
-
-                                                </a>
                                                 <Link href={resolveUploadResource(order.data.Screenshot?.fileUrl ?? "")}
                                                     target="_blank"
                                                     className="font-medium text-primary">

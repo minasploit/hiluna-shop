@@ -3,7 +3,7 @@ import { signIn, signOut, useSession } from "next-auth/react"
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FiArrowLeft, FiDollarSign, FiHome, FiImage, FiList, FiPenTool } from "react-icons/fi";
+import { FiArrowLeft, FiDollarSign, FiHeart, FiHome, FiImage, FiList, FiLogOut, FiPenTool, FiUser } from "react-icons/fi";
 import SwitchTheme from "./SwitchTheme"
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -106,14 +106,19 @@ const AdminHeader = () => {
                                 </div>
                             </label>
                             <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                                <li>
-                                    <a className="justify-between">
-                                        Profile
-                                        <span className="badge">New</span>
-                                    </a>
+                                <li><button onClick={() => router.push("/profile")}>
+                                    <FiUser className="text-lg" /> Profile</button>
                                 </li>
-                                <li><a>Settings</a></li>
-                                <li><a onClick={() => void signOut({ redirect: false })}>Logout</a></li>
+                                <li><button onClick={() => router.push("/orders")}>
+                                    <FiDollarSign className="text-lg" /> Orders</button>
+                                </li>
+                                <li><button onClick={() => router.push("/favorites")}>
+                                    <FiHeart className="text-lg" /> Favorites</button>
+                                </li>
+                                <li><button onClick={() => void signOut({ redirect: false })}>
+                                    <FiLogOut className="text-lg" />
+                                    Logout
+                                </button></li>
                             </ul>
                         </div>
                     }

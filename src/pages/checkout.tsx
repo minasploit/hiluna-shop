@@ -310,9 +310,9 @@ const Checkout: NextPageWithLayout = () => {
                                                     <div className="flex">
                                                         <div className="min-w-0 flex-1">
                                                             <h4 className="text-sm">
-                                                                <a href={`/artworks/${item.id}`} className="font-medium">
+                                                                <Link href={`/artworks/${item.id}`} className="font-medium">
                                                                     {item.name}
-                                                                </a>
+                                                                </Link>
                                                             </h4>
                                                             <p className="mt-1 text-sm">{item.dimension}</p>
                                                             {/* <p className="mt-1 text-sm">{item.}</p> */}
