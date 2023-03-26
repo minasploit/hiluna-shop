@@ -12,6 +12,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { type CartItem } from "../cart";
 import Link from "next/link";
 import styles from './artworks.module.css'
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 const filters = [
     {
@@ -198,6 +199,13 @@ const Artworks: NextPageWithLayout = () => {
                         <h2 id="product-heading" className="sr-only">
                             Products
                         </h2>
+
+                        {
+                            artworks.isLoading &&
+                            <div className="flex justify-center">
+                                <LoadingSpinner className="w-8 h-8" />
+                            </div>
+                        }
 
                         <div className="columns-1 gap-y-4 sm:columns-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:columns-3">
                             {
