@@ -165,6 +165,9 @@ export const orderRouter = createTRPCRouter({
                     },
                     OrderedBy: true,
                     Screenshot: true
+                },
+                orderBy: {
+                    orderedAt: "desc"
                 }
             })
 

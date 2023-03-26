@@ -1,4 +1,5 @@
 import { Currency } from "@prisma/client";
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,7 +22,7 @@ const Orders: NextPageWithLayout = () => {
                 <div className="max-w-xl mb-12">
                     <h1 className="text-sm font-semibold uppercase tracking-wide text-primary">Thank you!</h1>
                     <p className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">It&apos;s on the way!</p>
-                    <p className="mt-2 text-base opacity-75">We&apos;ve received your order #{orderId} and will be with you soon.</p>
+                    <p className="mt-2 text-base opacity-75">We&apos;ve received your order #{orderId} and we will contact you soon.</p>
                 </div>
             }
 
@@ -61,8 +62,11 @@ const Orders: NextPageWithLayout = () => {
                                 Order placed on <time dateTime={order.orderedAt.toLocaleDateString()}>{order.orderedAt.toLocaleDateString()}</time>
                             </h3>
 
-                            <div className="rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8 bg-base-200">
-                                <dl className="divide-y divide-gray-200 space-y-6 text-sm flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-x-6 lg:w-1/2 lg:flex-none lg:gap-x-8">
+                            <div className={clsx(
+                                "rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8 bg-base-200",
+                                Number(orderId) == order.id && "border-[3px] border-primary"
+                            )}>
+                                <dl className="divide-y divide-gray-200 space-y-6 text-sm flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-4 sm:gap-x-6 lg:w-1/2 lg:flex-none lg:gap-x-8">
                                     <div className="flex justify-between sm:block">
                                         <dt className="font-medium text-base-content">Date placed</dt>
                                         <dd className="sm:mt-1 opacity-80">
@@ -73,6 +77,10 @@ const Orders: NextPageWithLayout = () => {
                                         <dt className="font-medium text-base-content">Order number</dt>
                                         <dd className="sm:mt-1 opacity-80">{order.id}</dd>
                                     </div>
+                                    <div className="flex justify-between pt-6 sm:block sm:pt-0">
+                                        <dt className="font-medium text-base-content">Payment Method</dt>
+                                        <dd className="sm:mt-1 opacity-80">{prettifyCamel(order.paymentMethod)}</dd>
+                                    </div>
                                     <div className="flex justify-between pt-6 font-medium text-base-content sm:block sm:pt-0">
                                         <dt>Total amount</dt>
                                         <dd className="sm:mt-1">
@@ -80,6 +88,11 @@ const Orders: NextPageWithLayout = () => {
                                         </dd>
                                     </div>
                                 </dl>
+
+                                {
+                                    Number(orderId) == order.id &&
+                                    <h1 className="font-semibold uppercase tracking-wide text-primary text-center mt-6 sm:mt-0">Thank you for your order!</h1>
+                                }
                             </div>
 
                             <table className="mt-4 w-full sm:mt-6">
@@ -95,9 +108,7 @@ const Orders: NextPageWithLayout = () => {
                                         <th scope="col" className="hidden pr-8 py-3 font-normal sm:table-cell">
                                             Status
                                         </th>
-                                        <th scope="col" className="w-0 py-3 font-normal text-right">
-                                            Info
-                                        </th>
+                                        <th scope="col" className="w-0 py-3 font-normal text-right"></th>
                                     </tr>
                                 </thead>
                                 <tbody className="border-b border-gray-500 divide-y divide-gray-500 text-sm sm:border-t">
