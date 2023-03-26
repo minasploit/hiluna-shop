@@ -51,15 +51,18 @@ export const orderRouter = createTRPCRouter({
             const order = await ctx.prisma.order.create({
                 data: {
                     phoneNumber: input.phoneNumber,
-                    // artworkId: i,
                     orderedById: ctx.session.user.id,
                     paymentMethod: input.paymentMethod,
                     screenshotUrl: input.screenshotUrl,
-                    price: total,
+                    totalPrice: total,
                     currency: Currency.ETB,
                     orderStatus: input.paymentMethod == PaymentMethod.CashOnDelivery ? OrderStatus.Ordered : OrderStatus.OrderedAndPaid,
-                    Artworks: {
-                        connect: input.artworks.map(id => ({ id }))
+                    OrderedArtworks: {
+                        create: artworks.map(artwork => ({
+                            price: artwork.price,
+                            currency: artwork.currency,
+                            artworkId: artwork.id
+                        }))
                     }
                 }
             });
@@ -86,9 +89,13 @@ export const orderRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const order = await ctx.prisma.order.findFirst({
                 include: {
-                    Artworks: {
+                    OrderedArtworks: {
                         include: {
-                            Files: true
+                            Artwork: {
+                                include: {
+                                    Files: true
+                                }
+                            }
                         }
                     },
                     OrderedBy: true,
@@ -140,9 +147,13 @@ export const orderRouter = createTRPCRouter({
             if (ctx.session.user.role == UserRole.USER) {
                 const res = await ctx.prisma.order.findMany({
                     include: {
-                        Artworks: {
+                        OrderedArtworks: {
                             include: {
-                                Files: true
+                                Artwork: {
+                                    include: {
+                                        Files: true
+                                    }
+                                }
                             }
                         },
                         OrderedBy: true,
@@ -158,9 +169,13 @@ export const orderRouter = createTRPCRouter({
 
             const res = await ctx.prisma.order.findMany({
                 include: {
-                    Artworks: {
+                    OrderedArtworks: {
                         include: {
-                            Files: true
+                            Artwork: {
+                                include: {
+                                    Files: true
+                                }
+                            }
                         }
                     },
                     OrderedBy: true,

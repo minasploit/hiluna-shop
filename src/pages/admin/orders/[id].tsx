@@ -170,14 +170,14 @@ const ManageOrder: NextPageWithLayout = () => {
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="sm:col-span-1">
                             <dt className="text-sm font-medium">Artworks</dt>
-                            <dd className="mt-2">
+                            <dd className="grid mt-2 gap-2">
                                 {
-                                    order.data.Artworks.map(artwork => (
-                                        <div className="flex items-center space-x-3" key={artwork.id}>
+                                    order.data.OrderedArtworks.map(orderedArtwork => (
+                                        <div className="flex items-center space-x-3 relative hover:opacity-80" key={orderedArtwork.artworkId}>
                                             <div className="avatar">
                                                 <div className="mask mask-squircle w-12 h-12">
                                                     <Image
-                                                        src={resolveUploadResource(getArtworkImage(artwork))}
+                                                        src={resolveUploadResource(getArtworkImage(orderedArtwork.Artwork))}
                                                         alt="Artwork image"
                                                         width={90}
                                                         height={90}
@@ -186,8 +186,15 @@ const ManageOrder: NextPageWithLayout = () => {
                                             </div>
                                             <div>
                                                 <div className="font-medium">
-                                                    {artwork.name}
+                                                    <a href={`/artworks/${orderedArtwork.artworkId}`}>
+                                                        <span aria-hidden="true" className="absolute inset-0" />
+                                                        {orderedArtwork.Artwork.name}
+                                                    </a>
                                                 </div>
+                                            </div>
+                                            <div className="flex-1 text-right font-semibold sm:pr-8">
+                                                {orderedArtwork.currency == Currency.USD && `$${orderedArtwork.price.toLocaleString()}`}
+                                                {orderedArtwork.currency == Currency.ETB && `${orderedArtwork.price.toLocaleString()} ${orderedArtwork.currency}`}
                                             </div>
                                         </div>
                                     ))
@@ -222,10 +229,10 @@ const ManageOrder: NextPageWithLayout = () => {
                             <dd className="mt-1">{prettifyCamel(order.data.paymentMethod)}</dd>
                         </div>
                         <div className="sm:col-span-1">
-                            <dt className="text-sm font-medium">Price</dt>
-                            <dd className="mt-1">
-                                {order.data.currency == Currency.USD && `$${order.data.price.toLocaleString()}`}
-                                {order.data.currency == Currency.ETB && `${order.data.price.toLocaleString()} ${order.data.currency}`}
+                            <dt className="text-sm font-medium">Total Price</dt>
+                            <dd className="mt-1 font-bold">
+                                {order.data.currency == Currency.USD && `$${order.data.totalPrice.toLocaleString()}`}
+                                {order.data.currency == Currency.ETB && `${order.data.totalPrice.toLocaleString()} ${order.data.currency}`}
                             </dd>
                         </div>
                         <div className="sm:col-span-1">

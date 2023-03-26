@@ -30,7 +30,7 @@ export const dashboardRouter = createTRPCRouter({
         })
 
         const revenue = orders
-            .map(order => order.price)
+            .map(order => order.totalPrice)
             .reduce((acc, val) => acc + val, 0)
 
         return {

@@ -46,12 +46,12 @@ const ManageOrders: NextPageWithLayout = () => {
                                 <td>
                                     <Link href={`/admin/orders/${order.id}`} className="flex flex-col gap-2">
                                         {
-                                            order.Artworks.map(artwork => (
-                                                <div className="flex items-center space-x-3" key={artwork.id}>
+                                            order.OrderedArtworks.map(orderedArtwork => (
+                                                <div className="flex items-center space-x-3" key={orderedArtwork.artworkId}>
                                                     <div className="avatar">
                                                         <div className="mask mask-squircle w-12 h-12">
                                                             <Image
-                                                                src={resolveUploadResource(getArtworkImage(artwork))}
+                                                                src={resolveUploadResource(getArtworkImage(orderedArtwork.Artwork))}
                                                                 alt="Artwork image"
                                                                 width={90}
                                                                 height={90}
@@ -60,7 +60,7 @@ const ManageOrders: NextPageWithLayout = () => {
                                                     </div>
                                                     <div>
                                                         <div className="font-bold">
-                                                            {artwork.name}
+                                                            {orderedArtwork.Artwork.name}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -71,8 +71,8 @@ const ManageOrders: NextPageWithLayout = () => {
                                 <td>{order.OrderedBy.name}</td>
                                 <td>{order.phoneNumber}</td>
                                 <td>
-                                    {order.currency == Currency.USD && `$${order.price.toLocaleString()}`}
-                                    {order.currency == Currency.ETB && `${order.price.toLocaleString()} ${order.currency}`}
+                                    {order.currency == Currency.USD && `$${order.totalPrice.toLocaleString()}`}
+                                    {order.currency == Currency.ETB && `${order.totalPrice.toLocaleString()} ${order.currency}`}
                                 </td>
                                 <td>{prettifyCamel(order.paymentMethod)}</td>
                                 <td>

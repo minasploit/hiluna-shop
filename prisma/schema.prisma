@@ -9,24 +9,24 @@ datasource db {
 }
 
 model Artwork {
-    id               Int          @id @default(autoincrement())
+    id               Int             @id @default(autoincrement())
     name             String
     dimension        String
-    description      String       @db.Text
+    description      String          @db.Text
     featured         Boolean
     availableForSale Boolean
     price            Int
-    currency         Currency     @default(ETB)
+    currency         Currency        @default(ETB)
     orientation      Orientation?
     collectionId     Int?
     createdById      String
-    createdAt        DateTime     @default(now())
-    updatedAt        DateTime     @updatedAt
-    Collection       Collection?  @relation(fields: [collectionId], references: [id])
-    CreatedBy        User         @relation(fields: [createdById], references: [id])
-    Orders           Order[]      @relation("ArtworksAndOrders")
-    Medium           Media[]      @relation("ArtworksAndMedium")
-    Files            File[]       @relation("ArtworksAndFiles")
+    createdAt        DateTime        @default(now())
+    updatedAt        DateTime        @updatedAt
+    Collection       Collection?     @relation(fields: [collectionId], references: [id])
+    CreatedBy        User            @relation(fields: [createdById], references: [id])
+    Medium           Media[]         @relation("ArtworksAndMedium")
+    Files            File[]          @relation("ArtworksAndFiles")
+    Orders           ArtworkOrders[]
 
     @@map("Artworks")
 }
@@ -54,21 +54,33 @@ model Collection {
 }
 
 model Order {
-    id            Int           @id @default(autoincrement())
-    orderedById   String
-    phoneNumber   String
-    paymentMethod PaymentMethod @default(CashOnDelivery)
-    screenshotUrl Int?
-    price         Int
-    currency      Currency      @default(ETB)
-    orderStatus   OrderStatus
-    orderedAt     DateTime      @default(now())
-    updatedAt     DateTime      @updatedAt
-    OrderedBy     User          @relation(fields: [orderedById], references: [id])
-    Screenshot    File?         @relation(fields: [screenshotUrl], references: [id])
-    Artworks      Artwork[]     @relation("ArtworksAndOrders")
+    id              Int             @id @default(autoincrement())
+    orderedById     String
+    phoneNumber     String
+    paymentMethod   PaymentMethod   @default(CashOnDelivery)
+    screenshotUrl   Int?
+    totalPrice           Int
+    currency        Currency        @default(ETB)
+    orderStatus     OrderStatus
+    orderedAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+    OrderedBy       User            @relation(fields: [orderedById], references: [id])
+    Screenshot      File?           @relation(fields: [screenshotUrl], references: [id])
+    OrderedArtworks ArtworkOrders[]
 
     @@map("Orders")
+}
+
+model ArtworkOrders {
+    artworkId Int
+    Artwork   Artwork  @relation(fields: [artworkId], references: [id])
+    orderId   Int
+    Order     Order    @relation(fields: [orderId], references: [id])
+    price     Int
+    currency  Currency @default(ETB)
+
+    @@id([artworkId, orderId])
+    @@map("ArtworkOrders")
 }
 
 model File {

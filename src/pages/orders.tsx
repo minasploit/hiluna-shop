@@ -84,7 +84,7 @@ const Orders: NextPageWithLayout = () => {
                                     <div className="flex justify-between pt-6 font-medium text-base-content sm:block sm:pt-0">
                                         <dt>Total amount</dt>
                                         <dd className="sm:mt-1">
-                                            {`${order.price.toLocaleString()} ETB`}
+                                            {`${order.totalPrice.toLocaleString()} ETB`}
                                         </dd>
                                     </div>
                                 </dl>
@@ -112,33 +112,38 @@ const Orders: NextPageWithLayout = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="border-b border-gray-500 divide-y divide-gray-500 text-sm sm:border-t">
-                                    {order.Artworks.map((artwork) => (
-                                        <tr key={artwork.id}>
-                                            <td className="py-6 pr-8">
+                                    {order.OrderedArtworks.map((orderedArtwork) => (
+                                        <tr key={`${order.id} ${orderedArtwork.artworkId}`}>
+                                            <td className="py-6 pr-8 relative hover:opacity-75">
                                                 <div className="flex items-center">
                                                     <Image
-                                                        src={resolveUploadResource(getArtworkImage(artwork))}
+                                                        src={resolveUploadResource(getArtworkImage(orderedArtwork.Artwork))}
                                                         alt="Artwork Image" width={100} height={100}
                                                         className="w-16 h-16 object-center object-cover rounded mr-6"
                                                     />
                                                     <div>
-                                                        <div className="font-medium">{artwork.name}</div>
+                                                        <div className="font-medium">
+                                                            <a href={`/artworks/${orderedArtwork.artworkId}`}>
+                                                                <span aria-hidden={true} className="absolute inset-0" />
+                                                                {orderedArtwork.Artwork.name}
+                                                            </a>
+                                                        </div>
                                                         <div className="mt-1 sm:hidden">
-                                                            {artwork.currency == Currency.USD && `$${artwork.price.toLocaleString()}`}
-                                                            {artwork.currency == Currency.ETB && `${artwork.price.toLocaleString()} ${artwork.currency}`}
+                                                            {orderedArtwork.currency == Currency.USD && `$${orderedArtwork.price.toLocaleString()}`}
+                                                            {orderedArtwork.currency == Currency.ETB && `${orderedArtwork.price.toLocaleString()} ${orderedArtwork.currency}`}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="hidden py-6 pr-8 sm:table-cell">
-                                                {artwork.currency == Currency.USD && `$${artwork.price.toLocaleString()}`}
-                                                {artwork.currency == Currency.ETB && `${artwork.price.toLocaleString()} ${artwork.currency}`}
+                                                {orderedArtwork.currency == Currency.USD && `$${orderedArtwork.price.toLocaleString()}`}
+                                                {orderedArtwork.currency == Currency.ETB && `${orderedArtwork.price.toLocaleString()} ${orderedArtwork.currency}`}
                                             </td>
                                             <td className="hidden py-6 pr-8 sm:table-cell">{prettifyCamel(order.orderStatus)}</td>
                                             <td className="py-6 font-medium text-right whitespace-nowrap">
-                                                <a href={`/artworks/${artwork.id}`} className="text-primary">
+                                                <a href={`/artworks/${orderedArtwork.Artwork.id}`} className="text-primary">
                                                     View<span className="hidden lg:inline"> Artwork</span>
-                                                    <span className="sr-only">, {artwork.name}</span>
+                                                    <span className="sr-only">, {orderedArtwork.Artwork.name}</span>
                                                 </a>
                                             </td>
                                         </tr>

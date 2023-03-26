@@ -46,13 +46,23 @@ CREATE TABLE `Orders` (
     `phoneNumber` VARCHAR(191) NOT NULL,
     `paymentMethod` ENUM('CashOnDelivery', 'CBE', 'Telebirr', 'Bunna') NOT NULL DEFAULT 'CashOnDelivery',
     `screenshotUrl` INTEGER NULL,
-    `price` INTEGER NOT NULL,
+    `totalPrice` INTEGER NOT NULL,
     `currency` ENUM('ETB', 'USD') NOT NULL DEFAULT 'ETB',
     `orderStatus` ENUM('Ordered', 'OrderedAndPaid', 'Completed', 'Cancelled') NOT NULL,
     `orderedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ArtworkOrders` (
+    `artworkId` INTEGER NOT NULL,
+    `orderId` INTEGER NOT NULL,
+    `price` INTEGER NOT NULL,
+    `currency` ENUM('ETB', 'USD') NOT NULL DEFAULT 'ETB',
+
+    PRIMARY KEY (`artworkId`, `orderId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -119,15 +129,6 @@ CREATE TABLE `VerificationTokens` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_ArtworksAndOrders` (
-    `A` INTEGER NOT NULL,
-    `B` INTEGER NOT NULL,
-
-    UNIQUE INDEX `_ArtworksAndOrders_AB_unique`(`A`, `B`),
-    INDEX `_ArtworksAndOrders_B_index`(`B`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `_ArtworksAndMedium` (
     `A` INTEGER NOT NULL,
     `B` INTEGER NOT NULL,
@@ -158,16 +159,16 @@ ALTER TABLE `Orders` ADD CONSTRAINT `Orders_orderedById_fkey` FOREIGN KEY (`orde
 ALTER TABLE `Orders` ADD CONSTRAINT `Orders_screenshotUrl_fkey` FOREIGN KEY (`screenshotUrl`) REFERENCES `Files`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `ArtworkOrders` ADD CONSTRAINT `ArtworkOrders_artworkId_fkey` FOREIGN KEY (`artworkId`) REFERENCES `Artworks`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ArtworkOrders` ADD CONSTRAINT `ArtworkOrders_orderId_fkey` FOREIGN KEY (`orderId`) REFERENCES `Orders`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Accounts` ADD CONSTRAINT `Accounts_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Sessions` ADD CONSTRAINT `Sessions_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_ArtworksAndOrders` ADD CONSTRAINT `_ArtworksAndOrders_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artworks`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_ArtworksAndOrders` ADD CONSTRAINT `_ArtworksAndOrders_B_fkey` FOREIGN KEY (`B`) REFERENCES `Orders`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_ArtworksAndMedium` ADD CONSTRAINT `_ArtworksAndMedium_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artworks`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
