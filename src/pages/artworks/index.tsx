@@ -210,9 +210,9 @@ const Artworks: NextPageWithLayout = () => {
                             {artworks.data?.map((artwork) => (
                                 <Link href={`/artworks/${artwork.id}`} key={artwork.id}>
                                     <div
-                                        className="group relative bg-base-200 border border-gray-200 rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8"
+                                        className="group relative bg-base-200 border border-gray-500 rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8"
                                     >
-                                        <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none">
+                                        <div className="aspect-w-3 aspect-h-4 group-hover:opacity-75 sm:aspect-none">
                                             <Image
                                                 src={resolveUploadResource(getArtworkImage(artwork))}
                                                 alt={artwork.name} width={500} height={500}
