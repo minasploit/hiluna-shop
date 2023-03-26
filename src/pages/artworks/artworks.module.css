@@ -1,0 +1,7 @@
+[data-theme="garden"] .artworkBorder {
+    border-color: rgb(156 163 175);
+}
+
+[data-theme="halloween"] .artworkBorder {
+    border-color: rgb(75 85 99);
+}

@@ -11,6 +11,7 @@ import { type NextPageWithLayout } from "../_app";
 import { useLocalStorage } from "usehooks-ts";
 import { type CartItem } from "../cart";
 import Link from "next/link";
+import styles from './artworks.module.css'
 
 const filters = [
     {
@@ -210,12 +211,16 @@ const Artworks: NextPageWithLayout = () => {
                             {artworks.data?.map((artwork) => (
                                 <Link href={`/artworks/${artwork.id}`} key={artwork.id}>
                                     <div
-                                        className="group relative bg-base-200 border border-gray-500 rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8"
+                                        className={
+                                            clsx("group relative bg-base-200 border rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8",
+                                                styles.artworkBorder)
+                                        }
                                     >
                                         <div className="aspect-w-3 aspect-h-4 group-hover:opacity-75 sm:aspect-none">
                                             <Image
                                                 src={resolveUploadResource(getArtworkImage(artwork))}
                                                 alt={artwork.name} width={500} height={500}
+                                                priority
                                                 className="w-full h-full object-center object-cover sm:w-full sm:h-full"
                                             />
                                         </div>
@@ -232,7 +237,7 @@ const Artworks: NextPageWithLayout = () => {
                                                         </span>
                                                     ))}
                                                 </p>
-                                                <p className="text-base font-medium">
+                                                <div className="text-base font-medium">
                                                     {
                                                         artwork.availableForSale ?
                                                             <>
@@ -246,7 +251,7 @@ const Artworks: NextPageWithLayout = () => {
                                                         cartItemIds.map(c => c.id).includes(artwork.id) &&
                                                         <span className="badge ml-2">In your cart</span>
                                                     }
-                                                </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
