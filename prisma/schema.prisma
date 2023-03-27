@@ -58,14 +58,14 @@ model Order {
     orderedById     String
     phoneNumber     String
     paymentMethod   PaymentMethod   @default(CashOnDelivery)
-    screenshotUrl   Int?
-    totalPrice           Int
+    screenshotId    Int?
+    totalPrice      Int
     currency        Currency        @default(ETB)
     orderStatus     OrderStatus
     orderedAt       DateTime        @default(now())
     updatedAt       DateTime        @updatedAt
     OrderedBy       User            @relation(fields: [orderedById], references: [id])
-    Screenshot      File?           @relation(fields: [screenshotUrl], references: [id])
+    Screenshot      File?           @relation(fields: [screenshotId], references: [id])
     OrderedArtworks ArtworkOrders[]
 
     @@map("Orders")

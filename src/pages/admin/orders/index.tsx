@@ -79,7 +79,7 @@ const ManageOrders: NextPageWithLayout = () => {
                                     {order.paymentMethod == PaymentMethod.CashOnDelivery && <>Cash on delivery</>}
                                     {
                                         (order.paymentMethod != PaymentMethod.CashOnDelivery && order.Screenshot) &&
-                                        <Link className="link" href={resolveUploadResource(order.Screenshot.fileUrl ?? "")} target={"_blank"}>
+                                        <Link className="link" href={resolveUploadResource(order.Screenshot.fileUrl)} target={"_blank"}>
                                             Click to view
                                         </Link>
                                     }

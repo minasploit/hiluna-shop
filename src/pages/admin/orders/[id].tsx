@@ -251,14 +251,14 @@ const ManageOrder: NextPageWithLayout = () => {
                             <dd className="mt-1 text-sm">
                                 <ul role="list" className="border border-gray-400 rounded-md divide-y divide-gray-400">
                                     {
-                                        order.data.screenshotUrl &&
+                                        order.data.Screenshot &&
                                         <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                                             <div className="w-0 flex-1 flex items-center">
                                                 <FiPaperclip className="flex-shrink-0 h-5 w-5 text-gray-500" aria-hidden="true" />
-                                                <span className="ml-2 flex-1 w-0 truncate">{order.data.Screenshot?.fileUrl}</span>
+                                                <span className="ml-2 flex-1 w-0 truncate">{order.data.Screenshot.fileUrl}</span>
                                             </div>
                                             <div className="ml-4 flex-shrink-0">
-                                                <Link href={resolveUploadResource(order.data.Screenshot?.fileUrl ?? "")}
+                                                <Link href={resolveUploadResource(order.data.Screenshot.fileUrl)}
                                                     target="_blank"
                                                     className="font-medium text-primary">
                                                     View

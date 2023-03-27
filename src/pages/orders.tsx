@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { getArtworkImage, prettifyCamel } from "~/components/Functions";
+import { getArtworkImage, prettifyCamel, resolveUploadResource } from "~/components/Functions";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./_app";
@@ -66,7 +66,7 @@ const Orders: NextPageWithLayout = () => {
                                 "rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8 bg-base-200",
                                 Number(orderId) == order.id && "border-[3px] border-primary"
                             )}>
-                                <dl className="divide-y divide-gray-200 space-y-6 text-sm flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-4 sm:gap-x-6 lg:w-1/2 lg:flex-none lg:gap-x-8">
+                                <dl className="divide-y divide-gray-200 space-y-6 text-sm flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-5 sm:gap-x-6 lg:w-1/2 lg:flex-none lg:gap-x-8">
                                     <div className="flex justify-between sm:block">
                                         <dt className="font-medium text-base-content">Date placed</dt>
                                         <dd className="sm:mt-1 opacity-80">
@@ -81,6 +81,17 @@ const Orders: NextPageWithLayout = () => {
                                         <dt className="font-medium text-base-content">Payment Method</dt>
                                         <dd className="sm:mt-1 opacity-80">{prettifyCamel(order.paymentMethod)}</dd>
                                     </div>
+                                    {
+                                        order.Screenshot &&
+                                        <div className="flex justify-between pt-6 sm:block sm:pt-0">
+                                            <dt className="font-medium text-base-content">Screenshot</dt>
+                                            <dd className="sm:mt-1 opacity-80">
+                                                <Link href={resolveUploadResource(order.Screenshot.fileUrl)} target={"_blank"}>
+                                                    View File
+                                                </Link>
+                                            </dd>
+                                        </div>
+                                    }
                                     <div className="flex justify-between pt-6 font-medium text-base-content sm:block sm:pt-0">
                                         <dt>Total amount</dt>
                                         <dd className="sm:mt-1">

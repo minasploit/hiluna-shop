@@ -9,7 +9,7 @@ export const AddOrderSchema = z.object({
     ...OrderSharedSchema,
     artworks: z.array(z.number()),
     paymentMethod: z.nativeEnum(PaymentMethod).default(PaymentMethod.CashOnDelivery),
-    screenshotUrl: z.number().nullable()
+    screenshotId: z.number().nullable()
 })
 export const AddOrderFormSchema = z.object(
     OrderSharedSchema

@@ -53,7 +53,7 @@ export const orderRouter = createTRPCRouter({
                     phoneNumber: input.phoneNumber,
                     orderedById: ctx.session.user.id,
                     paymentMethod: input.paymentMethod,
-                    screenshotUrl: input.screenshotUrl,
+                    screenshotId: input.screenshotId,
                     totalPrice: total,
                     currency: Currency.ETB,
                     orderStatus: input.paymentMethod == PaymentMethod.CashOnDelivery ? OrderStatus.Ordered : OrderStatus.OrderedAndPaid,
