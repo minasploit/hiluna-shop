@@ -1,8 +1,10 @@
 import { Currency } from "@prisma/client";
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { getArtworkImage, prettifyCamel, resolveUploadResource } from "~/components/Functions";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { api } from "~/utils/api";
@@ -11,9 +13,19 @@ import { type NextPageWithLayout } from "./_app";
 const Orders: NextPageWithLayout = () => {
 
     const router = useRouter();
-    const orders = api.order.list.useQuery();
-
     const { orderId } = router.query;
+
+    const { status } = useSession();
+
+    const orders = api.order.list.useQuery(undefined, {
+        enabled: status == "authenticated"
+    });
+
+    useEffect(() => {
+        if (status == "unauthenticated") {
+            void router.push("/")
+        }
+    }, [router, status])
 
     return <>
         <main className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:pb-24 lg:px-8">
@@ -40,7 +52,7 @@ const Orders: NextPageWithLayout = () => {
 
                 <div className="space-y-20">
                     {
-                        orders.isLoading &&
+                        (orders.isLoading && status == "authenticated") &&
                         <div className="flex items-center justify-center mt-12">
                             <LoadingSpinner />
                         </div>
