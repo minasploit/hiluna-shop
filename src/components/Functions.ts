@@ -32,8 +32,8 @@ export function getArtworkImage(artwork: Artwork & {
     Files: File[]
 }): string {
     const images = artwork.Files.filter(f => f.fileType == FileType.Image);
-    if (images.length == 0)
-        return ""
+    if (!images[0])
+        return resolveStaticResource("artworkplaceholder.jpg")
 
-    return images[0]?.fileUrl ?? ""
+    return resolveUploadResource(images[0].fileUrl)
 }

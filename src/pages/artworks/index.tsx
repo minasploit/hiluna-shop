@@ -4,7 +4,7 @@ import { Currency } from "@prisma/client";
 import clsx from "clsx";
 import { useState, Fragment } from "react";
 import { FiArrowDown, FiPlus, FiX } from "react-icons/fi";
-import { getArtworkImage, resolveUploadResource } from "~/components/Functions";
+import { getArtworkImage } from "~/components/Functions";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import { type NextPageWithLayout } from "../_app";
@@ -226,7 +226,7 @@ const Artworks: NextPageWithLayout = () => {
                                     >
                                         <div className="aspect-w-3 aspect-h-4 group-hover:opacity-75 sm:aspect-none">
                                             <Image
-                                                src={resolveUploadResource(getArtworkImage(artwork))}
+                                                src={getArtworkImage(artwork)}
                                                 alt={artwork.name} width={500} height={500}
                                                 priority
                                                 className="w-full h-full object-center object-cover sm:w-full sm:h-full"

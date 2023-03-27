@@ -112,7 +112,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                     .map((file) => (
                                         <Tab
                                             key={file.id}
-                                            className="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50"
+                                            className="relative h-24 rounded-md flex items-center justify-center text-sm font-medium uppercase cursor-pointer hover:bg-gray-50"
                                         >
                                             {({ selected }) => (
                                                 <>
@@ -131,9 +131,9 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                                             }
                                                             {
                                                                 file.fileType === FileType.Video &&
-                                                                <video className="w-full h-full object-center object-cover sm:rounded-lg">
-                                                                    <source src={resolveUploadResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
-                                                                    Your browser does not support the video tag.
+                                                                <video
+                                                                    src={resolveUploadResource(file.fileUrl)}
+                                                                    className="w-full h-full object-center object-cover sm:rounded-lg">
                                                                 </video>
                                                             }
                                                         </div>

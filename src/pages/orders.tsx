@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { getArtworkImage, prettifyCamel, resolveUploadResource } from "~/components/Functions";
+import { getArtworkImage, prettifyCamel } from "~/components/Functions";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./_app";
@@ -118,7 +118,7 @@ const Orders: NextPageWithLayout = () => {
                                                 <Link href={`/artworks/${orderedArtwork.artworkId}`}>
                                                     <div className="flex items-center">
                                                         <Image
-                                                            src={resolveUploadResource(getArtworkImage(orderedArtwork.Artwork))}
+                                                            src={getArtworkImage(orderedArtwork.Artwork)}
                                                             alt="Artwork Image" width={100} height={100}
                                                             className="w-16 h-16 object-center object-cover rounded mr-6"
                                                         />

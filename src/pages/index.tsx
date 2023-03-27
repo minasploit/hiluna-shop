@@ -1,7 +1,7 @@
 import { type NextPageWithLayout } from "./_app";
 import Artwall from "~/components/Artwall";
 import Image from "next/image";
-import { getArtworkImage, resolveStaticResource, resolveUploadResource } from "~/components/Functions";
+import { getArtworkImage, resolveStaticResource } from "~/components/Functions";
 import { api } from "~/utils/api";
 import { Currency } from "@prisma/client";
 
@@ -253,7 +253,7 @@ const Home: NextPageWithLayout = () => {
 								<div key={favorite.id} className="group relative">
 									<div className="w-full h-96 rounded-lg overflow-hidden group-hover:opacity-75 sm:h-auto sm:aspect-w-2 sm:aspect-h-3">
 										<Image
-											src={resolveUploadResource(getArtworkImage(favorite))}
+											src={getArtworkImage(favorite)}
 											alt="Favorite artwork image"
 											className="w-full h-full object-center object-cover"
 											width={500} height={500}

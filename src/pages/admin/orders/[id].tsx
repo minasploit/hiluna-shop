@@ -178,7 +178,7 @@ const ManageOrder: NextPageWithLayout = () => {
                                                 <div className="avatar">
                                                     <div className="mask mask-squircle w-12 h-12">
                                                         <Image
-                                                            src={resolveUploadResource(getArtworkImage(orderedArtwork.Artwork))}
+                                                            src={getArtworkImage(orderedArtwork.Artwork)}
                                                             alt="Artwork image"
                                                             width={90}
                                                             height={90}
