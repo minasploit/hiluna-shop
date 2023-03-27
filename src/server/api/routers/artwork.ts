@@ -75,8 +75,22 @@ export const artworkRouter = createTRPCRouter({
             return res;
         }),
     list: publicProcedure
-        .query(async ({ ctx }) => {
+        .input(z.object({
+            filters: z.object({
+                medium: z.array(z.number())
+            })
+        }).optional())
+        .query(async ({ ctx, input }) => {
             const res = await ctx.prisma.artwork.findMany({
+                where: {
+                    AND: input?.filters.medium.map(m => ({
+                        Medium: {
+                            some: {
+                                id: m
+                            }
+                        }
+                    }))
+                },
                 include: {
                     Files: true,
                     Collection: true,

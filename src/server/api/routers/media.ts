@@ -24,6 +24,16 @@ export const mediaRouter = createTRPCRouter({
 
             return res;
         }),
+    listForFilter: publicProcedure.query(async ({ ctx }) => {
+        const res = await ctx.prisma.media.findMany({
+            select: {
+                id: true,
+                name: true
+            }
+        })
+
+        return res
+    }),
     create: adminProcedure
         .input(AddMediaFormSchema)
         .mutation(async ({ ctx, input }) => {
