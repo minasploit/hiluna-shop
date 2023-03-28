@@ -111,7 +111,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                                 <td>{artwork.dimension}</td>
                                 <td>
                                     {artwork.Medium.map(m => (
-                                        <span className="badge mx-1" key={m.id}>
+                                        <span className="badge badge-primary badge-outline mx-1" key={m.id}>
                                             {m.name}
                                         </span>
                                     ))}

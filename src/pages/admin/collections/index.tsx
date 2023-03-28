@@ -78,7 +78,7 @@ const ManageCollection: NextPageWithLayout = () => {
                             <tr key={collection.id}>
                                 <th>{index + 1}</th>
                                 <td>
-                                    <Link href={`/admin/collections/${collection.id}`}>
+                                    <Link href={`/admin/collections/${collection.id}`} className="hover:opacity-75">
                                         {collection.name}
                                     </Link>
                                 </td>

@@ -13,20 +13,21 @@ import { resolveUploadResource } from "~/components/Functions";
 import Link from "next/link";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { Tab } from "@headlessui/react";
+import styles from './artworks.module.css'
 
 const product = {
     // name: 'Zip Tote Basket',
     // price: '$140',
     rating: 4,
-    images: [
-        {
-            id: 1,
-            name: 'Angled view',
-            src: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg',
-            alt: 'Angled front view with bag zipped and handles upright.',
-        },
-        // More images...
-    ],
+    // images: [
+    //     {
+    //         id: 1,
+    //         name: 'Angled view',
+    //         src: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg',
+    //         alt: 'Angled front view with bag zipped and handles upright.',
+    //     },
+    //     // More images...
+    // ],
     // colors: [
     //     { name: 'Washed Black', bgColor: 'bg-gray-700', selectedColor: 'ring-gray-700' },
     //     { name: 'White', bgColor: 'bg-white', selectedColor: 'ring-gray-400' },
@@ -183,7 +184,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                         </Tab.Panels>
                     </Tab.Group>
 
-                    <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
+                    <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 sticky top-32">
                         <h1 className="text-3xl font-extrabold tracking-tight">{artwork.data?.name}</h1>
 
                         <div className="mt-3">
@@ -208,7 +209,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                         <FiStar
                                             key={rating}
                                             className={clsx(
-                                                product.rating > rating ? 'text-indigo-500' : 'text-gray-300',
+                                                product.rating > rating ? 'text-base-content' : styles.ratingText,
                                                 'h-5 w-5 flex-shrink-0'
                                             )}
                                             aria-hidden="true"

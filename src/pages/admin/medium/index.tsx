@@ -78,7 +78,7 @@ const ManageMedium: NextPageWithLayout = () => {
                             <tr key={media.id}>
                                 <th>{index + 1}</th>
                                 <td>
-                                    <Link href={`/admin/medium/${media.id}`}>
+                                    <Link href={`/admin/medium/${media.id}`} className="hover:opacity-75">
                                         {media.name}
                                     </Link>
                                 </td>

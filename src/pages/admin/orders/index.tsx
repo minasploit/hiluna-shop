@@ -44,7 +44,7 @@ const ManageOrders: NextPageWithLayout = () => {
                             <tr key={order.id}>
                                 <th>{index + 1}</th>
                                 <td>
-                                    <Link href={`/admin/orders/${order.id}`} className="flex flex-col gap-2">
+                                    <Link href={`/admin/orders/${order.id}`} className="flex flex-col gap-2 hover:opacity-75">
                                         {
                                             order.OrderedArtworks.map(orderedArtwork => (
                                                 <div className="flex items-center space-x-3" key={orderedArtwork.artworkId}>

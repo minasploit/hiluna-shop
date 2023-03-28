@@ -5,3 +5,11 @@
 [data-theme="halloween"] .artworkBorder {
     border-color: rgb(75 85 99);
 }
+
+[data-theme="garden"] .ratingText {
+    color: rgb(194 196 199);
+}
+
+[data-theme="halloween"] .ratingText {
+    color: rgb(107 114 128);
+}
