@@ -248,7 +248,7 @@ const EditArtwork: NextPageWithLayout = () => {
                         </div>
                     </div>
 
-                    <div className="mt-5 md:mt-0 md:col-span-2">
+                    <div className="mt-5 md:mt-0 md:col-span-2 h-fit sticky top-[8.5rem]">
                         <FormProvider {...artworkForm}>
                             <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
                                 <div className="grid grid-cols-6 gap-6">

@@ -58,7 +58,7 @@ const ManageCollection: NextPageWithLayout = () => {
                 <p className="py-6">Here are your collections</p>
             </div>
             <Link href="collections/new">
-                <button className="btn btn-outline">Add new Collection</button>
+                <button className="btn btn-primary btn-outline">Add new Collection</button>
             </Link>
         </div>
 
@@ -66,10 +66,10 @@ const ManageCollection: NextPageWithLayout = () => {
             <table className="table w-full">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th></th>
+                        <th className="table-header"></th>
+                        <th className="table-header">Name</th>
+                        <th className="table-header">Description</th>
+                        <th className="table-header"></th>
                     </tr>
                 </thead>
                 <tbody>

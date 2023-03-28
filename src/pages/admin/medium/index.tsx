@@ -58,7 +58,7 @@ const ManageMedium: NextPageWithLayout = () => {
                 <p className="py-6">Here are your medium</p>
             </div>
             <Link href="medium/new">
-                <button className="btn btn-outline">Add new Media</button>
+                <button className="btn btn-primary btn-outline">Add new Media</button>
             </Link>
         </div>
 
@@ -66,10 +66,10 @@ const ManageMedium: NextPageWithLayout = () => {
             <table className="table w-full">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th></th>
+                        <th className="table-header"></th>
+                        <th className="table-header">Name</th>
+                        <th className="table-header">Description</th>
+                        <th className="table-header"></th>
                     </tr>
                 </thead>
                 <tbody>

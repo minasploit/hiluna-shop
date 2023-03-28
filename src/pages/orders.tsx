@@ -39,7 +39,7 @@ const Orders: NextPageWithLayout = () => {
             }
 
             <div className="max-w-xl">
-                <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Order history</h1>
+                <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl text-primary-focus">Order history</h1>
                 <p className="mt-1 text-sm">
                     Check the status of recent orders, and manage returns.
                 </p>
@@ -75,7 +75,7 @@ const Orders: NextPageWithLayout = () => {
                             </h3>
 
                             <div className={clsx(
-                                "rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8 bg-base-200",
+                                "rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8 bg-base-200 border border-primary",
                                 Number(orderId) == order.id && "border-[3px] border-primary"
                             )}>
                                 <dl className="divide-y divide-gray-200 space-y-6 text-sm flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-5 sm:gap-x-6 lg:w-1/2 lg:flex-none lg:gap-x-8">

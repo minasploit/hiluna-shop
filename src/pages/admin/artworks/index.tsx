@@ -63,7 +63,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                 <p className="py-6">Here are your artworks</p>
             </div>
             <Link href="artworks/new">
-                <button className="btn btn-outline">Add new artwork</button>
+                <button className="btn btn-primary btn-outline">Add new artwork</button>
             </Link>
         </div>
 
@@ -71,13 +71,13 @@ const ManageArtworks: NextPageWithLayout = () => {
             <table className="table w-full">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Dimension</th>
-                        <th>Medium</th>
-                        <th>Orientation</th>
-                        <th>Price</th>
-                        <th></th>
+                        <th className="table-header"></th>
+                        <th className="table-header">Name</th>
+                        <th className="table-header">Dimension</th>
+                        <th className="table-header">Medium</th>
+                        <th className="table-header">Orientation</th>
+                        <th className="table-header">Price</th>
+                        <th className="table-header"></th>
                     </tr>
                 </thead>
                 <tbody>

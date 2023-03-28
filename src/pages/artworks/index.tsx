@@ -140,15 +140,15 @@ const Artworks: NextPageWithLayout = () => {
                 </Transition.Root>
 
                 <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
-                    <div className="border-b border-gray-500 pt-24 pb-10">
-                        <h1 className="text-4xl font-extrabold tracking-tight">My Artworks</h1>
+                    <div className="border-b border-primary pt-24 pb-10">
+                        <h1 className="text-4xl font-extrabold tracking-tight text-primary-focus">My Artworks</h1>
                         <p className="mt-4 text-base opacity-70">
                             Checkout out the latest release of Basic Tees, new and improved with four openings!
                         </p>
                     </div>
 
                     <div className="pt-12 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
-                        <aside className="h-fit sticky top-32">
+                        <aside className="sm:h-fit sm:sticky sm:top-32">
                             <h2 className="sr-only">Filters</h2>
 
                             <button

@@ -26,16 +26,16 @@ const ManageOrders: NextPageWithLayout = () => {
             <table className="table w-full">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Artworks</th>
-                        <th>Ordered By</th>
-                        <th>Phone Number</th>
-                        <th>Price</th>
-                        <th>Payment Method</th>
-                        <th>Screenshot</th>
-                        <th>Status</th>
-                        <th>Ordered At</th>
-                        <th></th>
+                        <th className="table-header"></th>
+                        <th className="table-header">Artworks</th>
+                        <th className="table-header">Ordered By</th>
+                        <th className="table-header">Phone Number</th>
+                        <th className="table-header">Price</th>
+                        <th className="table-header">Payment Method</th>
+                        <th className="table-header">Screenshot</th>
+                        <th className="table-header">Status</th>
+                        <th className="table-header">Ordered At</th>
+                        <th className="table-header"></th>
                     </tr>
                 </thead>
                 <tbody>
