@@ -1,9 +1,11 @@
 import { type NextPageWithLayout } from "./_app";
 import Artwall from "~/components/Artwall";
 import Image from "next/image";
-import { getArtworkImage, resolveStaticResource } from "~/components/Functions";
+import { getArtworkImage, getArtworkImageUrl, resolveStaticResource } from "~/components/Functions";
 import { api } from "~/utils/api";
 import { Currency } from "@prisma/client";
+import { LottiePlayer } from "lottie-react";
+import Lotie from "~/components/Lotie";
 
 const testimonials = [
 	{
@@ -176,7 +178,7 @@ const Home: NextPageWithLayout = () => {
 					{/* Sale */}
 					<section
 						aria-labelledby="sale-heading"
-						className="relative max-w-7xl mx-auto pt-32 px-4 flex flex-col items-center text-center sm:px-6 lg:px-8"
+						className="relative max-w-7xl mx-auto py-32 px-4 flex flex-col items-center text-center sm:px-6 lg:px-8"
 					>
 						<div className="max-w-2xl mx-auto lg:max-w-none">
 							<h2
@@ -253,8 +255,10 @@ const Home: NextPageWithLayout = () => {
 								<div key={favorite.id} className="group relative">
 									<div className="w-full h-96 rounded-lg overflow-hidden group-hover:opacity-75 sm:h-auto sm:aspect-w-2 sm:aspect-h-3">
 										<Image
-											src={getArtworkImage(favorite)}
+											src={getArtworkImageUrl(favorite)}
 											alt="Favorite artwork image"
+											blurDataURL={getArtworkImage(favorite).blurHash ?? undefined}
+											placeholder={getArtworkImage(favorite).blurHash ? "blur" : "empty"}
 											className="w-full h-full object-center object-cover"
 											width={500} height={500}
 										/>
@@ -273,7 +277,7 @@ const Home: NextPageWithLayout = () => {
 													{favorite.currency == Currency.ETB && `${favorite.price.toLocaleString()} ${favorite.currency}`}
 												</>
 												:
-												<p className="mt-1 text-sm inline">Not available for sale</p>
+												<span className="mt-1 text-sm inline">Not available for sale</span>
 										}
 									</p>
 								</div>

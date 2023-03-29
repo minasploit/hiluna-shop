@@ -9,6 +9,7 @@ import { Fragment } from "react";
 import { useRouter } from "next/router";
 import HeaderCartButton from "./HeaderCartButton";
 import { FiDollarSign, FiEye, FiHeart, FiImage, FiList, FiLogOut, FiUser } from "react-icons/fi";
+import Lotie from "./Lotie";
 
 const nav = [
     { id: 0, title: "Manage Site", icon: <FiEye className="text-xl" />, href: "/admin", adminOnly: true },
@@ -56,6 +57,7 @@ const Header = () => {
                 </div>
 
                 <Link href="/" className="btn btn-ghost normal-case text-xl">
+                    <Lotie src="/lottie/palette.json" className="h-[2.75rem] mr-2" />
                     Hiluna Art
                 </Link>
 

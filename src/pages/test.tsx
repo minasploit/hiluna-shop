@@ -1,7 +1,7 @@
 import { api } from "~/utils/api";
 import Image from 'next/image'
 import { useLocalStorage } from "usehooks-ts";
-import { getArtworkImage } from "~/components/Functions";
+import { getArtworkImageUrl } from "~/components/Functions";
 import { type NextPageWithLayout } from "./_app";
 import { type CartItem } from "./cart";
 import Link from "next/link";
@@ -21,7 +21,7 @@ const Test: NextPageWithLayout = () => {
                         <Link key={artwork.id} href={`/artworks/${artwork.id}`} className="group">
                             <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                                 <Image
-                                    src={getArtworkImage(artwork)}
+                                    src={getArtworkImageUrl(artwork)}
                                     alt={artwork.name}
                                     className="w-full h-full object-center object-cover group-hover:opacity-75"
                                     width={220} height={220}

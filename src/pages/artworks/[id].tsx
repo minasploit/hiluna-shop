@@ -118,7 +118,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                             {({ selected }) => (
                                                 <>
                                                     <span className="sr-only">Artwork file</span>
-                                                    <span className="absolute inset-0 rounded-md overflow-hidden">
+                                                    <span className="absolute inset-0 rounded-md overflow-hidden flex items-center">
                                                         <div className="relative">
                                                             {
                                                                 file.fileType === FileType.Image &&
@@ -167,7 +167,9 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                         <Image
                                             src={resolveUploadResource(file.fileUrl)}
                                             alt="Artwork thumbnail"
-                                            priority={true}
+                                            priority
+                                            blurDataURL={file.blurHash ?? undefined}
+                                            placeholder={file.blurHash ? "blur" : "empty"}
                                             width={720} height={720}
                                             className="w-full h-full object-center object-cover sm:rounded-lg"
                                         />
@@ -184,7 +186,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                         </Tab.Panels>
                     </Tab.Group>
 
-                    <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 sticky top-32">
+                    <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 sticky top-[7.2rem]">
                         <h1 className="text-3xl font-extrabold tracking-tight">{artwork.data?.name}</h1>
 
                         <div className="mt-3">

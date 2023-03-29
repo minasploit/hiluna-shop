@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { env } from '~/env.mjs';
 import * as ftp from "basic-ftp"
 import { FileType, PrismaClient } from '@prisma/client'
+import { resolveUploadResource } from '~/components/Functions';
+import { getPlaiceholder } from 'plaiceholder';
 
 export const config = {
     api: {
@@ -76,15 +78,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 await client.uploadFrom(file.filepath, `/${newFileName}`);
 
+                const fileType = file.mimetype?.includes("image") ? FileType.Image :
+                    file.mimetype?.includes("video") ? FileType.Video :
+                        FileType.Unknown;
+
+                let blurHash: string | undefined;
+
+                if (fileType == FileType.Image) {
+                    // calculate blurHash for uploaded images
+
+                    const { base64 } = await getPlaiceholder(resolveUploadResource(newFileName));
+                    blurHash = base64;
+                }
+
                 const fileOnDb = await prisma.file.create({
                     data: {
                         fileUrl: newFileName,
-                        fileType:
-                            file.mimetype?.includes("image") ? FileType.Image :
-                                file.mimetype?.includes("video") ? FileType.Video :
-                                    FileType.Unknown,
-                        mimeType: file.mimetype
-
+                        fileType,
+                        mimeType: file.mimetype,
+                        blurHash
                     }
                 })
 

@@ -30,10 +30,28 @@ export async function sendSMSToUser(phoneNumber: string, message: string, templa
 
 export function getArtworkImage(artwork: Artwork & {
     Files: File[]
-}): string {
+}): File {
     const images = artwork.Files.filter(f => f.fileType == FileType.Image);
     if (!images[0])
-        return resolveStaticResource("artworkplaceholder.jpg")
+        return {
+            id: 0,
+            fileUrl: "artworkplaceholder.jpg",
+            fileType: FileType.Image,
+            mimeType: "image/*",
+            blurHash: null
+        }
 
-    return resolveUploadResource(images[0].fileUrl)
+    return images[0]
+}
+
+export function getArtworkImageUrl(artwork: Artwork & {
+    Files: File[]
+}): string {
+    const image = getArtworkImage(artwork);
+    
+    if (image.id == 0) {
+        return resolveStaticResource("artworkplaceholder.jpg")
+    }
+
+    return resolveUploadResource(image.fileUrl)
 }

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { getArtworkImage, prettifyCamel, resolveUploadResource } from "~/components/Functions";
+import { getArtworkImageUrl, prettifyCamel, resolveUploadResource } from "~/components/Functions";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./_app";
@@ -137,11 +137,11 @@ const Orders: NextPageWithLayout = () => {
                                 <tbody className="border-b border-gray-500 divide-y divide-gray-500 text-sm sm:border-t">
                                     {order.OrderedArtworks.map((orderedArtwork) => (
                                         <tr key={`${order.id} ${orderedArtwork.artworkId}`}>
-                                            <td className="py-6 pr-8 hover:opacity-75">
-                                                <Link href={`/artworks/${orderedArtwork.artworkId}`}>
+                                            <td className="py-6 pr-8">
+                                                <Link href={`/artworks/${orderedArtwork.artworkId}`} className="hover:opacity-75">
                                                     <div className="flex items-center">
                                                         <Image
-                                                            src={getArtworkImage(orderedArtwork.Artwork)}
+                                                            src={getArtworkImageUrl(orderedArtwork.Artwork)}
                                                             alt="Artwork Image" width={100} height={100}
                                                             className="w-16 h-16 object-center object-cover rounded mr-6"
                                                         />

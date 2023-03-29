@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiCheck, FiChevronDown, FiPaperclip } from "react-icons/fi";
-import { getArtworkImage, prettifyCamel, resolveUploadResource } from "~/components/Functions";
+import { getArtworkImageUrl, prettifyCamel, resolveUploadResource } from "~/components/Functions";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
@@ -178,7 +178,7 @@ const ManageOrder: NextPageWithLayout = () => {
                                                 <div className="avatar">
                                                     <div className="mask mask-squircle w-12 h-12">
                                                         <Image
-                                                            src={getArtworkImage(orderedArtwork.Artwork)}
+                                                            src={getArtworkImageUrl(orderedArtwork.Artwork)}
                                                             alt="Artwork image"
                                                             width={90}
                                                             height={90}

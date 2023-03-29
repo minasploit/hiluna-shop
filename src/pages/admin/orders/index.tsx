@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { getArtworkImage, prettifyCamel, resolveUploadResource } from "~/components/Functions";
+import { getArtworkImageUrl, prettifyCamel, resolveUploadResource } from "~/components/Functions";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 
@@ -51,7 +51,7 @@ const ManageOrders: NextPageWithLayout = () => {
                                                     <div className="avatar">
                                                         <div className="mask mask-squircle w-12 h-12">
                                                             <Image
-                                                                src={getArtworkImage(orderedArtwork.Artwork)}
+                                                                src={getArtworkImageUrl(orderedArtwork.Artwork)}
                                                                 alt="Artwork image"
                                                                 width={90}
                                                                 height={90}

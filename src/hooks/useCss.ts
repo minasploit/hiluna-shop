@@ -31,7 +31,7 @@ const css = `
 #slideshowparentcontainer {
     display: block;
     box-sizing: border-box;
-    max-width: 1800px;
+    // max-width: 1800px;
     margin: auto;
     margin-top: -1px;
     text-align: center;

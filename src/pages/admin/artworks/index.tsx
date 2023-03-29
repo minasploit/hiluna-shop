@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiCheckCircle } from "react-icons/fi";
-import { getArtworkImage } from "~/components/Functions";
+import { getArtworkImageUrl } from "~/components/Functions";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 
@@ -91,7 +91,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                                             <div className="avatar">
                                                 <div className="mask mask-squircle w-12 h-12">
                                                     <Image
-                                                        src={getArtworkImage(artwork)}
+                                                        src={getArtworkImageUrl(artwork)}
                                                         alt="Artwork image"
                                                         width={90}
                                                         height={90}

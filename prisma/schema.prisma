@@ -88,6 +88,7 @@ model File {
     fileUrl  String
     fileType FileType
     mimeType String?
+    blurHash String?
     Order    Order[]
     Artwork  Artwork[] @relation("ArtworksAndFiles")
 
