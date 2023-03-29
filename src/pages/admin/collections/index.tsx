@@ -58,7 +58,7 @@ const ManageCollection: NextPageWithLayout = () => {
                 <p className="py-6">Here are your collections</p>
             </div>
             <Link href="collections/new">
-                <button className="btn btn-primary btn-outline">Add new Collection</button>
+                <button className="btn btn-primary">Add new Collection</button>
             </Link>
         </div>
 

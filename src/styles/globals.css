@@ -50,6 +50,6 @@
   }
 
   .table-header {
-    @apply bg-primary-focus text-base-100
+    @apply bg-primary text-base-100
   }
 }

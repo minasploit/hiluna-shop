@@ -14,7 +14,15 @@ const css = `
 }
 
 [data-theme="halloween"] #sale-heading {
-    color: #ffffff;
+    color: #9FE973;
+}
+
+[data-theme="garden"] #stock-heading {
+    color: #9FE973;
+}
+
+[data-theme="halloween"] #stock-heading {
+    color: #08311D;
 }
 
 #divvvv {

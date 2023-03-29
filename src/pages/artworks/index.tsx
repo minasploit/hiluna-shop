@@ -220,7 +220,7 @@ const Artworks: NextPageWithLayout = () => {
                                     <Link href={`/artworks/${artwork.id}`} key={artwork.id}>
                                         <div
                                             className={
-                                                clsx("group relative bg-base-200 border rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8",
+                                                clsx("group relative bg-base-200 border rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8 border-primary",
                                                     styles.artworkBorder)
                                             }
                                         >
@@ -242,7 +242,7 @@ const Artworks: NextPageWithLayout = () => {
                                                 <div className="flex-1 flex flex-col justify-end">
                                                     <p className="text-sm opacity-70 mb-1">
                                                         {artwork.Medium.map(m => (
-                                                            <span className="badge badge-primary m-1" key={m.id}>
+                                                            <span className={clsx("badge badge-primary m-1", !filtersForm.getValues("medium")?.includes(m.id.toString()) && "badge-outline")} key={m.id}>
                                                                 {m.name}
                                                             </span>
                                                         ))}

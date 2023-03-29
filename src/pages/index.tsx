@@ -4,8 +4,6 @@ import Image from "next/image";
 import { getArtworkImage, getArtworkImageUrl, resolveStaticResource } from "~/components/Functions";
 import { api } from "~/utils/api";
 import { Currency } from "@prisma/client";
-import { LottiePlayer } from "lottie-react";
-import Lotie from "~/components/Lotie";
 
 const testimonials = [
 	{
@@ -245,14 +243,14 @@ const Home: NextPageWithLayout = () => {
 							<h2 id="favorites-heading" className="text-2xl font-extrabold tracking-tight">
 								Our Favorites
 							</h2>
-							<a href="#" className="hidden text-sm font-semibold text-primary sm:block">
+							{/* <a href="#" className="hidden text-sm font-semibold text-primary sm:block">
 								Browse all favorites<span aria-hidden="true"> &rarr;</span>
-							</a>
+							</a> */}
 						</div>
 
-						<div className="mt-6 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-y-0 sm:gap-x-6 lg:gap-x-8">
+						<div className="mt-6 columns-1 gap-y-4 sm:columns-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:columns-3">
 							{favorites.data?.map((favorite) => (
-								<div key={favorite.id} className="group relative">
+								<div key={favorite.id} className="group relative overflow-hidden mb-4 sm:mb-6 md:mb-8">
 									<div className="w-full h-96 rounded-lg overflow-hidden group-hover:opacity-75 sm:h-auto sm:aspect-w-2 sm:aspect-h-3">
 										<Image
 											src={getArtworkImageUrl(favorite)}
@@ -299,13 +297,13 @@ const Home: NextPageWithLayout = () => {
 							<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 								<div className="relative pt-48 pb-16 sm:pb-24">
 									<div>
-										<h2 id="sale-heading" className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+										<h2 id="stock-heading" className="text-4xl font-extrabold tracking-tight md:text-5xl">
 											Final Stock.
 											<br />
 											Up to 50% off.
 										</h2>
 										<div className="mt-6 text-base">
-											<a href="#" className="font-semibold text-white">
+											<a href="#" className="font-semibold text-primary-content">
 												Shop the sale<span aria-hidden="true"> &rarr;</span>
 											</a>
 										</div>
@@ -317,7 +315,8 @@ const Home: NextPageWithLayout = () => {
 												<div className="flex-shrink-0">
 													<Image
 														className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
-														src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg"
+														// src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg"
+														src={resolveStaticResource("1.jpg")}
 														alt="Footer artwork image" width={300} height={300}
 													/>
 												</div>

@@ -63,7 +63,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                 <p className="py-6">Here are your artworks</p>
             </div>
             <Link href="artworks/new">
-                <button className="btn btn-primary btn-outline">Add new artwork</button>
+                <button className="btn btn-primary">Add new artwork</button>
             </Link>
         </div>
 
