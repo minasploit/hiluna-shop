@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { getArtworkImageUrl, prettifyCamel, resolveUploadResource } from "~/components/Functions";
+import { getArtworkImageUrl, prettifyCamel, resolveUploadResource } from "~/utils/functions";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { api } from "~/utils/api";
 import { hashId } from "~/utils/hashId";

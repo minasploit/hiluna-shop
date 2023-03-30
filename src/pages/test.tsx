@@ -1,7 +1,7 @@
 import { api } from "~/utils/api";
 import Image from 'next/image'
 import { useLocalStorage } from "usehooks-ts";
-import { getArtworkImageUrl } from "~/components/Functions";
+import { getArtworkImageUrl } from "~/utils/functions";
 import { type NextPageWithLayout } from "./_app";
 import { type CartItem } from "./cart";
 import Link from "next/link";

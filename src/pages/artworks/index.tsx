@@ -4,7 +4,7 @@ import { Currency } from "@prisma/client";
 import clsx from "clsx";
 import { useState, Fragment } from "react";
 import { FiArrowDown, FiPlus, FiX } from "react-icons/fi";
-import { getArtworkImage, getArtworkImageUrl } from "~/components/Functions";
+import { getArtworkImage, getArtworkImageUrl } from "~/utils/functions";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import { type NextPageWithLayout } from "../_app";

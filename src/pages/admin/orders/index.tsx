@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { getArtworkImageUrl, prettifyCamel, resolveUploadResource } from "~/components/Functions";
+import { getArtworkImageUrl, prettifyCamel, resolveUploadResource } from "~/utils/functions";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 import { hashId } from "~/utils/hashId";

@@ -1,5 +1,5 @@
 import useCss from "~/hooks/useCss";
-import { resolveStaticResource } from "./Functions";
+import { resolveStaticResource } from "../utils/functions";
 import Image from "next/image";
 
 const Artwall = () => {

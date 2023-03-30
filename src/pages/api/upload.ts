@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { env } from '~/env.mjs';
 import * as ftp from "basic-ftp"
 import { FileType, PrismaClient } from '@prisma/client'
-import { resolveUploadResource } from '~/components/Functions';
+import { resolveUploadResource } from '~/utils/functions';
 import { getPlaiceholder } from 'plaiceholder';
 
 export const config = {

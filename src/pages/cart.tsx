@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { getArtworkImageUrl } from "~/components/Functions";
+import { getArtworkImageUrl } from "~/utils/functions";
 
 export interface CartItem {
     id: number;

@@ -9,7 +9,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { toast } from "react-hot-toast";
 import { type CartItem } from "../cart";
 import Image from "next/image";
-import { resolveUploadResource } from "~/components/Functions";
+import { resolveUploadResource } from "~/utils/functions";
 import Link from "next/link";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { Tab } from "@headlessui/react";

@@ -20,7 +20,7 @@ import React from "react";
 import { type FtpUploadResult } from "./api/upload";
 import { PaymentMethod } from "@prisma/client";
 import { useRouter } from "next/router";
-import { getArtworkImageUrl } from "~/components/Functions";
+import { getArtworkImageUrl } from "~/utils/functions";
 
 const paymentMethods = [
     { id: 0, title: 'Cash on Delivery', label: 'Cash', description: 'Make the payment in cash when the artwork is delivered', value: PaymentMethod.CashOnDelivery },

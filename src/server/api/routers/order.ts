@@ -1,7 +1,7 @@
 import { Currency, OrderStatus, PaymentMethod, UserRole } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { sendSMSToUser } from "~/components/Functions";
+import { sendSMSToUser } from "~/utils/functions";
 import {
     adminProcedure,
     createTRPCRouter,

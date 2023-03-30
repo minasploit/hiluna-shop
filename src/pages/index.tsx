@@ -1,7 +1,7 @@
 import { type NextPageWithLayout } from "./_app";
 import Artwall from "~/components/Artwall";
 import Image from "next/image";
-import { getArtworkImage, getArtworkImageUrl, resolveStaticResource } from "~/components/Functions";
+import { getArtworkImage, getArtworkImageUrl, resolveStaticResource } from "~/utils/functions";
 import { api } from "~/utils/api";
 import { Currency } from "@prisma/client";
 

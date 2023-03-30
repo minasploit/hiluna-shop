@@ -13,7 +13,7 @@ import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 import { EditArtworkFormSchema } from "~/utils/schema";
 import Image from "next/image";
-import { resolveUploadResource } from "~/components/Functions";
+import { resolveUploadResource } from "~/utils/functions";
 import { type FtpUploadResult } from "~/pages/api/upload";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import Link from "next/link";

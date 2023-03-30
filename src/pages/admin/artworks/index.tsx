@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiCheckCircle } from "react-icons/fi";
-import { getArtworkImageUrl } from "~/components/Functions";
+import { getArtworkImageUrl } from "~/utils/functions";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 
