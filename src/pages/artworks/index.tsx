@@ -138,10 +138,6 @@ const Artworks: NextPageWithLayout = () => {
                     </Dialog>
                 </Transition.Root>
 
-                {
-                    JSON.stringify(filtersForm.watch())
-                }
-
                 <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
                     <div className="border-b border-primary pt-24 pb-10">
                         <h1 className="text-4xl font-extrabold tracking-tight text-primary-focus">My Artworks</h1>
