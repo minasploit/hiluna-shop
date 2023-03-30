@@ -44,10 +44,11 @@ const MultiTagField: React.FC<MultiTagFieldAttributes> = ({ label, name, options
                     isMultiple={true}
                     isSearchable={true}
                     placeholder="Select medium..."
+                    searchInputPlaceholder="Select medium..."
                     primaryColor=""
                     isDisabled={form.formState.isSubmitting}
                     classNames={{
-                        tagItem: () => "flex px-3 py-1 bg-primary/80 rounded-md",
+                        tagItem: () => "flex px-3 py-1 bg-primary rounded-md",
                         tagItemText: "text-white mr-2",
                         tagItemIcon: "w-3 h-3 mt-0.5 text-white",
                         menuButton: () => "flex p-1.5 text-md text-gray-500 border border-gray-500 rounded-lg shadow-sm transition-all duration-300 cursor-pointer focus:outline-none focus:border-primary focus:ring focus:ring-primary/20",

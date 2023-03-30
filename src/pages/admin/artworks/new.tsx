@@ -45,6 +45,11 @@ const NewArtwork: NextPageWithLayout = () => {
             type: FieldType.TEXT,
         },
         {
+            name: "shortDescription",
+            label: "Short Description",
+            type: FieldType.TEXT,
+        },
+        {
             name: "description",
             label: "Description",
             type: FieldType.RICHTEXT,
@@ -170,7 +175,7 @@ const NewArtwork: NextPageWithLayout = () => {
                         <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
                                 {artworkFields.map((field) => (
-                                    <div className={clsx("col-span-6", !["description", "files", "medium"].includes(field.name) && "sm:col-span-3")} key={field.name}>
+                                    <div className={clsx("col-span-6", !["shortDescription", "description", "files", "medium"].includes(field.name) && "sm:col-span-3")} key={field.name}>
                                         <Field {...field} />
                                     </div>
                                 ))}
@@ -192,7 +197,6 @@ const NewArtwork: NextPageWithLayout = () => {
                                 </button>
                             </div>
                         </form>
-
                     </FormProvider>
                 </div>
             </div>

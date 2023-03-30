@@ -22,6 +22,7 @@ export const ChangeOrderStatusSchema = z.object({
 // =========== ARTWORK ===========
 const ArtworkSharedSchema = {
     name: z.string().min(2),
+    shortDescription: z.string().min(2),
     description: z.string().min(2),
     dimension: z.string().min(2),
     featured: z.boolean().default(false),

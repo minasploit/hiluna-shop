@@ -12,6 +12,7 @@ model Artwork {
     id               Int             @id @default(autoincrement())
     name             String
     dimension        String
+    shortDescription String          @db.Text
     description      String          @db.Text
     featured         Boolean
     availableForSale Boolean

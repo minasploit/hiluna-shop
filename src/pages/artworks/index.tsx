@@ -141,7 +141,7 @@ const Artworks: NextPageWithLayout = () => {
                 <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
                     <div className="border-b border-primary pt-24 pb-10">
                         <h1 className="text-4xl font-extrabold tracking-tight text-primary">My Artworks</h1>
-                        <p className="mt-4 text-base opacity-70">
+                        <p className="mt-4 text-base">
                             Checkout out the latest release of Basic Tees, new and improved with four openings!
                         </p>
                     </div>
@@ -219,7 +219,7 @@ const Artworks: NextPageWithLayout = () => {
                                     <Link href={`/artworks/${artwork.id}`} key={artwork.id}>
                                         <div
                                             className={
-                                                clsx("group relative bg-base-200 border rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8 border-primary",
+                                                clsx("group relative bg-base-200 border rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8",
                                                     styles.artworkBorder)
                                             }
                                         >
@@ -234,24 +234,27 @@ const Artworks: NextPageWithLayout = () => {
                                                 />
                                             </div>
                                             <div className="flex-1 p-4 space-y-2 flex flex-col">
-                                                <h3 className="text-sm font-medium">
+                                                <h3 className="text-lg font-medium">
                                                     {artwork.name}
                                                 </h3>
-                                                <div className="text-sm opacity-70">{parse(artwork.description)}</div>
+                                                <div className="text- opacity-80">{parse(artwork.shortDescription)}</div>
                                                 <div className="flex-1 flex flex-col justify-end">
-                                                    <p className="text-sm opacity-70 mb-1">
-                                                        {artwork.Medium.map(m => (
-                                                            <span className={clsx("badge m-1",
-                                                                filtersForm.getValues("medium") &&
-                                                                    filtersForm.getValues("medium")?.includes(m.id.toString()) ?
-                                                                    "badge-primary" :
-                                                                    "badge-primary badge-outline")}
-                                                                key={m.id}>
-                                                                {m.name}
-                                                            </span>
-                                                        ))}
-                                                    </p>
-                                                    <div className="text-base font-medium">
+                                                    {
+                                                        artwork.Medium.length != 0 &&
+                                                        <p className="opacity-90 mt-2 mb-4">
+                                                            {artwork.Medium.map(m => (
+                                                                <span className={clsx("badge m-1",
+                                                                    filtersForm.getValues("medium") &&
+                                                                        filtersForm.getValues("medium")?.includes(m.id.toString()) ?
+                                                                        "badge-primary" :
+                                                                        "badge-primary badge-outline")}
+                                                                    key={m.id}>
+                                                                    {m.name}
+                                                                </span>
+                                                            ))}
+                                                        </p>
+                                                    }
+                                                    <div className="text-lg font-medium">
                                                         {
                                                             artwork.availableForSale ?
                                                                 <>
