@@ -30,6 +30,7 @@
 		"daisyui": "^2.51.3",
 		"formidable": "^2.1.1",
 		"ftp-ts": "^1.1.0",
+		"hashids": "^2.2.11",
 		"html-react-parser": "^3.0.12",
 		"lottie-react": "^2.4.0",
 		"lottie-web": "^5.10.2",

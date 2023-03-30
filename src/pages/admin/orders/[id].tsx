@@ -127,7 +127,7 @@ const ManageOrder: NextPageWithLayout = () => {
                                         leaveFrom="opacity-100"
                                         leaveTo="opacity-0"
                                     >
-                                        <Listbox.Options className="origin-top-right absolute z-10 right-0 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-base-100 divide-y divide-gray-200">
+                                        <Listbox.Options className="origin-top-right absolute z-10 right-0 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-base-100 divide-y divide-gray-500 border border-primary">
                                             {orderStatusOptions.map((option) => (
                                                 <Listbox.Option
                                                     key={option.title}

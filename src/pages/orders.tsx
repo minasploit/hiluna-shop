@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { getArtworkImageUrl, prettifyCamel, resolveUploadResource } from "~/components/Functions";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { api } from "~/utils/api";
+import { hashId } from "~/utils/hashId";
 import { type NextPageWithLayout } from "./_app";
 
 const Orders: NextPageWithLayout = () => {
@@ -87,7 +88,7 @@ const Orders: NextPageWithLayout = () => {
                                     </div>
                                     <div className="flex justify-between pt-6 sm:block sm:pt-0">
                                         <dt className="font-medium text-base-content">Order number</dt>
-                                        <dd className="sm:mt-1 opacity-80">{order.id}</dd>
+                                        <dd className="sm:mt-1 opacity-80">{hashId.encode(order.id)}</dd>
                                     </div>
                                     <div className="flex justify-between pt-6 sm:block sm:pt-0">
                                         <dt className="font-medium text-base-content">Payment Method</dt>

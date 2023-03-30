@@ -28,6 +28,7 @@ specifiers:
   eslint-config-next: ^13.2.1
   formidable: ^2.1.1
   ftp-ts: ^1.1.0
+  hashids: ^2.2.11
   html-react-parser: ^3.0.12
   lottie-react: ^2.4.0
   lottie-web: ^5.10.2
@@ -71,6 +72,7 @@ dependencies:
   daisyui: 2.51.3_gbtt6ss3tbiz4yjtvdr6fbrj44
   formidable: 2.1.1
   ftp-ts: 1.1.0
+  hashids: 2.2.11
   html-react-parser: 3.0.12_react@18.2.0
   lottie-react: 2.4.0_biqbaboplfbrettd7655fr4n2y
   lottie-web: 5.10.2
@@ -1883,6 +1885,10 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+
+  /hashids/2.2.11:
+    resolution: {integrity: sha512-e1rAPT5Wa9vf/Dq1eq8LFw5VH2dtKxRf6k9bCw0GLwKL/SRnUphIcqwJWUZ1ki18cdj03nCrpdlJOcyHILQk8Q==}
+    dev: false
 
   /hexoid/1.0.0:
     resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}

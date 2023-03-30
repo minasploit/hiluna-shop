@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getArtworkImageUrl, prettifyCamel, resolveUploadResource } from "~/components/Functions";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
+import { hashId } from "~/utils/hashId";
 
 const ManageOrders: NextPageWithLayout = () => {
     const orders = api.order.list.useQuery();
@@ -26,7 +27,7 @@ const ManageOrders: NextPageWithLayout = () => {
             <table className="table w-full">
                 <thead>
                     <tr>
-                        <th className="table-header"></th>
+                        <th className="table-header">Order ID</th>
                         <th className="table-header">Artworks</th>
                         <th className="table-header">Ordered By</th>
                         <th className="table-header">Phone Number</th>
@@ -40,9 +41,9 @@ const ManageOrders: NextPageWithLayout = () => {
                 </thead>
                 <tbody>
                     {
-                        orders.data?.map((order, index) => (
+                        orders.data?.map((order) => (
                             <tr key={order.id}>
-                                <th>{index + 1}</th>
+                                <th>{hashId.encode(order.id)}</th>
                                 <td>
                                     <Link href={`/admin/orders/${order.id}`} className="flex flex-col gap-2 hover:opacity-75">
                                         {
