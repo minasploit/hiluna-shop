@@ -57,6 +57,7 @@ const ManageMedium: NextPageWithLayout = () => {
                 <h1 className="text-5xl font-bold">Medium</h1>
                 <p className="py-6">Here are your medium</p>
             </div>
+            
             <Link href="medium/new">
                 <button className="btn btn-primary">Add new Media</button>
             </Link>
