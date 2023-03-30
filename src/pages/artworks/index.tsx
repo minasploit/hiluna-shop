@@ -241,9 +241,11 @@ const Artworks: NextPageWithLayout = () => {
                                                 <div className="flex-1 flex flex-col justify-end">
                                                     <p className="text-sm opacity-70 mb-1">
                                                         {artwork.Medium.map(m => (
-                                                            <span className={clsx("badge badge-primary m-1",
+                                                            <span className={clsx("badge m-1",
                                                                 filtersForm.getValues("medium") &&
-                                                                !filtersForm.getValues("medium")?.includes(m.id.toString()) && "badge-outline")}
+                                                                    filtersForm.getValues("medium")?.includes(m.id.toString()) ?
+                                                                    "badge-primary" :
+                                                                    "badge-primary badge-outline")}
                                                                 key={m.id}>
                                                                 {m.name}
                                                             </span>

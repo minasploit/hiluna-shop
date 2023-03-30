@@ -16,12 +16,13 @@ const config = {
 				garden: {
 					// eslint-disable-next-line @typescript-eslint/no-var-requires
 					...require("daisyui/src/colors/themes")["[data-theme=garden]"],
-					primary: "#026002d4",
+					primary: "#163300",
 				},
 				halloween: {
 					// eslint-disable-next-line @typescript-eslint/no-var-requires
 					...require("daisyui/src/colors/themes")["[data-theme=halloween]"],
-					primary: "#9FE973",
+					primary: "#9FE870",
+					// primaryFocus: "#80e142",
 				}
 			},
 		],
