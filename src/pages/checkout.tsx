@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocalStorage } from "usehooks-ts";
 import { api } from "~/utils/api";
-import { type CartItem } from "./cart";
+import { type CartItem } from "../components/Cart";
 import { type NextPageWithLayout } from "./_app";
 import { RadioGroup } from '@headlessui/react'
 import { FiCheckSquare, FiInfo, FiTrash } from "react-icons/fi";

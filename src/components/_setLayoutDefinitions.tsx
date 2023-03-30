@@ -17,7 +17,6 @@ import EditCollection from "~/pages/admin/collections/[id]";
 import EditArtwork from "~/pages/admin/artworks/[id]";
 import ArtworkDetail from "~/pages/artworks/[id]";
 import ManageOrders from "~/pages/admin/orders";
-import Cart from "~/pages/cart";
 import Checkout from "~/pages/checkout";
 import Orders from "~/pages/orders";
 import ManageOrder from "~/pages/admin/orders/[id]";
@@ -28,7 +27,6 @@ const UserLayoutPages = [
     Artworks,
     ArtworkDetail,
     Collections,
-    Cart,
     Checkout,
     Orders,
     Test

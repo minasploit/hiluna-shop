@@ -5,11 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTop } from "~/hooks/useTop";
 import SwitchTheme from "./SwitchTheme"
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import HeaderCartButton from "./HeaderCartButton";
 import { FiDollarSign, FiEye, FiHeart, FiImage, FiList, FiLogOut, FiUser } from "react-icons/fi";
 import Lotie from "./Lotie";
+import Cart from "~/components/Cart";
 
 const nav = [
     { id: 0, title: "Manage Site", icon: <FiEye className="text-xl" />, href: "/admin", adminOnly: true },
@@ -29,6 +30,8 @@ const Header = () => {
     const router = useRouter();
     const { data: session } = useSession();
     const top = useTop();
+
+    const [cartOpen, setCartOpen] = useState(false);
 
     return <>
         <div className={clsx("navbar fixed z-20 backdrop-blur-lg", !top && `shadow`)}>
@@ -96,7 +99,7 @@ const Header = () => {
                     <SwitchTheme />
                 </div>
 
-                <HeaderCartButton />
+                <HeaderCartButton setCartOpen={setCartOpen} />
 
                 {
                     session &&
@@ -136,6 +139,8 @@ const Header = () => {
 
             </div>
         </div>
+
+        <Cart cartOpen={cartOpen} setCartOpen={setCartOpen} />
     </>
 }
 

@@ -7,7 +7,7 @@ import { Currency, FileType } from "@prisma/client";
 import parse from 'html-react-parser'
 import { useLocalStorage } from "usehooks-ts";
 import { toast } from "react-hot-toast";
-import { type CartItem } from "../cart";
+import { type CartItem } from "../../components/Cart";
 import Image from "next/image";
 import { resolveUploadResource } from "~/utils/functions";
 import Link from "next/link";

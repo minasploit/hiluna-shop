@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useLocalStorage } from "usehooks-ts";
 import { getArtworkImageUrl } from "~/utils/functions";
 import { type NextPageWithLayout } from "./_app";
-import { type CartItem } from "./cart";
+import { type CartItem } from "../components/Cart";
 import Link from "next/link";
 
 const Test: NextPageWithLayout = () => {

@@ -9,7 +9,7 @@ import { api } from "~/utils/api";
 import Image from "next/image";
 import { type NextPageWithLayout } from "../_app";
 import { useLocalStorage } from "usehooks-ts";
-import { type CartItem } from "../cart";
+import { type CartItem } from "../../components/Cart";
 import Link from "next/link";
 import styles from './artworks.module.css'
 import { LoadingSpinner } from "~/components/LoadingSpinner";
