@@ -22,7 +22,7 @@ const config = {
 					// eslint-disable-next-line @typescript-eslint/no-var-requires
 					...require("daisyui/src/colors/themes")["[data-theme=halloween]"],
 					primary: "#9FE870",
-					// primaryFocus: "#80e142",
+					"primary-focus": "#80e142"
 				}
 			},
 		],

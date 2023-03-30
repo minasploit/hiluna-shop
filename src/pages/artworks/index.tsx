@@ -140,7 +140,7 @@ const Artworks: NextPageWithLayout = () => {
 
                 <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
                     <div className="border-b border-primary pt-24 pb-10">
-                        <h1 className="text-4xl font-extrabold tracking-tight text-primary-focus">My Artworks</h1>
+                        <h1 className="text-4xl font-extrabold tracking-tight text-primary">My Artworks</h1>
                         <p className="mt-4 text-base opacity-70">
                             Checkout out the latest release of Basic Tees, new and improved with four openings!
                         </p>
