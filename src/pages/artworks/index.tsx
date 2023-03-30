@@ -45,7 +45,6 @@ const Artworks: NextPageWithLayout = () => {
         setQueryFilters({
             medium: filtersForm.getValues("medium")?.map(m => Number(m)),
         })
-        console.log(filtersForm.watch());
     }
 
     return <>
@@ -138,6 +137,10 @@ const Artworks: NextPageWithLayout = () => {
                         </Transition.Child>
                     </Dialog>
                 </Transition.Root>
+
+                {
+                    JSON.stringify(filtersForm.watch())
+                }
 
                 <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
                     <div className="border-b border-primary pt-24 pb-10">
@@ -242,7 +245,10 @@ const Artworks: NextPageWithLayout = () => {
                                                 <div className="flex-1 flex flex-col justify-end">
                                                     <p className="text-sm opacity-70 mb-1">
                                                         {artwork.Medium.map(m => (
-                                                            <span className={clsx("badge badge-primary m-1", !filtersForm.getValues("medium")?.includes(m.id.toString()) && "badge-outline")} key={m.id}>
+                                                            <span className={clsx("badge badge-primary m-1",
+                                                                filtersForm.getValues("medium") &&
+                                                                !filtersForm.getValues("medium")?.includes(m.id.toString()) && "badge-outline")}
+                                                                key={m.id}>
                                                                 {m.name}
                                                             </span>
                                                         ))}
