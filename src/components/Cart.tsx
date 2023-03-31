@@ -155,43 +155,46 @@ const Cart = ({ cartOpen, setCartOpen }: { cartOpen: boolean, setCartOpen: Dispa
 											</div>
 										</div>
 
-										<div className="border-t border-gray-500 py-6 px-4 sm:px-6">
-											<div className="flex justify-between text-base font-medium">
-												<p>Subtotal</p>
-												<p>{subTotal.toLocaleString()} ETB</p>
-											</div>
-											<p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-											<div className="mt-6">
-												{
-													status == "authenticated"
-														?
-														<button className="btn btn-primary w-full" onClick={() => {
-															void router.push("/checkout");
-															setCartOpen(false);
-														}}>
-															<FiLock className="mx-3 text-xl" />
-															Checkout
+										{
+											cartItems.data?.length != 0 &&
+											<div className="border-t border-gray-500 py-6 px-4 sm:px-6">
+												<div className="flex justify-between text-base font-medium">
+													<p>Subtotal</p>
+													<p>{subTotal.toLocaleString()} ETB</p>
+												</div>
+												<p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+												<div className="mt-6">
+													{
+														status == "authenticated"
+															?
+															<button className="btn btn-primary w-full" onClick={() => {
+																void router.push("/checkout");
+																setCartOpen(false);
+															}}>
+																<FiLock className="mx-3 text-xl" />
+																Checkout
+															</button>
+															:
+															<button className="btn btn-primary w-full" onClick={() => void signIn()}>
+																<FiUserCheck className="mx-3 text-xl" />
+																Login to checkout
+															</button>
+													}
+												</div>
+												<div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+													<div>
+														{' '} or {' '}
+														<button
+															type="button"
+															className="font-medium text-primary"
+															onClick={() => setCartOpen(false)}
+														>
+															Continue Shopping<span aria-hidden="true"> &rarr;</span>
 														</button>
-														:
-														<button className="btn btn-primary w-full" onClick={() => void signIn()}>
-															<FiUserCheck className="mx-3 text-xl" />
-															Login to checkout
-														</button>
-												}
-											</div>
-											<div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-												<div>
-													{' '} or {' '}
-													<button
-														type="button"
-														className="font-medium text-primary"
-														onClick={() => setCartOpen(false)}
-													>
-														Continue Shopping<span aria-hidden="true"> &rarr;</span>
-													</button>
+													</div>
 												</div>
 											</div>
-										</div>
+										}
 									</div>
 								</div>
 							</Transition.Child>
