@@ -71,6 +71,9 @@ export const EditArtworkFormSchema = z.object({
 const MediaSharedSchema = {
     name: z.string().min(2),
     description: z.string().nullable(),
+    featured: z.boolean().default(false),
+    featureImageId: z.number().nullable().optional(),
+    featureOrder: z.number()
 }
 export const AddMediaFormSchema = z.object(MediaSharedSchema)
 export const EditMediaFormSchema = z.object({

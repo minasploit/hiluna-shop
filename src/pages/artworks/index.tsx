@@ -2,9 +2,9 @@ import { Transition, Dialog, Disclosure } from "@headlessui/react";
 import parse from 'html-react-parser'
 import { Currency } from "@prisma/client";
 import clsx from "clsx";
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { FiArrowDown, FiPlus, FiX } from "react-icons/fi";
-import { getArtworkImage, getArtworkImageUrl } from "~/utils/functions";
+import { getArtworkImage, getArtworkImageUrl, splitStringByLength } from "~/utils/functions";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import { type NextPageWithLayout } from "../_app";
@@ -14,8 +14,14 @@ import Link from "next/link";
 import styles from './artworks.module.css'
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { FormProvider, useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { hashId } from "~/utils/hashId";
+import { useMemo } from "react";
+import { env } from "~/env.mjs";
 
 const Artworks: NextPageWithLayout = () => {
+
+    const router = useRouter();
 
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [queryFilters, setQueryFilters] = useState<{
@@ -29,6 +35,10 @@ const Artworks: NextPageWithLayout = () => {
     });
     const medium = api.medium.listForFilter.useQuery();
 
+    const defaultFilters = useMemo(() => ({
+        medium: typeof router.query.m == "string" ? (splitStringByLength(router.query.m ?? "", Number(env.NEXT_PUBLIC_HASHID_LENGTH))?.map(m => hashId.decode(m)) ?? []) : []
+    }), [router.query.m])
+
     const filters = [
         {
             id: 'medium',
@@ -37,14 +47,44 @@ const Artworks: NextPageWithLayout = () => {
         },
     ]
 
+    useEffect(() => {
+        setQueryFilters(defaultFilters)
+    }, [defaultFilters]);
+
     const filtersForm = useForm<{
         medium: string[],
-    }>()
+        mediumMobile: string[]
+    }>({
+        defaultValues: {
+            medium: defaultFilters.medium.map(m => String(m)),
+            mediumMobile: defaultFilters.medium.map(m => String(m)),
+        }
+    })
 
-    function applyFilter() {
+    function applyFilter(filterType: 'default' | 'mobile') {
+        if (filterType == "default") {
+            filtersForm.setValue("mediumMobile", filtersForm.getValues("medium").map(m => String(m)))
+        }
+
+        if (filterType == "mobile") {
+            filtersForm.setValue("medium", filtersForm.getValues("mediumMobile").map(m => String(m)))
+        }
+
+        let medium = filtersForm.getValues("medium")?.map(m => Number(m));
+
+        // filter duplicates
+        medium = [...new Set(medium)]
+        // filtersForm.setValue("medium", medium.map(m => String(m)))
+
         setQueryFilters({
-            medium: filtersForm.getValues("medium")?.map(m => Number(m)),
+            medium,
         })
+
+        void router.push({
+            query: medium.length != 0 ?
+                `m=${medium.map(m => hashId.encode(m)).join('')}` :
+                null
+        });
     }
 
     return <>
@@ -114,13 +154,15 @@ const Artworks: NextPageWithLayout = () => {
                                                                                 type="checkbox"
                                                                                 value={option.value}
                                                                                 {...filtersForm.register(
-                                                                                    "medium",
+                                                                                    "mediumMobile",
                                                                                     // (section.id == "medium" ? "medium" : section.id == "category" ? "category" : "sizes"),
                                                                                     {
-                                                                                        onChange: applyFilter
+                                                                                        onChange: () => applyFilter("mobile")
                                                                                     })}
                                                                                 id={`${section.id}-${optionIdx}-mobile`}
-                                                                                name={`${section.id}[]`} />
+                                                                                name={`mediumMobile[]`}
+                                                                                defaultChecked={defaultFilters.medium?.includes(option.value)}
+                                                                            />
                                                                             <span className="label-text ml-3">{option.label}</span>
                                                                         </label>
                                                                     </div>
@@ -140,7 +182,12 @@ const Artworks: NextPageWithLayout = () => {
 
                 <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
                     <div className="border-b border-primary pt-24 pb-10">
-                        <h1 className="text-4xl font-extrabold tracking-tight text-primary">My Artworks</h1>
+                        <h1 className="text-4xl font-extrabold tracking-tight text-primary">
+                            {
+                                queryFilters.medium.length == 1 ? medium.data?.filter(m => queryFilters.medium[0] == m.id)[0]?.name : "My"
+                            }
+                            {` `} Artworks
+                        </h1>
                         <p className="mt-4 text-base">
                             Checkout out the latest release of Basic Tees, new and improved with four openings!
                         </p>
@@ -152,12 +199,26 @@ const Artworks: NextPageWithLayout = () => {
 
                             <button
                                 type="button"
-                                className="inline-flex items-center lg:hidden"
+                                className="btn btn-link btn-primary inline-flex items-center lg:hidden"
                                 onClick={() => setMobileFiltersOpen(true)}
                             >
                                 <span className="text-sm font-medium">Filters</span>
                                 <FiPlus className="flex-shrink-0 ml-1 h-5 w-5" aria-hidden="true" />
                             </button>
+
+                            {
+                                queryFilters.medium.length != 0 &&
+                                <div className="sm:hidden mt-2">
+                                    Applied filters: {" "}
+                                    {
+                                        queryFilters.medium.map((m, i) => (
+                                            <span key={i} className="badge mr-1">
+                                                {medium.data?.filter(media => media.id == m)[0]?.name}
+                                            </span>
+                                        ))
+                                    }
+                                </div>
+                            }
 
                             <div className="hidden lg:block">
                                 <div className="divide-y divide-gray-500 space-y-10">
@@ -177,10 +238,11 @@ const Artworks: NextPageWithLayout = () => {
                                                                             "medium",
                                                                             // (section.id == "medium" ? "medium" : section.id == "category" ? "category" : "sizes"),
                                                                             {
-                                                                                onChange: applyFilter
+                                                                                onChange: () => applyFilter("default")
                                                                             })}
                                                                         id={`${section.id}-${optionIdx}`}
-                                                                        name={`${section.id}[]`} />
+                                                                        defaultChecked={defaultFilters.medium?.includes(option.value)}
+                                                                    />
                                                                     <span className="label-text ml-3">{option.label}</span>
                                                                 </label>
                                                             </div>

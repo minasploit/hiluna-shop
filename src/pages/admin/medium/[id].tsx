@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { type z } from "zod";
@@ -14,6 +14,9 @@ import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 import { EditMediaFormSchema } from "~/utils/schema";
+import Image from "next/image";
+import { resolveUploadResource } from "~/utils/functions";
+import { type FtpUploadResult } from "~/pages/api/upload";
 
 const EditMedium: NextPageWithLayout = () => {
     const router = useRouter()
@@ -22,6 +25,8 @@ const EditMedium: NextPageWithLayout = () => {
     const media = api.medium.getOne.useQuery(Number(id))
 
     const mediumMutation = api.medium.edit.useMutation();
+
+    const inputFileRef = useRef<HTMLInputElement | null>(null);
 
     const mediumFields: FieldAttribute[] = [
         {
@@ -36,6 +41,25 @@ const EditMedium: NextPageWithLayout = () => {
             type: FieldType.TEXT,
             defaultValue: media.data?.description ?? ""
         },
+        {
+            name: "featureImageId",
+            label: "Feature Image",
+            type: FieldType.FILE,
+            accept: "image/*",
+            inputFileRef,
+        },
+        {
+            name: "featured",
+            label: "Featued on the home page?",
+            type: FieldType.CHECKBOX,
+            defaultValue: media.data?.featured
+        },
+        {
+            name: "featureOrder",
+            label: "Order in which the media is shown in the Home Page",
+            type: FieldType.NUMBER,
+            defaultValue: media.data?.featureOrder
+        }
     ]
 
     type EditMediumFormSchemaType = z.infer<typeof EditMediaFormSchema>;
@@ -51,7 +75,38 @@ const EditMedium: NextPageWithLayout = () => {
         const toastId = toast.loading("Editing media...");
 
         try {
-            const res = await mediumMutation.mutateAsync(data);
+            let fileId: number | undefined;
+
+            if (mediumForm.getValues("featured") && !media.data?.featureImageId && !inputFileRef.current?.files?.length) {
+                toast.error("Please, select the file you want to use as a feature image", { id: toastId });
+                return;
+            }
+
+            if (inputFileRef.current?.files?.length) {
+                const formData = new FormData();
+                Object.values(inputFileRef.current.files).forEach(file => {
+                    formData.append('file', file);
+                })
+
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json() as FtpUploadResult;
+
+                if (result.status == 500 || !result.urls[0]) {
+                    toast.error("Error uploading the file", { id: toastId });
+                    return;
+                }
+
+                fileId = result.urls[0].fileId
+            }
+
+            const res = await mediumMutation.mutateAsync({
+                ...data,
+                featureImageId: fileId
+            });
 
             mediumForm.reset(res)
 
@@ -100,6 +155,22 @@ const EditMedium: NextPageWithLayout = () => {
                 <div className="md:grid md:grid-cols-3 md:gap-6">
                     <div className="md:col-span-1">
                         <h3 className="text-lg font-medium leading-6">Edit media</h3>
+                        {
+                            media.data.FeatureImage &&
+                            <>
+                                <label className="label my-2">
+                                    <span className="label-text">Current featured image</span>
+                                </label>
+                                <div className="flex items-center flex-col">
+                                    <Image
+                                        src={resolveUploadResource(media.data.FeatureImage?.fileUrl)}
+                                        width={320} height={320} alt="Artwork image"
+                                        className="w-auto"
+                                        priority
+                                    />
+                                </div>
+                            </>
+                        }
                     </div>
 
                     <div className="mt-5 md:mt-0 md:col-span-2">

@@ -1,11 +1,17 @@
 import { type File, FileType, type Artwork } from "@prisma/client"
 import { env } from "~/env.mjs"
 
-export function resolveUploadResource(imageUrl: string): string {
+export function resolveUploadResource(imageUrl: string | null | undefined): string {
+    if (imageUrl == null || imageUrl == undefined)
+        return ""
+
     return `https://media.hiluna.art/uploads/${imageUrl}`
 }
 
-export function resolveStaticResource(imageUrl: string): string {
+export function resolveStaticResource(imageUrl: string | null | undefined): string {
+    if (imageUrl == null || imageUrl == undefined)
+        return ""
+
     return `https://media.hiluna.art/static/${imageUrl}`
 }
 
@@ -48,10 +54,12 @@ export function getArtworkImageUrl(artwork: Artwork & {
     Files: File[]
 }): string {
     const image = getArtworkImage(artwork);
-    
+
     if (image.id == 0) {
         return resolveStaticResource("artworkplaceholder.jpg")
     }
 
     return resolveUploadResource(image.fileUrl)
 }
+
+export const splitStringByLength = (str: string, length: number) => str.match(new RegExp(`.{1,${length}}`, 'g'));

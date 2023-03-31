@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useRef } from "react";
 import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { type z } from "zod";
@@ -9,26 +10,47 @@ import Field from "~/components/form/Field";
 import type FieldAttribute from "~/components/form/FieldAttributes";
 import { FieldType } from "~/components/form/FieldAttributes";
 import { type NextPageWithLayout } from "~/pages/_app";
+import { type FtpUploadResult } from "~/pages/api/upload";
 import { api } from "~/utils/api";
 import { AddMediaFormSchema } from "~/utils/schema";
-
-const mediumFields: FieldAttribute[] = [
-    {
-        name: "name",
-        label: "Name of the Media",
-        type: FieldType.TEXT,
-    },
-    {
-        name: "description",
-        label: "Description of the Media",
-        type: FieldType.TEXT,
-    },
-]
 
 const NewMedium: NextPageWithLayout = () => {
     const router = useRouter();
 
     const mediumMutation = api.medium.create.useMutation();
+
+    const inputFileRef = useRef<HTMLInputElement | null>(null);
+
+    const mediumFields: FieldAttribute[] = [
+        {
+            name: "name",
+            label: "Name of the Media",
+            type: FieldType.TEXT,
+        },
+        {
+            name: "description",
+            label: "Description of the Media",
+            type: FieldType.TEXT,
+        },
+        {
+            name: "featureImageId",
+            label: "Feature Image",
+            type: FieldType.FILE,
+            accept: "image/*",
+            inputFileRef,
+        },
+        {
+            name: "featured",
+            label: "Featued on the home page?",
+            type: FieldType.CHECKBOX
+        },
+        {
+            name: "featureOrder",
+            label: "Order in which the media is shown in the Home Page",
+            type: FieldType.NUMBER,
+            defaultValue: 0
+        }
+    ]
 
     type AddMediumFormSchemaType = z.infer<typeof AddMediaFormSchema>;
     const mediumForm = useForm<AddMediumFormSchemaType>({
@@ -39,7 +61,38 @@ const NewMedium: NextPageWithLayout = () => {
         const toastId = toast.loading("Saving media...");
 
         try {
-            const res = await mediumMutation.mutateAsync(data);
+            let fileId: number | undefined;
+
+            if (mediumForm.getValues("featured")) {
+                if (!inputFileRef.current?.files?.length) {
+                    toast.error("Please, select the file you want to use as a feature image", { id: toastId });
+                    return;
+                }
+
+                const formData = new FormData();
+                Object.values(inputFileRef.current.files).forEach(file => {
+                    formData.append('file', file);
+                })
+
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json() as FtpUploadResult;
+
+                if (result.status == 500 || !result.urls[0]) {
+                    toast.error("Error uploading the file", { id: toastId });
+                    return;
+                }
+
+                fileId = result.urls[0].fileId
+            }
+
+            const res = await mediumMutation.mutateAsync({
+                ...data,
+                featureImageId: fileId
+            });
 
             mediumForm.reset(res)
 
@@ -67,7 +120,7 @@ const NewMedium: NextPageWithLayout = () => {
                         <form onSubmit={mediumForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
                                 {mediumFields.map((field) => (
-                                    <div className="col-span-6 sm:col-span-3" key={field.name}>
+                                    <div className={clsx("col-span-6", !["featureImageId"].includes(field.name) && "sm:col-span-3")} key={field.name}>
                                         <Field {...field} />
                                     </div>
                                 ))}

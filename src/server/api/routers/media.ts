@@ -13,6 +13,9 @@ export const mediaRouter = createTRPCRouter({
             const res = await ctx.prisma.media.findFirst({
                 where: {
                     id: input
+                },
+                include: {
+                    FeatureImage: true
                 }
             })
 
@@ -20,7 +23,27 @@ export const mediaRouter = createTRPCRouter({
         }),
     list: publicProcedure
         .query(async ({ ctx }) => {
-            const res = await ctx.prisma.media.findMany()
+            const res = await ctx.prisma.media.findMany({
+                include: {
+                    FeatureImage: true
+                }
+            })
+
+            return res;
+        }),
+    listFeatured: publicProcedure
+        .query(async ({ ctx }) => {
+            const res = await ctx.prisma.media.findMany({
+                include: {
+                    FeatureImage: true
+                },
+                where: {
+                    featured: true
+                },
+                orderBy: {
+                    featureOrder: "desc"
+                }
+            })
 
             return res;
         }),
@@ -29,6 +52,9 @@ export const mediaRouter = createTRPCRouter({
             select: {
                 id: true,
                 name: true
+            },
+            orderBy: {
+                featureOrder: "desc"
             }
         })
 
@@ -39,8 +65,7 @@ export const mediaRouter = createTRPCRouter({
         .mutation(async ({ ctx, input }) => {
             const res = await ctx.prisma.media.create({
                 data: {
-                    name: input.name,
-                    description: input.description
+                    ...input
                 }
             });
 
@@ -54,8 +79,7 @@ export const mediaRouter = createTRPCRouter({
                     id: input.id
                 },
                 data: {
-                    name: input.name,
-                    description: input.description
+                    ...input
                 }
             });
 

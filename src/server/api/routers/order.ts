@@ -8,6 +8,7 @@ import {
     protectedProcedure,
 } from "~/server/api/trpc";
 import { AddOrderSchema, ChangeOrderStatusSchema } from "~/utils/schema";
+import { hashId } from "~/utils/hashId";
 
 export const orderRouter = createTRPCRouter({
     create: protectedProcedure
@@ -80,7 +81,7 @@ export const orderRouter = createTRPCRouter({
             })
 
             // send order placed sms to user
-            await sendSMSToUser(input.phoneNumber, `${order.id} at Hiluna Art`, "shopping_1");
+            await sendSMSToUser(input.phoneNumber, `${hashId.encode(order.id)} at Hiluna Art`, "shopping_1");
 
             return order;
         }),

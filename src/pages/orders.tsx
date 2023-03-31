@@ -88,7 +88,7 @@ const Orders: NextPageWithLayout = () => {
                                     </div>
                                     <div className="flex justify-between pt-6 sm:block sm:pt-0">
                                         <dt className="font-medium text-base-content">Order number</dt>
-                                        <dd className="sm:mt-1 opacity-80">{hashId.encode(order.id)}</dd>
+                                        <dd className="sm:mt-1 opacity-80 font-semibold text-primary">#{hashId.encode(order.id)}</dd>
                                     </div>
                                     <div className="flex justify-between pt-6 sm:block sm:pt-0">
                                         <dt className="font-medium text-base-content">Payment Method</dt>
@@ -107,7 +107,7 @@ const Orders: NextPageWithLayout = () => {
                                     }
                                     <div className="flex justify-between pt-6 font-medium text-base-content sm:block sm:pt-0">
                                         <dt>Total amount</dt>
-                                        <dd className="sm:mt-1">
+                                        <dd className="sm:mt-1 text-primary">
                                             {`${order.totalPrice.toLocaleString()} ETB`}
                                         </dd>
                                     </div>

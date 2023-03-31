@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { FiArrowLeft, FiDollarSign, FiHeart, FiHome, FiImage, FiList, FiLogOut, FiPenTool, FiUser } from "react-icons/fi";
 import SwitchTheme from "./SwitchTheme"
 import { useRouter } from "next/router";
-import Head from "next/head";
 
 const nav = [
     { id: 0, title: "Dashboard", icon: <FiHome className="text-xl" />, href: "/admin" },
@@ -40,10 +39,6 @@ const AdminHeader = () => {
     }, [top]);
 
     return <>
-        <Head>
-            <title>Manage - Hiluna Art</title>
-        </Head>
-
         <div className={clsx("navbar fixed z-20 backdrop-blur-lg border-t-8 border-primary", !top && `shadow`)}>
             <div className="flex-1 justify-between">
                 <div className="block md:hidden">

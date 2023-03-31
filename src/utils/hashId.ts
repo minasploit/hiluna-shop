@@ -1,5 +1,6 @@
 import Hashids from 'hashids'
-const hashids = new Hashids('hilunart', 5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789')
+import { env } from '~/env.mjs';
+const hashids = new Hashids('hilunart', Number(env.NEXT_PUBLIC_HASHID_LENGTH), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789')
 
 export const hashId = {
 	encode: (id: number) => {

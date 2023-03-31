@@ -2,8 +2,11 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { FiCheckCircle } from "react-icons/fi";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
+import { resolveUploadResource } from "~/utils/functions";
+import Image from "next/image";
 
 const ManageMedium: NextPageWithLayout = () => {
     const [deleteMediaId, setDeleteMediaId] = useState(0);
@@ -57,7 +60,7 @@ const ManageMedium: NextPageWithLayout = () => {
                 <h1 className="text-5xl font-bold">Medium</h1>
                 <p className="py-6">Here are your medium</p>
             </div>
-            
+
             <Link href="medium/new">
                 <button className="btn btn-primary">Add new Media</button>
             </Link>
@@ -69,6 +72,7 @@ const ManageMedium: NextPageWithLayout = () => {
                     <tr>
                         <th className="table-header"></th>
                         <th className="table-header">Name</th>
+                        <th className="table-header">Feature Order</th>
                         <th className="table-header">Description</th>
                         <th className="table-header"></th>
                     </tr>
@@ -80,9 +84,35 @@ const ManageMedium: NextPageWithLayout = () => {
                                 <th>{index + 1}</th>
                                 <td>
                                     <Link href={`/admin/medium/${media.id}`} className="hover:opacity-75">
-                                        {media.name}
+                                        {
+                                            media.FeatureImage ?
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="avatar">
+                                                        <div className="mask mask-squircle w-12 h-12">
+                                                            <Image
+                                                                src={resolveUploadResource(media.FeatureImage.fileUrl)}
+                                                                alt="Artwork image"
+                                                                width={90}
+                                                                height={90}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-bold">
+                                                            {media.name}
+                                                            {media.featured && <FiCheckCircle className="inline ml-2 text-primary" />}
+                                                        </div>
+                                                    </div>
+                                                </div> :
+                                                <div className="font-bold">
+                                                    {media.name}
+                                                    {media.featured && <FiCheckCircle className="inline ml-2 text-primary" />}
+                                                </div>
+                                        }
+
                                     </Link>
                                 </td>
+                                <td>{media.featureOrder}</td>
                                 <td>{media.description}</td>
                                 <th className="flex gap-2 justify-end">
                                     <Link href={`/admin/medium/${media.id}`}>
