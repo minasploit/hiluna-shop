@@ -6,7 +6,11 @@ const config = {
 		"./node_modules/react-tailwindcss-select/dist/index.esm.js"
 	],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				wisegreen: "#9FE870"
+			}
+		},
 	},
 	plugins: [require("daisyui")],
 	daisyui: {
@@ -22,7 +26,8 @@ const config = {
 					// eslint-disable-next-line @typescript-eslint/no-var-requires
 					...require("daisyui/src/colors/themes")["[data-theme=halloween]"],
 					primary: "#9FE870",
-					"primary-focus": "#80e142"
+					"primary-focus": "#80e142",
+					secondary: "#163300"
 				}
 			},
 		],

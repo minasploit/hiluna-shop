@@ -54,7 +54,7 @@ const Home: NextPageWithLayout = () => {
 										mediaIdx == 0 &&
 										<div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
 											<Image
-												width={500} height={500}
+												width={400} height={400}
 												priority
 												className="object-center object-cover group-hover:opacity-75 w-auto"
 												src={resolveUploadResource(media.FeatureImage?.fileUrl)}
@@ -63,7 +63,7 @@ const Home: NextPageWithLayout = () => {
 											<div aria-hidden="true" className="bg-gradient-to-b from-transparent to-black opacity-50" />
 											<div className="p-6 flex items-end">
 												<div>
-													<h3 className="font-semibold">
+													<h3 className="text-xl font-semibold">
 														<Link href={`/artworks?m=${hashId.encode(media.id)}`}>
 															<span className="absolute inset-0" />
 															{media.name}
@@ -88,11 +88,11 @@ const Home: NextPageWithLayout = () => {
 											/>
 											<div
 												aria-hidden="true"
-												className="bg-gradient-to-b from-transparent to-black opacity-50 sm:absolute sm:inset-0"
+												className="bg-gradient-to-b from-transparent to-black opacity-80 sm:absolute sm:inset-0"
 											/>
 											<div className="p-6 flex items-end sm:absolute sm:inset-0">
 												<div>
-													<h3 className="font-semibold sm:text-white">
+													<h3 className="text-xl font-semibold sm:text-wisegreen">
 														<Link href={`/artworks?m=${hashId.encode(media.id)}`}>
 															<span className="absolute inset-0" />
 															{media.name}
@@ -119,27 +119,27 @@ const Home: NextPageWithLayout = () => {
 
 				{/* Featured section */}
 				{/* <section aria-labelledby="cause-heading">
-					<div className="relative bg-gray-800 py-32 px-6 sm:py-40 sm:px-12 lg:px-16">
+					<div className="relative bg-secondary py-32 px-6 sm:py-40 sm:px-12 lg:px-16">
 						<div className="absolute inset-0 overflow-hidden">
 							<img
 								src="https://tailwindui.com/img/ecommerce-images/home-page-03-feature-section-full-width.jpg"
 								alt=""
-								className="w-full h-full object-center object-cover"
+								className="w-full h-full object-center object-cover opacity-10"
 							/>
 						</div>
 						<div aria-hidden="true" className="absolute inset-0 bg-gray-900 bg-opacity-50" />
 						<div className="relative max-w-3xl mx-auto flex flex-col items-center text-center">
-							<h2 id="cause-heading" className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+							<h2 id="cause-heading" className="text-3xl font-extrabold tracking-tight sm:text-4xl text-primary">
 								Long-term thinking
 							</h2>
-							<p className="mt-3 text-xl text-white">
+							<p className="mt-3 text-xl">
 								We're committed to responsible, sustainable, and ethical manufacturing. Our small-scale approach allows
 								us to focus on quality and reduce our impact. We're doing our best to delay the inevitable heat-death of
 								the universe.
 							</p>
 							<a
 								href="#"
-								className="mt-8 w-full block bg-white border border-transparent rounded-md py-3 px-8 text-base font-medium text-gray-900 hover:bg-gray-100 sm:w-auto"
+								className="mt-8 w-full btn btn-secondary"
 							>
 								Read our story
 							</a>
@@ -250,7 +250,7 @@ const Home: NextPageWithLayout = () => {
 											width={500} height={500}
 										/>
 									</div>
-									<h3 className="mt-4 text-base font-semibold">
+									<h3 className="mt-4 text-base font-semibold text-primary">
 										<a href={`/artworks/${favorite.id}`}>
 											<span className="absolute inset-0" />
 											{favorite.name}
