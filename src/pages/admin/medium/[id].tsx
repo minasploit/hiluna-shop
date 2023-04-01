@@ -178,7 +178,7 @@ const EditMedium: NextPageWithLayout = () => {
                             <form onSubmit={mediumForm.handleSubmit(onSubmit)}>
                                 <div className="grid grid-cols-6 gap-6">
                                     {mediumFields.map((field) => (
-                                        <div className="col-span-6 sm:col-span-3" key={field.name}>
+                                        <div className={clsx("col-span-6", !["featureImageId"].includes(field.name) && "sm:col-span-3")} key={field.name}>
                                             <Field {...field} />
                                         </div>
                                     ))}

@@ -76,8 +76,9 @@ const Orders: NextPageWithLayout = () => {
                             </h3>
 
                             <div className={clsx(
-                                "rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8 bg-base-200 border border-primary",
-                                Number(orderId) == order.id && "border-[3px] border-primary"
+                                "rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8 bg-base-200 bg-opacity-30 border-primary",
+                                orderId ? "border" : "border-[3px]",
+                                Number(orderId) == order.id && "border-[3px]"
                             )}>
                                 <dl className="divide-y divide-gray-200 space-y-6 text-sm flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-5 sm:gap-x-6 lg:w-1/2 lg:flex-none lg:gap-x-8">
                                     <div className="flex justify-between sm:block">
@@ -88,7 +89,7 @@ const Orders: NextPageWithLayout = () => {
                                     </div>
                                     <div className="flex justify-between pt-6 sm:block sm:pt-0">
                                         <dt className="font-medium text-base-content">Order number</dt>
-                                        <dd className="sm:mt-1 opacity-80 font-semibold text-primary">#{hashId.encode(order.id)}</dd>
+                                        <dd className="sm:mt-1 font-semibold text-primary">#{hashId.encode(order.id)}</dd>
                                     </div>
                                     <div className="flex justify-between pt-6 sm:block sm:pt-0">
                                         <dt className="font-medium text-base-content">Payment Method</dt>

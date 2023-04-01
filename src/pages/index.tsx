@@ -92,7 +92,7 @@ const Home: NextPageWithLayout = () => {
 											/>
 											<div className="p-6 flex items-end sm:absolute sm:inset-0">
 												<div>
-													<h3 className="text-xl md:text-2xl font-semibold sm:text-primary">
+													<h3 className="text-xl md:text-2xl font-semibold sm:text-white">
 														<Link href={`/artworks?m=${hashId.encode(media.id)}`}>
 															<span className="absolute inset-0" />
 															{media.name}

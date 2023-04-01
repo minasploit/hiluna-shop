@@ -281,7 +281,7 @@ const Artworks: NextPageWithLayout = () => {
                                     <Link href={`/artworks/${artwork.id}`} key={artwork.id}>
                                         <div
                                             className={
-                                                clsx("group relative bg-base-200 border rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8",
+                                                clsx("group relative bg-base-200 bg-opacity-30 border rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8",
                                                     styles.artworkBorder)
                                             }
                                         >

@@ -182,7 +182,11 @@ export const orderRouter = createTRPCRouter({
                         include: {
                             Artwork: {
                                 include: {
-                                    Files: true
+                                    Files: {
+                                        include: {
+                                            File: true
+                                        }
+                                    }
                                 }
                             }
                         }
