@@ -20,14 +20,16 @@ const config = {
 				garden: {
 					// eslint-disable-next-line @typescript-eslint/no-var-requires
 					...require("daisyui/src/colors/themes")["[data-theme=garden]"],
-					primary: "#163300",
+					primary: "#7BA8D4",
+					// "primary-content": "#163300",
+					"base-100": "#fff"
 				},
 				halloween: {
 					// eslint-disable-next-line @typescript-eslint/no-var-requires
 					...require("daisyui/src/colors/themes")["[data-theme=halloween]"],
-					primary: "#9FE870",
-					"primary-focus": "#80e142",
-					secondary: "#163300"
+					primary: "#7BA8D4",
+					// "primary-content": "#163300",
+					// secondary: "#163300"
 				}
 			},
 		],

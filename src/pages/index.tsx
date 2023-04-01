@@ -63,7 +63,7 @@ const Home: NextPageWithLayout = () => {
 											<div aria-hidden="true" className="bg-gradient-to-b from-transparent to-black opacity-50" />
 											<div className="p-6 flex items-end">
 												<div>
-													<h3 className="text-xl font-semibold">
+													<h3 className="text-xl md:text-2xl font-semibold">
 														<Link href={`/artworks?m=${hashId.encode(media.id)}`}>
 															<span className="absolute inset-0" />
 															{media.name}
@@ -92,7 +92,7 @@ const Home: NextPageWithLayout = () => {
 											/>
 											<div className="p-6 flex items-end sm:absolute sm:inset-0">
 												<div>
-													<h3 className="text-xl font-semibold sm:text-wisegreen">
+													<h3 className="text-xl md:text-2xl font-semibold sm:text-primary">
 														<Link href={`/artworks?m=${hashId.encode(media.id)}`}>
 															<span className="absolute inset-0" />
 															{media.name}
@@ -169,7 +169,7 @@ const Home: NextPageWithLayout = () => {
 					>
 						<div className="max-w-2xl mx-auto lg:max-w-none">
 							<h2
-								id="sale-heading"
+								id="sale-headingssssss"
 								className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl"
 							>
 								Get 25% off during our one-time sale
@@ -179,7 +179,7 @@ const Home: NextPageWithLayout = () => {
 								stock.
 							</p>
 							<button
-								className="btn btn-primary mt-6 inline-block w-full border border-transparent rounded-md py-3 px-8 font-medium text-base-100 sm:w-auto"
+								className="btn btn-primary mt-6 inline-block w-full border border-transparent rounded-md py-3 px-8 font-medium sm:w-auto"
 							>
 								Get access to our one-time sale
 							</button>
@@ -250,7 +250,7 @@ const Home: NextPageWithLayout = () => {
 											width={500} height={500}
 										/>
 									</div>
-									<h3 className="mt-4 text-base font-semibold text-primary">
+									<h3 className="mt-4 text-base font-semibold">
 										<a href={`/artworks/${favorite.id}`}>
 											<span className="absolute inset-0" />
 											{favorite.name}
@@ -286,7 +286,7 @@ const Home: NextPageWithLayout = () => {
 							<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 								<div className="relative pt-48 pb-16 sm:pb-24">
 									<div>
-										<h2 id="stock-heading" className="text-4xl font-extrabold tracking-tight md:text-5xl">
+										<h2 id="stock-headingsssssssssss" className="text-4xl font-extrabold tracking-tight md:text-5xl text-primary-content">
 											Final Stock.
 											<br />
 											Up to 50% off.

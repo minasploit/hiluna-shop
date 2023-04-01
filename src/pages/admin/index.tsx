@@ -26,7 +26,7 @@ const AdminPage: NextPageWithLayout = () => {
                     <div className="stat-value">{dashboardNumbers.data?.revenue.toLocaleString()} ETB</div>
                     <div className="stat-actions">
                         <Link href={`/admin/orders`}>
-                            <button className="btn btn-sm btn-secondary">View orders</button>
+                            <button className="btn btn-sm btn-primary">View orders</button>
                         </Link>
                     </div>
                 </div>
