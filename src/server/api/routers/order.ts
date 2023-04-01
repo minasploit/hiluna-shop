@@ -94,7 +94,11 @@ export const orderRouter = createTRPCRouter({
                         include: {
                             Artwork: {
                                 include: {
-                                    Files: true
+                                    Files: {
+                                        include: {
+                                            File: true
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -152,7 +156,11 @@ export const orderRouter = createTRPCRouter({
                             include: {
                                 Artwork: {
                                     include: {
-                                        Files: true
+                                        Files: {
+                                            include: {
+                                                File: true
+                                            }
+                                        }
                                     }
                                 }
                             }

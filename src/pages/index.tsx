@@ -244,8 +244,8 @@ const Home: NextPageWithLayout = () => {
 										<Image
 											src={getArtworkImageUrl(favorite)}
 											alt="Favorite artwork image"
-											blurDataURL={getArtworkImage(favorite).blurHash ?? undefined}
-											placeholder={getArtworkImage(favorite).blurHash ? "blur" : "empty"}
+											blurDataURL={getArtworkImage(favorite).File.blurHash ?? undefined}
+											placeholder={getArtworkImage(favorite).File.blurHash ? "blur" : "empty"}
 											className="w-full h-full object-center object-cover"
 											width={500} height={500}
 										/>

@@ -1,4 +1,4 @@
-import { type File, FileType, type Artwork } from "@prisma/client"
+import { type File, FileType, type Artwork, type ArtworkFiles } from "@prisma/client"
 import { env } from "~/env.mjs"
 
 export function resolveUploadResource(imageUrl: string | null | undefined): string {
@@ -35,31 +35,44 @@ export async function sendSMSToUser(phoneNumber: string, message: string, templa
 }
 
 export function getArtworkImage(artwork: Artwork & {
-    Files: File[]
-}): File {
-    const images = artwork.Files.filter(f => f.fileType == FileType.Image);
+    Files: (ArtworkFiles & {
+        File: File;
+    })[]
+}): {
+    File: File;
+    type: "upload" | "static";
+} {
+    const images = artwork.Files.filter(f => f.File.fileType == FileType.Image);
     if (!images[0])
         return {
-            id: 0,
-            fileUrl: "artworkplaceholder.jpg",
-            fileType: FileType.Image,
-            mimeType: "image/*",
-            blurHash: null
+            type: "static",
+            File: {
+                id: 0,
+                fileUrl: "artworkplaceholder.jpg",
+                fileType: FileType.Image,
+                mimeType: "image/*",
+                blurHash: null
+            }
         }
 
-    return images[0]
+    return {
+        ...images[0],
+        type: "upload"
+    }
 }
 
 export function getArtworkImageUrl(artwork: Artwork & {
-    Files: File[]
+    Files: (ArtworkFiles & {
+        File: File;
+    })[]
 }): string {
     const image = getArtworkImage(artwork);
 
-    if (image.id == 0) {
+    if (image.type == "static") {
         return resolveStaticResource("artworkplaceholder.jpg")
     }
 
-    return resolveUploadResource(image.fileUrl)
+    return resolveUploadResource(image.File.fileUrl)
 }
 
 export const splitStringByLength = (str: string, length: number) => str.match(new RegExp(`.{1,${length}}`, 'g'));

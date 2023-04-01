@@ -21,7 +21,11 @@ export const artworkRouter = createTRPCRouter({
                             name: true
                         }
                     },
-                    Files: true
+                    Files: {
+                        include: {
+                            File: true
+                        }
+                    }
                 }
             })
 
@@ -32,7 +36,11 @@ export const artworkRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             const res = await ctx.prisma.artwork.findMany({
                 include: {
-                    Files: true,
+                    Files: {
+                        include: {
+                            File: true
+                        }
+                    },
                     Collection: true
                 },
                 where: {
@@ -51,7 +59,11 @@ export const artworkRouter = createTRPCRouter({
                     featured: true
                 },
                 include: {
-                    Files: true
+                    Files: {
+                        include: {
+                            File: true
+                        }
+                    }
                 }
             })
 
@@ -92,7 +104,11 @@ export const artworkRouter = createTRPCRouter({
                     }))
                 },
                 include: {
-                    Files: true,
+                    Files: {
+                        include: {
+                            File: true
+                        }
+                    },
                     Collection: true,
                     Medium: {
                         select: {
@@ -117,16 +133,35 @@ export const artworkRouter = createTRPCRouter({
             delete artwork.medium;
             delete artwork.files;
 
-            const res = await ctx.prisma.artwork.create({
-                data: {
-                    ...artwork,
-                    Medium: {
-                        connect: input.medium?.map(m => ({ id: m }))
-                    },
-                    Files: {
-                        connect: input.files?.map(f => ({ id: f }))
+            const res = await ctx.prisma.$transaction(async (prisma) => {
+                const createdArtwork = await prisma.artwork.create({
+                    data: {
+                        ...artwork,
+                        Medium: {
+                            connect: [{
+                                id: 8
+                            }]
+                        },
                     }
-                }
+                });
+
+                const updatedArtwork = await prisma.artwork.update({
+                    data: {
+                        Files: {
+                            set: input.files?.map(f => ({
+                                artworkId_fileId: {
+                                    fileId: f,
+                                    artworkId: createdArtwork.id
+                                }
+                            }))
+                        }
+                    },
+                    where: {
+                        id: createdArtwork.id
+                    }
+                });
+
+                return updatedArtwork
             });
 
             return res;
@@ -156,7 +191,12 @@ export const artworkRouter = createTRPCRouter({
                         set: input.medium?.map(m => ({ id: m }))
                     },
                     Files: {
-                        set: input.files?.map(f => ({ id: f }))
+                        set: input.files?.map(f => ({
+                            artworkId_fileId: {
+                                fileId: f,
+                                artworkId: input.id
+                            }
+                        }))
                     }
                 }
             });

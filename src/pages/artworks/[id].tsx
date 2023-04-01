@@ -109,10 +109,10 @@ const ArtworkDetail: NextPageWithLayout = () => {
                         <div className="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
                             <Tab.List className="grid grid-cols-4 gap-6">
                                 {artwork.data.Files
-                                    .sort((a) => (a.fileType == FileType.Image) ? -1 : 1)
+                                    .sort((f) => (f.File.fileType == FileType.Image) ? -1 : 1)
                                     .map((file) => (
                                         <Tab
-                                            key={file.id}
+                                            key={file.File.id}
                                             className="relative h-24 rounded-md flex items-center justify-center text-sm font-medium uppercase cursor-pointer hover:bg-gray-50"
                                         >
                                             {({ selected }) => (
@@ -121,9 +121,9 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                                     <span className="absolute inset-0 rounded-md overflow-hidden flex items-center">
                                                         <div className="relative">
                                                             {
-                                                                file.fileType === FileType.Image &&
+                                                                file.File.fileType === FileType.Image &&
                                                                 <Image
-                                                                    src={resolveUploadResource(file.fileUrl)}
+                                                                    src={resolveUploadResource(file.File.fileUrl)}
                                                                     alt="Artwork image"
                                                                     priority={true}
                                                                     width={120} height={120}
@@ -131,16 +131,16 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                                                 />
                                                             }
                                                             {
-                                                                file.fileType === FileType.Video &&
+                                                                file.File.fileType === FileType.Video &&
                                                                 <video
-                                                                    src={resolveUploadResource(file.fileUrl)}
+                                                                    src={resolveUploadResource(file.File.fileUrl)}
                                                                     className="w-full h-full object-center object-cover sm:rounded-lg">
                                                                 </video>
                                                             }
                                                         </div>
                                                     </span>
                                                     {
-                                                        file.fileType === FileType.Video &&
+                                                        file.File.fileType === FileType.Video &&
                                                         <div className="absolute">
                                                             <FiPlayCircle className="w-10 h-10 text-white" />
                                                         </div>
@@ -161,23 +161,23 @@ const ArtworkDetail: NextPageWithLayout = () => {
 
                         <Tab.Panels className="w-full aspect-w-1 aspect-h-1">
                             {artwork.data.Files.map((file) => (
-                                <Tab.Panel key={file.id}>
+                                <Tab.Panel key={file.File.id}>
                                     {
-                                        file.fileType === FileType.Image &&
+                                        file.File.fileType === FileType.Image &&
                                         <Image
-                                            src={resolveUploadResource(file.fileUrl)}
+                                            src={resolveUploadResource(file.File.fileUrl)}
                                             alt="Artwork thumbnail"
                                             priority
-                                            blurDataURL={file.blurHash ?? undefined}
-                                            placeholder={file.blurHash ? "blur" : "empty"}
+                                            blurDataURL={file.File.blurHash ?? undefined}
+                                            placeholder={file.File.blurHash ? "blur" : "empty"}
                                             width={720} height={720}
                                             className="w-full h-full object-center object-cover sm:rounded-lg"
                                         />
                                     }
                                     {
-                                        file.fileType === FileType.Video &&
+                                        file.File.fileType === FileType.Video &&
                                         <video controls className="w-full h-full object-center object-cover sm:rounded-lg">
-                                            <source src={resolveUploadResource(file.fileUrl)} type={file.mimeType ?? "video/mp4"} />
+                                            <source src={resolveUploadResource(file.File.fileUrl)} type={file.File.mimeType ?? "video/mp4"} />
                                             Your browser does not support the video tag.
                                         </video>
                                     }

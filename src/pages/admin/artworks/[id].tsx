@@ -138,14 +138,14 @@ const EditArtwork: NextPageWithLayout = () => {
 
     useEffect(() => {
         artworkForm.setValue("id", Number(id))
-        artworkForm.setValue("files", artwork.data?.Files?.map(f => f.id))
+        artworkForm.setValue("files", artwork.data?.Files?.map(f => f.File.id))
     }, [id, artworkForm, artwork.data?.Files]);
 
     const onSubmit: SubmitHandler<EditArtworksFormSchemaType> = async (data) => {
         const toastId = toast.loading("Editing artwork...");
 
         try {
-            let urls = artwork.data?.Files.map(f => f.id);
+            let urls = artwork.data?.Files.map(f => f.File.id);
 
             if (inputFileRef.current?.files?.length) {
                 const formData = new FormData();
@@ -229,20 +229,20 @@ const EditArtwork: NextPageWithLayout = () => {
                         <div className="flex items-center flex-col">
                             {
                                 artwork.data.Files.map(f => (
-                                    <Fragment key={f.id}>
+                                    <Fragment key={f.File.id}>
                                         {
-                                            f.fileType == FileType.Image &&
+                                            f.File.fileType == FileType.Image &&
                                             <Image
-                                                src={resolveUploadResource(f.fileUrl)}
+                                                src={resolveUploadResource(f.File.fileUrl)}
                                                 width={320} height={320} alt="Artwork image"
                                                 className="w-auto"
                                                 priority
                                             />
                                         }
                                         {
-                                            f.fileType == FileType.Video &&
+                                            f.File.fileType == FileType.Video &&
                                             <video controls>
-                                                <source src={resolveUploadResource(f.fileUrl)} type={f.mimeType ?? "video/mp4"} />
+                                                <source src={resolveUploadResource(f.File.fileUrl)} type={f.File.mimeType ?? "video/mp4"} />
                                                 Your browser does not support the video tag.
                                             </video>
                                         }

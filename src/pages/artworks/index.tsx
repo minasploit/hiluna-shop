@@ -290,8 +290,8 @@ const Artworks: NextPageWithLayout = () => {
                                                     src={getArtworkImageUrl(artwork)}
                                                     alt={artwork.name} width={500} height={500}
                                                     priority
-                                                    blurDataURL={getArtworkImage(artwork).blurHash ?? undefined}
-                                                    placeholder={getArtworkImage(artwork).blurHash ? "blur" : "empty"}
+                                                    blurDataURL={getArtworkImage(artwork).File.blurHash ?? undefined}
+                                                    placeholder={getArtworkImage(artwork).File.blurHash ? "blur" : "empty"}
                                                     className="w-full h-full object-center object-cover sm:w-full sm:h-full"
                                                 />
                                             </div>
