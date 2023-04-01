@@ -26,7 +26,7 @@ model Artwork {
     Collection       Collection?     @relation(fields: [collectionId], references: [id])
     CreatedBy        User            @relation(fields: [createdById], references: [id])
     Medium           Media[]         @relation("ArtworksAndMedium")
-    Files            File[]          @relation("ArtworksAndFiles")
+    Files            ArtworkFiles[]
     Orders           ArtworkOrders[]
 
     @@map("Artworks")
@@ -88,14 +88,25 @@ model ArtworkOrders {
     @@map("ArtworkOrders")
 }
 
+model ArtworkFiles {
+    artworkId Int
+    Artwork   Artwork @relation(fields: [artworkId], references: [id])
+    fileId    Int
+    File      File    @relation(fields: [fileId], references: [id])
+    fileOrder Int
+
+    @@id([artworkId, fileId])
+    @@map("ArtworkFiles")
+}
+
 model File {
-    id             Int       @id @default(autoincrement())
+    id             Int            @id @default(autoincrement())
     fileUrl        String
     fileType       FileType
     mimeType       String?
     blurHash       String?
     Order          Order[]
-    Artwork        Artwork[] @relation("ArtworksAndFiles")
+    Artworks       ArtworkFiles[]
     FeaturingMedia Media[]
 
     @@map("Files")
