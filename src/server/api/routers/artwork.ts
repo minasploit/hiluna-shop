@@ -124,36 +124,34 @@ export const artworkRouter = createTRPCRouter({
     create: adminProcedure
         .input(AddArtworkSchema)
         .mutation(async ({ ctx, input }) => {
+            const { files, medium, ...data } = input;
+
             const artwork = {
-                ...input,
+                ...data,
                 createdById: ctx.session.user.id,
                 collectionId: input.collectionId == 0 ? null : input.collectionId,
             };
-
-            delete artwork.medium;
-            delete artwork.files;
 
             const res = await ctx.prisma.$transaction(async (prisma) => {
                 const createdArtwork = await prisma.artwork.create({
                     data: {
                         ...artwork,
                         Medium: {
-                            connect: [{
-                                id: 8
-                            }]
-                        },
+                            connect: medium?.map(m => ({ id: m }))
+                        }
                     }
                 });
 
                 const updatedArtwork = await prisma.artwork.update({
                     data: {
                         Files: {
-                            set: input.files?.map(f => ({
-                                artworkId_fileId: {
+                            deleteMany: {},
+                            createMany: {
+                                data: files.map(f => ({
                                     fileId: f,
-                                    artworkId: createdArtwork.id
-                                }
-                            }))
+                                    fileOrder: 0
+                                }))
+                            }
                         }
                     },
                     where: {
@@ -161,7 +159,7 @@ export const artworkRouter = createTRPCRouter({
                     }
                 });
 
-                return updatedArtwork
+                return updatedArtwork;
             });
 
             return res;
@@ -169,14 +167,13 @@ export const artworkRouter = createTRPCRouter({
     edit: adminProcedure
         .input(EditArtworkSchema)
         .mutation(async ({ ctx, input }) => {
+            const { files, medium, ...data } = input;
+
             const artwork = {
-                ...input,
+                ...data,
                 createdById: ctx.session.user.id,
                 collectionId: input.collectionId == 0 ? null : input.collectionId
             }
-
-            delete artwork.medium;
-            delete artwork.files;
 
             const res = await ctx.prisma.artwork.update({
                 where: {
@@ -188,15 +185,16 @@ export const artworkRouter = createTRPCRouter({
                 data: {
                     ...artwork,
                     Medium: {
-                        set: input.medium?.map(m => ({ id: m }))
+                        set: medium?.map(m => ({ id: m }))
                     },
                     Files: {
-                        set: input.files?.map(f => ({
-                            artworkId_fileId: {
+                        deleteMany: {},
+                        createMany: {
+                            data: files.map(f => ({
                                 fileId: f,
-                                artworkId: input.id
-                            }
-                        }))
+                                fileOrder: 0
+                            }))
+                        },
                     }
                 }
             });

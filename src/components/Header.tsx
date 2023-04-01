@@ -89,11 +89,14 @@ const Header = () => {
                 </ul>
             </div>
             <div className="flex-none">
-                <div className="hidden sm:block">
-                    <Link className="swap swap-rotate btn btn-circle btn-ghost" href="/admin">
-                        <FiEye className="w-5 h-5" />
-                    </Link>
-                </div>
+                {
+                    session?.user.role == UserRole.ADMIN &&
+                    <div className="hidden sm:block">
+                        <Link className="swap swap-rotate btn btn-circle btn-ghost" href="/admin">
+                            <FiEye className="w-5 h-5" />
+                        </Link>
+                    </div>
+                }
 
                 <div className="hidden sm:block">
                     <SwitchTheme />

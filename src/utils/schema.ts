@@ -34,8 +34,8 @@ const ArtworkSharedSchema = {
 }
 export const AddArtworkSchema = z.object({
     ...ArtworkSharedSchema,
-    medium: z.array(z.number()).optional(),
-    files: z.array(z.number()).optional(),
+    medium: z.array(z.number()),
+    files: z.array(z.number()),
 })
 export const AddArtworkFormSchema = z.object({
     ...ArtworkSharedSchema,
@@ -51,8 +51,8 @@ export const AddArtworkFormSchema = z.object({
 export const EditArtworkSchema = z.object({
     ...ArtworkSharedSchema,
     id: z.number(),
-    files: z.array(z.number()).optional(),
-    medium: z.array(z.number()).optional(),
+    files: z.array(z.number()),
+    medium: z.array(z.number()),
 })
 export const EditArtworkFormSchema = z.object({
     ...ArtworkSharedSchema,
