@@ -20,7 +20,7 @@ import ManageOrders from "~/pages/admin/orders";
 import Checkout from "~/pages/checkout";
 import Orders from "~/pages/orders";
 import ManageOrder from "~/pages/admin/orders/[id]";
-import Test from "~/pages/test";
+import Favorites from "~/pages/favorites";
 
 const UserLayoutPages = [
     Home,
@@ -29,7 +29,7 @@ const UserLayoutPages = [
     Collections,
     Checkout,
     Orders,
-    Test
+    Favorites
 ];
 
 const AdminLayoutPages = [

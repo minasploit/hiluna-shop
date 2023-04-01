@@ -149,32 +149,7 @@ export const orderRouter = createTRPCRouter({
         }),
     list: protectedProcedure
         .query(async ({ ctx }) => {
-            if (ctx.session.user.role == UserRole.USER) {
-                const res = await ctx.prisma.order.findMany({
-                    include: {
-                        OrderedArtworks: {
-                            include: {
-                                Artwork: {
-                                    include: {
-                                        Files: {
-                                            include: {
-                                                File: true
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        OrderedBy: true,
-                        Screenshot: true
-                    },
-                    where: {
-                        orderedById: ctx.session.user.id
-                    }
-                })
-
-                return res
-            }
+            const isElevated = ctx.session.user.role == UserRole.ADMIN;
 
             const res = await ctx.prisma.order.findMany({
                 include: {
@@ -193,6 +168,9 @@ export const orderRouter = createTRPCRouter({
                     },
                     OrderedBy: true,
                     Screenshot: true
+                },
+                where: isElevated ? {} : {
+                    orderedById: ctx.session.user.id
                 },
                 orderBy: {
                     orderedAt: "desc"
