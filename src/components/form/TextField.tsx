@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
-import { type InputFieldAttributes } from "./FieldAttributes";
+import { type TextFieldAttributes } from "./FieldAttributes";
 
-const InputField: React.FC<InputFieldAttributes> = ({ label, name, type, defaultValue }) => {
+const TextField: React.FC<TextFieldAttributes> = ({ label, name, type, defaultValue }) => {
     const form = useFormContext();
 
     useEffect(() => {
@@ -31,4 +31,4 @@ const InputField: React.FC<InputFieldAttributes> = ({ label, name, type, default
     );
 };
 
-export default InputField;
+export default TextField;

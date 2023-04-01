@@ -42,7 +42,7 @@ export function getArtworkImage(artwork: Artwork & {
     File: File;
     type: "upload" | "static";
 } {
-    const images = artwork.Files.filter(f => f.File.fileType == FileType.Image);
+    const images = artwork.Files.filter(f => f.File.fileType == FileType.Image).sort((a, b) => a.fileOrder < b.fileOrder ? 1 : -1);
     if (!images[0])
         return {
             type: "static",

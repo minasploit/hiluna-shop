@@ -2,11 +2,11 @@ import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import 'react-quill/dist/quill.snow.css'
 import { Controller, useFormContext } from "react-hook-form";
-import { type RichInputFieldAttributes } from "./FieldAttributes";
+import { type RichTextFieldAttributes } from "./FieldAttributes";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-const RichInputField: React.FC<RichInputFieldAttributes> = ({ label, name, defaultValue }) => {
+const RichTextField: React.FC<RichTextFieldAttributes> = ({ label, name, defaultValue }) => {
     const form = useFormContext();
 
     useEffect(() => {
@@ -50,4 +50,4 @@ const RichInputField: React.FC<RichInputFieldAttributes> = ({ label, name, defau
     );
 };
 
-export default RichInputField;
+export default RichTextField;

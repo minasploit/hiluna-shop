@@ -24,6 +24,9 @@ export const artworkRouter = createTRPCRouter({
                     Files: {
                         include: {
                             File: true
+                        },
+                        orderBy: {
+                            fileOrder: "desc"
                         }
                     }
                 }
@@ -167,7 +170,7 @@ export const artworkRouter = createTRPCRouter({
     edit: adminProcedure
         .input(EditArtworkSchema)
         .mutation(async ({ ctx, input }) => {
-            const { files, medium, ...data } = input;
+            const { files, medium, fileOrder, ...data } = input;
 
             const artwork = {
                 ...data,
@@ -192,7 +195,7 @@ export const artworkRouter = createTRPCRouter({
                         createMany: {
                             data: files.map(f => ({
                                 fileId: f,
-                                fileOrder: 0
+                                fileOrder: fileOrder.filter(o => o?.fileId == f)[0]?.order ?? 0
                             }))
                         },
                     }

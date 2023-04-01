@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             //
         });
     }).catch(e => {
-        console.log(e);
+        // console.error(e);
         status = 500;
         resultBody = {
             status: 500, message: 'Upload error', urls: []
@@ -113,6 +113,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             }
         }
         catch (err) {
+            // console.error(err);
             status = 500;
             resultBody = {
                 status: 500, message: 'Upload error', urls: []

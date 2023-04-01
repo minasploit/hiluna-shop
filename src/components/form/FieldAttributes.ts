@@ -9,13 +9,16 @@ enum FieldType {
     RICHTEXT = "richtext",
     FILE = "file",
     MULTITAG = "multitag",
+    HIDDEN = "hidden",
 }
 
 interface BaseFieldAttributes {
-    // id: string;
-    label: string;
     name: string;
     type: FieldType;
+}
+
+interface VisibleBaseFieldAttributes extends BaseFieldAttributes {
+    label: string;
 }
 
 interface SelectStringOptions {
@@ -28,34 +31,34 @@ interface SelectNumberOptions {
     value: number
 }
 
-interface SelectFieldAttributes extends BaseFieldAttributes {
+interface SelectFieldAttributes extends VisibleBaseFieldAttributes {
     type: FieldType.SELECT;
     options: SelectStringOptions[] | SelectNumberOptions[];
     valueType?: "string" | "number";
     defaultValue?: string | number;
 }
 
-interface CheckboxFieldAttributes extends BaseFieldAttributes {
+interface CheckboxFieldAttributes extends VisibleBaseFieldAttributes {
     type: FieldType.CHECKBOX;
     defaultValue?: boolean;
 }
 
-interface NumberFieldAttributes extends BaseFieldAttributes {
+interface NumberFieldAttributes extends VisibleBaseFieldAttributes {
     type: FieldType.NUMBER;
     defaultValue?: number;
 }
 
-interface RichInputFieldAttributes extends BaseFieldAttributes {
+interface RichTextFieldAttributes extends VisibleBaseFieldAttributes {
     type: FieldType.RICHTEXT;
     defaultValue?: string;
 }
 
-interface InputFieldAttributes extends BaseFieldAttributes {
+interface TextFieldAttributes extends VisibleBaseFieldAttributes {
     type: FieldType.TEXT;
     defaultValue?: string;
 }
 
-interface FileFieldAttributes extends BaseFieldAttributes {
+interface FileFieldAttributes extends VisibleBaseFieldAttributes {
     type: FieldType.FILE;
     inputFileRef?: React.MutableRefObject<HTMLInputElement | null>,
     accept?: string,
@@ -63,13 +66,19 @@ interface FileFieldAttributes extends BaseFieldAttributes {
     required?: boolean
 }
 
-interface MultiTagFieldAttributes extends BaseFieldAttributes {
+interface MultiTagFieldAttributes extends VisibleBaseFieldAttributes {
     type: FieldType.MULTITAG;
     options: Options;
     defaultValue?: SelectValue;
 }
 
-type FieldAttribute = InputFieldAttributes | SelectFieldAttributes | CheckboxFieldAttributes | NumberFieldAttributes | RichInputFieldAttributes | FileFieldAttributes | MultiTagFieldAttributes;
+interface HiddenFieldAttributes extends BaseFieldAttributes {
+    type: FieldType.HIDDEN;
+    defaultValue: number | string,
+    valueType?: "string" | "number";
+}
+
+type FieldAttribute = TextFieldAttributes | SelectFieldAttributes | CheckboxFieldAttributes | NumberFieldAttributes | RichTextFieldAttributes | FileFieldAttributes | MultiTagFieldAttributes | HiddenFieldAttributes;
 
 export default FieldAttribute;
-export { FieldType, type InputFieldAttributes, type SelectFieldAttributes, type CheckboxFieldAttributes, type NumberFieldAttributes, type RichInputFieldAttributes, type FileFieldAttributes, type MultiTagFieldAttributes };
+export { FieldType, type TextFieldAttributes, type SelectFieldAttributes, type CheckboxFieldAttributes, type NumberFieldAttributes, type RichTextFieldAttributes, type FileFieldAttributes, type MultiTagFieldAttributes, type HiddenFieldAttributes };

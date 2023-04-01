@@ -53,6 +53,10 @@ export const EditArtworkSchema = z.object({
     id: z.number(),
     files: z.array(z.number()),
     medium: z.array(z.number()),
+    fileOrder: z.array(z.object({
+        fileId: z.number().optional(),
+        order: z.number().optional()
+    }).optional().nullable())
 })
 export const EditArtworkFormSchema = z.object({
     ...ArtworkSharedSchema,
@@ -65,6 +69,10 @@ export const EditArtworkFormSchema = z.object({
         })
     ).nullable(),
     files: z.array(z.number()).optional(),
+    fileOrder: z.array(z.object({
+        fileId: z.number(),
+        order: z.number()
+    }).optional())
 })
 
 // =========== MEDIA ===========

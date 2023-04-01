@@ -24,8 +24,9 @@ model Artwork {
     createdAt        DateTime        @default(now())
     updatedAt        DateTime        @updatedAt
     Collection       Collection?     @relation(fields: [collectionId], references: [id])
-    CreatedBy        User            @relation(fields: [createdById], references: [id])
+    CreatedBy        User            @relation("CreatedBy", fields: [createdById], references: [id])
     Medium           Media[]         @relation("ArtworksAndMedium")
+    FavoritedBy      User[]          @relation("FavoritedArtworks")
     Files            ArtworkFiles[]
     Orders           ArtworkOrders[]
 
@@ -181,8 +182,9 @@ model User {
     role            UserRole  @default(USER)
     accounts        Account[]
     sessions        Session[]
-    createdArtworks Artwork[]
+    createdArtworks Artwork[] @relation("CreatedBy")
     Order           Order[]
+    Favorites       Artwork[] @relation("FavoritedArtworks")
 
     @@map("Users")
 }

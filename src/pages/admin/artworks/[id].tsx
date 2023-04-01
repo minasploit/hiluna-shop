@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef } from "react";
-import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import { FormProvider, useForm, type SubmitHandler, useFieldArray } from "react-hook-form";
 import toast from "react-hot-toast";
 import { type z } from "zod";
 import Field from "~/components/form/Field";
@@ -134,6 +134,14 @@ const EditArtwork: NextPageWithLayout = () => {
     type EditArtworksFormSchemaType = z.infer<typeof EditArtworkFormSchema>;
     const artworkForm = useForm<EditArtworksFormSchemaType>({
         resolver: zodResolver(EditArtworkFormSchema),
+        defaultValues: {
+            fileOrder: []
+        }
+    });
+
+    useFieldArray({
+        control: artworkForm.control,
+        name: "fileOrder"
     });
 
     useEffect(() => {
@@ -145,7 +153,12 @@ const EditArtwork: NextPageWithLayout = () => {
         const toastId = toast.loading("Editing artwork...");
 
         try {
-            let urls = artwork.data?.Files.map(f => f.File.id);
+            if (!artwork.data) {
+                toast.error("Wait for the artwork to load", { id: toastId });
+                return;
+            }
+
+            let urls = artwork.data.Files.map(f => f.File.id);
 
             if (inputFileRef.current?.files?.length) {
                 const formData = new FormData();
@@ -168,10 +181,16 @@ const EditArtwork: NextPageWithLayout = () => {
                 urls = result.urls.map(u => u.fileId);
             }
 
+            const fileOrder = artworkForm.getValues("fileOrder").map(f => ({
+                fileId: f?.fileId,
+                order: f?.order
+            }))
+
             const res = await artworkMutation.mutateAsync({
                 ...data,
-                files: urls,
-                medium: artworkForm.getValues("medium")?.map(m => Number(m.value)) ?? []
+                medium: artworkForm.getValues("medium")?.map(m => Number(m.value)) ?? [],
+                fileOrder: fileOrder,
+                files: urls
             });
 
             await artwork.refetch();
@@ -220,43 +239,50 @@ const EditArtwork: NextPageWithLayout = () => {
         {
             artwork.data &&
             <div className="card shadow px-4 py-5 sm:rounded-lg sm:p-6 md:mt-8">
-                <div className="md:grid md:grid-cols-3 md:gap-6">
-                    <div className="md:col-span-1">
-                        <h3 className="text-lg font-collections leading-6">Edit artwork</h3>
-                        <label className="label my-2">
-                            <span className="label-text">Current artwork files</span>
-                        </label>
-                        <div className="flex items-center flex-col">
-                            {
-                                artwork.data.Files.map(f => (
-                                    <Fragment key={f.File.id}>
-                                        {
-                                            f.File.fileType == FileType.Image &&
-                                            <Image
-                                                src={resolveUploadResource(f.File.fileUrl)}
-                                                width={320} height={320} alt="Artwork image"
-                                                className="w-auto"
-                                                priority
-                                            />
-                                        }
-                                        {
-                                            f.File.fileType == FileType.Video &&
-                                            <video controls>
-                                                <source src={resolveUploadResource(f.File.fileUrl)} type={f.File.mimeType ?? "video/mp4"} />
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        }
+                <FormProvider {...artworkForm}>
+                    <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
+                        <div className="md:grid md:grid-cols-3 md:gap-6">
+                            <div className="md:col-span-1">
+                                <h3 className="text-lg font-collections leading-6">Edit artwork</h3>
+                                <label className="label my-2">
+                                    <span className="label-text">Current artwork files</span>
+                                </label>
+                                <div className="flex items-center flex-col">
+                                    {
+                                        artwork.data.Files.map(f => (
+                                            <Fragment key={f.File.id}>
+                                                <div className="border-2 border-primary rounded-xl">
+                                                    {
+                                                        f.File.fileType == FileType.Image &&
+                                                        <Image
+                                                            src={resolveUploadResource(f.File.fileUrl)}
+                                                            width={320} height={320} alt="Artwork image"
+                                                            className="w-auto rounded-t-xl"
+                                                            priority
+                                                        />
+                                                    }
+                                                    {
+                                                        f.File.fileType == FileType.Video &&
+                                                        <video controls className="rounded-t-xl">
+                                                            <source src={resolveUploadResource(f.File.fileUrl)} type={f.File.mimeType ?? "video/mp4"} />
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    }
 
-                                        <br />
-                                    </Fragment>
-                                ))
-                            }
-                        </div>
-                    </div>
+                                                    <div className="p-3 pt-0">
+                                                        <Field type={FieldType.NUMBER} label="Order of the artwork" name={`fileOrder.${f.fileId}.order`} defaultValue={f.fileOrder} />
+                                                        <Field type={FieldType.HIDDEN} name={`fileOrder.${f.fileId}.fileId`} valueType="number" defaultValue={f.fileId} />
+                                                    </div>
+                                                </div>
 
-                    <div className="mt-5 md:mt-0 md:col-span-2 h-fit sticky top-[8.5rem]">
-                        <FormProvider {...artworkForm}>
-                            <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
+                                                <br />
+                                            </Fragment>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+
+                            <div className="mt-5 md:mt-0 md:col-span-2 h-fit sticky top-[8.5rem]">
                                 <div className="grid grid-cols-6 gap-6">
                                     {artworkFields.map((field) => (
                                         <div className={clsx("col-span-6", !["shortDescription", "description", "files", "medium"].includes(field.name) && "sm:col-span-3")} key={field.name}>
@@ -280,11 +306,11 @@ const EditArtwork: NextPageWithLayout = () => {
                                         {artworkForm.formState.isSubmitting ? "Saving..." : "Save"}
                                     </button>
                                 </div>
-                            </form>
 
-                        </FormProvider>
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                    </form>
+                </FormProvider>
             </div>
         }
     </>
