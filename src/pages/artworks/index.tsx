@@ -258,7 +258,7 @@ const Artworks: NextPageWithLayout = () => {
                         </p>
                     </div>
 
-                    <div className="pt-12 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+                    <div className="pt-6 sm:pt-10 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
                         <aside className="sm:h-fit sm:sticky sm:top-32">
                             <h2 className="sr-only">Filters</h2>
 
@@ -272,9 +272,16 @@ const Artworks: NextPageWithLayout = () => {
                             </button>
 
                             {
-                                queryFilters.medium.length != 0 &&
+                                (queryFilters.medium.length != 0 || collections.data?.filter(c => c.id != 0 && c.id == queryFilters.collection).length != 0) &&
                                 <div className="sm:hidden mt-2">
                                     Applied filters: {" "}
+                                    {
+                                        collections.data?.filter(c => c.id != 0 && c.id == queryFilters.collection).map((c, i) => (
+                                            <span key={i} className="badge badge-primary mr-1">
+                                                {c.name}
+                                            </span>
+                                        ))
+                                    }
                                     {
                                         queryFilters.medium.map((m, i) => (
                                             <span key={i} className="badge mr-1">
@@ -359,10 +366,6 @@ const Artworks: NextPageWithLayout = () => {
                                 <div className="flex justify-center">
                                     <LoadingSpinner className="w-8 h-8" />
                                 </div>
-                            }
-
-                            {
-                                JSON.stringify(filtersForm.watch(), null, 2)
                             }
 
                             <div className="columns-1 gap-y-4 sm:columns-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:columns-3">
