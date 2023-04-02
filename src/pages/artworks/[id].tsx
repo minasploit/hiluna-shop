@@ -197,16 +197,16 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                 <div className="flex items-center">
                                     <div className="rating rating-half">
                                         <input type="radio" name="rating-10" className="rating-hidden" />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 0.5} />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 1} />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 1.5} />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 2} />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 2.5} />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 3} />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 3.5} />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 4} />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 4.5} />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 5} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 0.5} readOnly />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 1} readOnly />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 1.5} readOnly />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 2} readOnly />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 2.5} readOnly />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 3} readOnly />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 3.5} readOnly />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 4} readOnly />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 4.5} readOnly />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 5} readOnly />
                                     </div>
                                 </div>
                                 <p className="sr-only">{artwork.data.rating.toString()} out of 5 stars</p>

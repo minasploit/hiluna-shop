@@ -30,12 +30,24 @@ const Cart = ({ cartOpen, setCartOpen }: { cartOpen: boolean, setCartOpen: Dispa
 	}, [cartItemIds, setCartItemIds]);
 
 	useEffect(() => {
+		if (!cartItems.isFetched)
+			return;
+
+		if (cartItems.data?.length != cartItemIds.length) {
+			// problematic artwork in cart, remove all items in cart
+
+			setCartItemIds([]);
+		}
+	});
+
+	useEffect(() => {
 		setSubTotal(
 			cartItems.data?.map(c => c.price).length ? cartItems.data?.map(c => c.price).reduce((a, b) => a + b) : 0
 		)
 	}, [cartItems, subTotal]);
 
 	useEffect(() => {
+		//remove unavailableforsale artworks from cart
 		cartItems.data?.forEach(c => {
 			if (!c.availableForSale && cartItemIds.map(cc => cc.id).includes(c.id)) {
 				// remove from cart
@@ -45,6 +57,7 @@ const Cart = ({ cartOpen, setCartOpen }: { cartOpen: boolean, setCartOpen: Dispa
 				});
 			}
 		})
+
 	}, [cartItemIds, cartItems, removeFromCart]);
 
 	return (

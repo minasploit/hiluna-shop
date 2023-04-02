@@ -42,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         form.parse(req, () => {
             //
         });
-    }).catch(e => {
+    }).catch(() => {
         // console.error(e);
         status = 500;
         resultBody = {
