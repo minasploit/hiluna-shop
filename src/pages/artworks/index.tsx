@@ -1,5 +1,4 @@
 import { Transition, Dialog, Disclosure } from "@headlessui/react";
-import parse from 'html-react-parser'
 import { Currency } from "@prisma/client";
 import clsx from "clsx";
 import { useState, Fragment, useEffect } from "react";
@@ -302,7 +301,7 @@ const Artworks: NextPageWithLayout = () => {
                                                 <h3 className="text-lg font-medium">
                                                     {artwork.name}
                                                 </h3>
-                                                <div className="text- opacity-80">{parse(artwork.shortDescription)}</div>
+                                                <div className="text- opacity-80">{artwork.shortDescription}</div>
                                                 <div className="flex-1 flex flex-col justify-end">
                                                     {
                                                         artwork.Medium.length != 0 &&
