@@ -3,11 +3,13 @@ CREATE TABLE `Artworks` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `dimension` VARCHAR(191) NOT NULL,
+    `shortDescription` TEXT NOT NULL,
     `description` TEXT NOT NULL,
-    `featured` BOOLEAN NOT NULL,
+    `featured` BOOLEAN NOT NULL DEFAULT false,
     `availableForSale` BOOLEAN NOT NULL,
     `price` INTEGER NOT NULL,
     `currency` ENUM('ETB', 'USD') NOT NULL DEFAULT 'ETB',
+    `rating` DOUBLE NOT NULL DEFAULT 2.5,
     `orientation` ENUM('Portrait', 'Landscape') NULL,
     `collectionId` INTEGER NULL,
     `createdById` VARCHAR(191) NOT NULL,
@@ -22,6 +24,9 @@ CREATE TABLE `Medium` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `description` TEXT NULL,
+    `featured` BOOLEAN NOT NULL DEFAULT false,
+    `featureImageId` INTEGER NULL,
+    `featureOrder` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -45,7 +50,7 @@ CREATE TABLE `Orders` (
     `orderedById` VARCHAR(191) NOT NULL,
     `phoneNumber` VARCHAR(191) NOT NULL,
     `paymentMethod` ENUM('CashOnDelivery', 'CBE', 'Telebirr', 'Bunna') NOT NULL DEFAULT 'CashOnDelivery',
-    `screenshotUrl` INTEGER NULL,
+    `screenshotId` INTEGER NULL,
     `totalPrice` INTEGER NOT NULL,
     `currency` ENUM('ETB', 'USD') NOT NULL DEFAULT 'ETB',
     `orderStatus` ENUM('Ordered', 'OrderedAndPaid', 'Completed', 'Cancelled') NOT NULL,
@@ -66,11 +71,21 @@ CREATE TABLE `ArtworkOrders` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `ArtworkFiles` (
+    `artworkId` INTEGER NOT NULL,
+    `fileId` INTEGER NOT NULL,
+    `fileOrder` INTEGER NOT NULL,
+
+    PRIMARY KEY (`artworkId`, `fileId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Files` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `fileUrl` VARCHAR(191) NOT NULL,
     `fileType` ENUM('Image', 'Video', 'Unknown') NOT NULL,
     `mimeType` VARCHAR(191) NULL,
+    `blurHash` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -138,12 +153,12 @@ CREATE TABLE `_ArtworksAndMedium` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_ArtworksAndFiles` (
+CREATE TABLE `_FavoritedArtworks` (
     `A` INTEGER NOT NULL,
-    `B` INTEGER NOT NULL,
+    `B` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `_ArtworksAndFiles_AB_unique`(`A`, `B`),
-    INDEX `_ArtworksAndFiles_B_index`(`B`)
+    UNIQUE INDEX `_FavoritedArtworks_AB_unique`(`A`, `B`),
+    INDEX `_FavoritedArtworks_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -153,16 +168,25 @@ ALTER TABLE `Artworks` ADD CONSTRAINT `Artworks_collectionId_fkey` FOREIGN KEY (
 ALTER TABLE `Artworks` ADD CONSTRAINT `Artworks_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `Users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Medium` ADD CONSTRAINT `Medium_featureImageId_fkey` FOREIGN KEY (`featureImageId`) REFERENCES `Files`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Orders` ADD CONSTRAINT `Orders_orderedById_fkey` FOREIGN KEY (`orderedById`) REFERENCES `Users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Orders` ADD CONSTRAINT `Orders_screenshotUrl_fkey` FOREIGN KEY (`screenshotUrl`) REFERENCES `Files`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Orders` ADD CONSTRAINT `Orders_screenshotId_fkey` FOREIGN KEY (`screenshotId`) REFERENCES `Files`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ArtworkOrders` ADD CONSTRAINT `ArtworkOrders_artworkId_fkey` FOREIGN KEY (`artworkId`) REFERENCES `Artworks`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ArtworkOrders` ADD CONSTRAINT `ArtworkOrders_orderId_fkey` FOREIGN KEY (`orderId`) REFERENCES `Orders`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ArtworkFiles` ADD CONSTRAINT `ArtworkFiles_artworkId_fkey` FOREIGN KEY (`artworkId`) REFERENCES `Artworks`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ArtworkFiles` ADD CONSTRAINT `ArtworkFiles_fileId_fkey` FOREIGN KEY (`fileId`) REFERENCES `Files`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Accounts` ADD CONSTRAINT `Accounts_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -177,7 +201,7 @@ ALTER TABLE `_ArtworksAndMedium` ADD CONSTRAINT `_ArtworksAndMedium_A_fkey` FORE
 ALTER TABLE `_ArtworksAndMedium` ADD CONSTRAINT `_ArtworksAndMedium_B_fkey` FOREIGN KEY (`B`) REFERENCES `Medium`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_ArtworksAndFiles` ADD CONSTRAINT `_ArtworksAndFiles_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artworks`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_FavoritedArtworks` ADD CONSTRAINT `_FavoritedArtworks_A_fkey` FOREIGN KEY (`A`) REFERENCES `Artworks`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_ArtworksAndFiles` ADD CONSTRAINT `_ArtworksAndFiles_B_fkey` FOREIGN KEY (`B`) REFERENCES `Files`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_FavoritedArtworks` ADD CONSTRAINT `_FavoritedArtworks_B_fkey` FOREIGN KEY (`B`) REFERENCES `Users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
