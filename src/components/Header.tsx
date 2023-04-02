@@ -8,7 +8,7 @@ import SwitchTheme from "./SwitchTheme"
 import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import HeaderCartButton from "./HeaderCartButton";
-import { FiDollarSign, FiEye, FiHeart, FiImage, FiList, FiLogOut, FiUser } from "react-icons/fi";
+import { FiDollarSign, FiEye, FiHeart, FiImage, FiList, FiLogOut } from "react-icons/fi";
 import Lotie from "./Lotie";
 import Cart from "~/components/Cart";
 
@@ -119,9 +119,6 @@ const Header = () => {
                                     <span className="badge">New</span>
                                 </button>
                             </li> */}
-                            <li><button onClick={() => router.push("/profile")}>
-                                <FiUser className="text-lg" /> Profile</button>
-                            </li>
                             <li><button onClick={() => router.push("/orders")}>
                                 <FiDollarSign className="text-lg" /> Orders</button>
                             </li>
