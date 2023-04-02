@@ -1,7 +1,7 @@
 import { Transition, Dialog, Disclosure } from "@headlessui/react";
 import { Currency } from "@prisma/client";
 import clsx from "clsx";
-import { useState, Fragment, useEffect, type SyntheticEvent } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { FiArrowDown, FiPlus, FiX } from "react-icons/fi";
 import { getArtworkImage, getArtworkImageUrl, splitStringByLength } from "~/utils/functions";
 import { api } from "~/utils/api";
@@ -48,16 +48,16 @@ const Artworks: NextPageWithLayout = () => {
 
     const filters = [
         {
-            id: 'medium',
-            name: 'Medium',
-            options: medium.data?.map(m => ({ value: m.id, label: m.name })),
-            type: FieldType.CHECKBOX
-        },
-        {
             id: 'collection',
             name: 'Collection',
             options: collections.data?.map(m => ({ value: m.id, label: m.name })),
             type: FieldType.SELECT
+        },
+        {
+            id: 'medium',
+            name: 'Medium',
+            options: medium.data?.map(m => ({ value: m.id, label: m.name })),
+            type: FieldType.CHECKBOX
         },
     ]
 
@@ -87,15 +87,23 @@ const Artworks: NextPageWithLayout = () => {
         }
     }, [defaultFilters, filtersForm]);
 
-    function applyFilter(e: SyntheticEvent, filterType: 'default' | 'mobile') {
-        if (filterType == "default") {
+    function applyFilter(filterType: 'medium' | 'collection', filterVariant: 'default' | 'mobile',) {
+        // apply the selected filter to the respective responsive input
+        if (filterVariant == "default") {
             filtersForm.setValue("mediumMobile", filtersForm.getValues("medium"))
             filtersForm.setValue("collectionMobile", filtersForm.getValues("collection"))
-        }
-
-        if (filterType == "mobile") {
+        } else if (filterVariant == "mobile") {
             filtersForm.setValue("medium", filtersForm.getValues("mediumMobile"))
             filtersForm.setValue("collection", filtersForm.getValues("collectionMobile"))
+        }
+
+        // apply mutual-exclusivity to filters
+        if (filterType == "medium") {
+            filtersForm.setValue("collection", 0)
+            filtersForm.setValue("collectionMobile", 0)
+        } else if (filterType == "collection") {
+            filtersForm.setValue("medium", [])
+            filtersForm.setValue("mediumMobile", [])
         }
 
         let medium = filtersForm.getValues("medium") ? filtersForm.getValues("medium").map(m => Number(m)) : [];
@@ -191,7 +199,7 @@ const Artworks: NextPageWithLayout = () => {
                                                                                     {...filtersForm.register(
                                                                                         (section.id == "medium" ? `mediumMobile` : `collectionMobile`),
                                                                                         {
-                                                                                            onChange: (e: SyntheticEvent) => applyFilter(e, "mobile")
+                                                                                            onChange: () => applyFilter("medium", "mobile")
                                                                                         })}
                                                                                     id={`${section.id}-${optionIdx}-mobile`}
                                                                                     defaultChecked={defaultFilters.medium?.includes(option.value)}
@@ -209,11 +217,11 @@ const Artworks: NextPageWithLayout = () => {
                                                                         <label className="label" htmlFor={section.id}>
                                                                             <span className="label-text">{section.name}</span>
                                                                         </label>
-                                                                        <select className="select select-bordered"
+                                                                        <select className="select select-bordered border-primary"
                                                                             {...filtersForm.register(
                                                                                 (section.id == "medium" ? "mediumMobile" : "collectionMobile"),
                                                                                 {
-                                                                                    onChange: (e: SyntheticEvent) => applyFilter(e, "mobile")
+                                                                                    onChange: () => applyFilter("collection", "mobile")
                                                                                 })}
                                                                             id={`${section.id}-mobile`}
                                                                             value={defaultFilters.collection}>
@@ -240,7 +248,7 @@ const Artworks: NextPageWithLayout = () => {
                 </Transition.Root>
 
                 <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
-                    <div className="border-b border-primary pt-24 pb-10">
+                    <div className="border-b border-primary pt-16 pb-10">
                         <h1 className="text-4xl font-extrabold tracking-tight text-primary">
                             {
                                 filtersForm.getValues("collection") != 0 ?
@@ -311,7 +319,7 @@ const Artworks: NextPageWithLayout = () => {
                                                                             {...filtersForm.register(
                                                                                 (section.id == "medium" ? `medium` : "collection"),
                                                                                 {
-                                                                                    onChange: (e: SyntheticEvent) => applyFilter(e, "default")
+                                                                                    onChange: () => applyFilter("medium", "default")
                                                                                 })}
                                                                             id={`${section.id}-${optionIdx}`}
                                                                             defaultChecked={defaultFilters.medium?.includes(option.value)}
@@ -329,11 +337,11 @@ const Artworks: NextPageWithLayout = () => {
                                                                 <label className="label" htmlFor={section.id}>
                                                                     <span className="label-text">{section.name}</span>
                                                                 </label>
-                                                                <select className="select select-bordered"
+                                                                <select className="select select-bordered border-primary"
                                                                     {...filtersForm.register(
                                                                         (section.id == "medium" ? "medium" : "collection"),
                                                                         {
-                                                                            onChange: (e: SyntheticEvent) => applyFilter(e, "default"),
+                                                                            onChange: () => applyFilter("collection", "default"),
                                                                             valueAsNumber: true,
                                                                         })}
                                                                     id={`${section.id}`}
