@@ -7,7 +7,6 @@ import AdminPage from "~/pages/admin";
 import ManageArtworks from "~/pages/admin/artworks";
 import NewArtwork from "~/pages/admin/artworks/new";
 import Artworks from "~/pages/artworks";
-import Collections from "~/pages/collections";
 import ManageMedium from "~/pages/admin/medium";
 import NewMedium from "~/pages/admin/medium/new";
 import EditMedium from "~/pages/admin/medium/[id]";
@@ -26,7 +25,6 @@ const UserLayoutPages = [
     Home,
     Artworks,
     ArtworkDetail,
-    Collections,
     Checkout,
     Orders,
     Favorites
