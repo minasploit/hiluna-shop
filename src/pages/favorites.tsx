@@ -16,9 +16,9 @@ const Favorites: NextPageWithLayout = () => {
 
     return <>
         <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
-            <div className="border-b border-primary pt-24 pb-10">
+            <div className="border-b border-primary pt-16 pb-10">
                 <h1 className="text-4xl font-extrabold tracking-tight text-primary">
-                    Favorited Artworks
+                    Favorite Artworks
                 </h1>
             </div>
 
@@ -35,15 +35,16 @@ const Favorites: NextPageWithLayout = () => {
                         </div>
                     }
 
+                    {
+                        artworks.data?.length == 0 &&
+                        <div className="flex justify-between items-center p-4">
+                            <h2 className="text-lg font-medium">
+                                No artworks added to favorites
+                            </h2>
+                        </div>
+                    }
+
                     <div className="columns-1 gap-y-4 sm:columns-2 sm:gap-x-6 sm:gap-y-10 lg:columns-3 lg:gap-x-8 xl:columns-4">
-                        {
-                            artworks.data?.length == 0 &&
-                            <div className="flex justify-between items-center p-4">
-                                <h2 className="text-lg font-medium">
-                                    No artworks published yet.
-                                </h2>
-                            </div>
-                        }
                         {artworks.data?.map((artwork) => (
                             <Link href={`/artworks/${artwork.id}`} key={artwork.id}>
                                 <div

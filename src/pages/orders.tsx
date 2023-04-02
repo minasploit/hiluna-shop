@@ -40,7 +40,7 @@ const Orders: NextPageWithLayout = () => {
             }
 
             <div className="max-w-xl">
-                <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Order history</h1>
+                <h1 className="text-primary text-2xl font-extrabold tracking-tight sm:text-3xl">Order history</h1>
                 <p className="mt-1 text-sm">
                     Check the status of recent orders, and manage returns.
                 </p>
