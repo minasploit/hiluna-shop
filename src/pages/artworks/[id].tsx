@@ -25,6 +25,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
 
     const artwork = api.artwork.getOne.useQuery(Number(id), { enabled: id != undefined });
+
     const favoriteMutation = api.favorite.toggleFavorite.useMutation();
 
     function addToCart() {
@@ -172,7 +173,12 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                     "btn-outline" :
                                     "btn-primary")}
                                 onClick={toggleFavorite}>
-                                <AiFillHeart className="text-xl" />
+                                {
+                                    favoriteMutation.isLoading ?
+                                        <LoadingSpinner className="text-base-100 w-5 h-5" /> :
+                                        <AiFillHeart className="text-xl" />
+                                }
+                                
                                 {artwork.data.FavoritedBy.length + (artwork.data.id * 3)}
                             </button>
                         </div>
