@@ -18,10 +18,14 @@ import { useRouter } from "next/router";
 import { hashId } from "~/utils/hashId";
 import { useMemo } from "react";
 import { env } from "~/env.mjs";
+import { useSession } from "next-auth/react";
+import { AiFillHeart } from "react-icons/ai"
 
 const Artworks: NextPageWithLayout = () => {
 
     const router = useRouter();
+
+    const { data: session } = useSession();
 
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [queryFilters, setQueryFilters] = useState<{
@@ -74,7 +78,6 @@ const Artworks: NextPageWithLayout = () => {
 
         // filter duplicates
         medium = [...new Set(medium)]
-        // filtersForm.setValue("medium", medium.map(m => String(m)))
 
         setQueryFilters({
             medium,
@@ -316,21 +319,28 @@ const Artworks: NextPageWithLayout = () => {
                                                             ))}
                                                         </p>
                                                     }
-                                                    <div className="text-lg font-medium">
+                                                    <div className="flex justify-between">
+                                                        <div className="text-lg font-medium">
+                                                            {
+                                                                artwork.availableForSale ?
+                                                                    <>
+                                                                        {artwork.currency == Currency.USD && `$${artwork.price.toLocaleString()}`}
+                                                                        {artwork.currency == Currency.ETB && `${artwork.price.toLocaleString()} ${artwork.currency}`}
+                                                                    </>
+                                                                    :
+                                                                    <p className="mt-1 text-sm inline">Not available for sale</p>
+                                                            }
+                                                            {
+                                                                cartItemIds.map(c => c.id).includes(artwork.id) &&
+                                                                <span className="badge ml-2">In your cart</span>
+                                                            }
+                                                        </div>
                                                         {
-                                                            artwork.availableForSale ?
-                                                                <>
-                                                                    {artwork.currency == Currency.USD && `$${artwork.price.toLocaleString()}`}
-                                                                    {artwork.currency == Currency.ETB && `${artwork.price.toLocaleString()} ${artwork.currency}`}
-                                                                </>
-                                                                :
-                                                                <p className="mt-1 text-sm inline">Not available for sale</p>
-                                                        }
-                                                        {
-                                                            cartItemIds.map(c => c.id).includes(artwork.id) &&
-                                                            <span className="badge ml-2">In your cart</span>
+                                                            artwork.FavoritedBy.filter(f => f.id == session?.user.id).length != 0 &&
+                                                            <AiFillHeart className="text-2xl leading-relaxed text-primary mt-1" />
                                                         }
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>

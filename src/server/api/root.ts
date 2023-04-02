@@ -4,6 +4,7 @@ import { mediaRouter } from "./routers/media";
 import { artworkRouter } from "./routers/artwork";
 import { collectionRouter } from "./routers/collection";
 import { orderRouter } from "./routers/order";
+import { favoriteRouter } from "./routers/favorite";
 
 /**
  * This is the primary router for your server.
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
 	artwork: artworkRouter,
 	collection: collectionRouter,
 	order: orderRouter,
+	favorite: favoriteRouter
 });
 
 // export type definition of API

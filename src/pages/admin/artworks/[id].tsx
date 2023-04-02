@@ -270,7 +270,7 @@ const EditArtwork: NextPageWithLayout = () => {
                                                     }
 
                                                     <div className="p-3 pt-0">
-                                                        <Field type={FieldType.NUMBER} label="Order of the artwork" name={`fileOrder.${f.fileId}.order`} defaultValue={f.fileOrder} />
+                                                        <Field type={FieldType.NUMBER} label="Priority of the file" name={`fileOrder.${f.fileId}.order`} defaultValue={f.fileOrder} />
                                                         <Field type={FieldType.HIDDEN} name={`fileOrder.${f.fileId}.fileId`} valueType="number" defaultValue={f.fileId} />
                                                     </div>
                                                 </div>

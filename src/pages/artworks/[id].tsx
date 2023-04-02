@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { type NextPageWithLayout } from "../_app";
-import { FiHeart, FiPlayCircle, FiStar } from "react-icons/fi";
+import { FiPlayCircle, FiStar } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { Currency, FileType } from "@prisma/client";
@@ -14,6 +14,8 @@ import Link from "next/link";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { Tab } from "@headlessui/react";
 import styles from './artworks.module.css'
+import { useSession } from "next-auth/react";
+import { AiFillHeart } from "react-icons/ai"
 
 const product = {
     // name: 'Zip Tote Basket',
@@ -54,9 +56,12 @@ const ArtworkDetail: NextPageWithLayout = () => {
     const router = useRouter();
     const { id } = router.query;
 
+    const { data: session } = useSession();
+
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
 
     const artwork = api.artwork.getOne.useQuery(Number(id), { enabled: id != undefined });
+    const favoriteMutation = api.favorite.toggleFavorite.useMutation();
 
     function addToCart() {
         setCartItemIds([
@@ -71,6 +76,14 @@ const ArtworkDetail: NextPageWithLayout = () => {
     function removeFromCart() {
         setCartItemIds(cartItemIds.filter(c => c.id != Number(id)))
         toast.success("Removed from cart")
+    }
+
+    async function toggleFavorite() {
+        await favoriteMutation.mutateAsync(Number(id));
+
+        await artwork.refetch();
+
+        toast.success(artwork.data?.FavoritedBy.filter(f => f.id == session?.user.id).length == 0 ? "Added to favorites" : "Removed from favorites")
     }
 
     return <>
@@ -113,7 +126,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                     .map((file) => (
                                         <Tab
                                             key={file.File.id}
-                                            className="relative h-24 rounded-md flex items-center justify-center text-sm font-medium uppercase cursor-pointer hover:bg-gray-50"
+                                            className="relative h-24 rounded-md flex items-center justify-center text-sm font-medium uppercase cursor-pointer hover:opacity-75"
                                         >
                                             {({ selected }) => (
                                                 <>
@@ -187,7 +200,18 @@ const ArtworkDetail: NextPageWithLayout = () => {
                     </Tab.Group>
 
                     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 sticky top-[7.2rem]">
-                        <h1 className="text-3xl font-extrabold tracking-tight">{artwork.data?.name}</h1>
+                        <div className="flex justify-between">
+                            <h1 className="text-3xl font-extrabold tracking-tight">{artwork.data?.name}</h1>
+
+                            <button className={clsx("btn gap-2 rounded-full ",
+                                artwork.data.FavoritedBy.filter(f => f.id == session?.user.id).length == 0 ?
+                                    "btn-outline" :
+                                    "btn-primary")}
+                                onClick={toggleFavorite}>
+                                <AiFillHeart className="text-xl" />
+                                {artwork.data.FavoritedBy.length + (artwork.data.id * 3)}
+                            </button>
+                        </div>
 
                         <div className="mt-3">
                             <h2 className="sr-only">Product information</h2>
@@ -299,18 +323,13 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                             </button>
                                             :
                                             <button
-                                                className="btn btn-error btn-wide"
+                                                className="btn btn-error btn-outline btn-wide"
                                                 onClick={removeFromCart}>
                                                 Remove from cart
                                             </button>
                                     }
                                 </>
                             }
-
-                            <button className={clsx("btn ", artwork.data?.availableForSale ? "btn-square btn-outline ml-4 " : "btn-primary gap-2")}>
-                                <FiHeart className="text-xl" />
-                                {!artwork.data?.availableForSale && "Add to Favorites"}
-                            </button>
                         </div>
 
                         {/* <section aria-labelledby="details-heading" className="mt-12">

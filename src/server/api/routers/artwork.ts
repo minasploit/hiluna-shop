@@ -28,6 +28,11 @@ export const artworkRouter = createTRPCRouter({
                         orderBy: {
                             fileOrder: "desc"
                         }
+                    },
+                    FavoritedBy: {
+                        include: {
+                            _count: true
+                        },
                     }
                 }
             })
@@ -117,6 +122,11 @@ export const artworkRouter = createTRPCRouter({
                         select: {
                             id: true,
                             name: true
+                        }
+                    },
+                    FavoritedBy: {
+                        select: {
+                            id: true
                         }
                     }
                 }
