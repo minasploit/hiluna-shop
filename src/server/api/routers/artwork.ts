@@ -33,6 +33,11 @@ export const artworkRouter = createTRPCRouter({
                         include: {
                             _count: true
                         },
+                    },
+                    Collection: {
+                        select: {
+                            name: true
+                        }
                     }
                 }
             })
@@ -97,19 +102,26 @@ export const artworkRouter = createTRPCRouter({
     list: publicProcedure
         .input(z.object({
             filters: z.object({
-                medium: z.array(z.number())
+                medium: z.array(z.number()),
+                collection: z.number(),
             })
         }).optional())
         .query(async ({ ctx, input }) => {
+            const mediumFilter = input?.filters.medium.map(m => ({
+                Medium: {
+                    some: {
+                        id: m
+                    }
+                },
+            }))
+
             const res = await ctx.prisma.artwork.findMany({
                 where: {
-                    AND: input?.filters.medium.map(m => ({
-                        Medium: {
-                            some: {
-                                id: m
-                            }
-                        }
-                    }))
+                    AND: mediumFilter,
+                    Collection: input?.filters.collection ?
+                        {
+                            id: input?.filters.collection
+                        } : undefined
                 },
                 include: {
                     Files: {

@@ -1,7 +1,7 @@
 import { Transition, Dialog, Disclosure } from "@headlessui/react";
 import { Currency } from "@prisma/client";
 import clsx from "clsx";
-import { useState, Fragment, useEffect } from "react";
+import { useState, Fragment, useEffect, type SyntheticEvent } from "react";
 import { FiArrowDown, FiPlus, FiX } from "react-icons/fi";
 import { getArtworkImage, getArtworkImageUrl, splitStringByLength } from "~/utils/functions";
 import { api } from "~/utils/api";
@@ -19,6 +19,7 @@ import { useMemo } from "react";
 import { env } from "~/env.mjs";
 import { useSession } from "next-auth/react";
 import { AiFillHeart } from "react-icons/ai"
+import { FieldType } from "~/components/form/FieldAttributes";
 
 const Artworks: NextPageWithLayout = () => {
 
@@ -28,8 +29,9 @@ const Artworks: NextPageWithLayout = () => {
 
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [queryFilters, setQueryFilters] = useState<{
-        medium: number[]
-    }>({ medium: [] });
+        medium: number[],
+        collection: number
+    }>({ medium: [], collection: 0 });
 
     const [cartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
 
@@ -37,55 +39,87 @@ const Artworks: NextPageWithLayout = () => {
         filters: queryFilters
     });
     const medium = api.medium.listForFilter.useQuery();
+    const collections = api.collection.listForFilter.useQuery();
 
     const defaultFilters = useMemo(() => ({
-        medium: typeof router.query.m == "string" ? (splitStringByLength(router.query.m ?? "", Number(env.NEXT_PUBLIC_HASHID_LENGTH))?.map(m => hashId.decode(m)) ?? []) : []
-    }), [router.query.m])
+        medium: typeof router.query.m == "string" ? (splitStringByLength(router.query.m ?? "", Number(env.NEXT_PUBLIC_HASHID_LENGTH))?.map(m => hashId.decode(m)) ?? []) : [],
+        collection: typeof router.query.c == "string" ? hashId.decode(splitStringByLength(router.query.c ?? "", Number(env.NEXT_PUBLIC_HASHID_LENGTH))?.[0] ?? "") : 0,
+    }), [router.query.c, router.query.m])
 
     const filters = [
         {
             id: 'medium',
             name: 'Medium',
-            options: medium.data?.map(m => ({ value: m.id, label: m.name }))
+            options: medium.data?.map(m => ({ value: m.id, label: m.name })),
+            type: FieldType.CHECKBOX
+        },
+        {
+            id: 'collection',
+            name: 'Collection',
+            options: collections.data?.map(m => ({ value: m.id, label: m.name })),
+            type: FieldType.SELECT
         },
     ]
 
-    useEffect(() => {
-        setQueryFilters(defaultFilters)
-    }, [defaultFilters]);
-
     const filtersForm = useForm<{
-        medium: string[],
-        mediumMobile: string[]
+        medium: number[],
+        mediumMobile: number[],
+        collection: number,
+        collectionMobile: number
     }>({
         defaultValues: {
-            medium: defaultFilters.medium.map(m => String(m)),
-            mediumMobile: defaultFilters.medium.map(m => String(m)),
+            medium: defaultFilters.medium,
+            mediumMobile: defaultFilters.medium,
+            collection: defaultFilters.collection,
+            collectionMobile: defaultFilters.collection
         }
     })
 
-    function applyFilter(filterType: 'default' | 'mobile') {
+    useEffect(() => {
+        setQueryFilters(defaultFilters)
+
+        if (!filtersForm.formState.isDirty) {
+            filtersForm.setValue("medium", defaultFilters.medium)
+            filtersForm.setValue("mediumMobile", defaultFilters.medium)
+
+            filtersForm.setValue("collection", defaultFilters.collection)
+            filtersForm.setValue("collectionMobile", defaultFilters.collection)
+        }
+    }, [defaultFilters, filtersForm]);
+
+    function applyFilter(e: SyntheticEvent, filterType: 'default' | 'mobile') {
+
+        console.log(filtersForm.getValues("medium"));
+
         if (filterType == "default") {
-            filtersForm.setValue("mediumMobile", filtersForm.getValues("medium").map(m => String(m)))
+            filtersForm.setValue("mediumMobile", filtersForm.getValues("medium"))
+            filtersForm.setValue("collectionMobile", filtersForm.getValues("collection"))
         }
 
         if (filterType == "mobile") {
-            filtersForm.setValue("medium", filtersForm.getValues("mediumMobile").map(m => String(m)))
+            filtersForm.setValue("medium", filtersForm.getValues("mediumMobile"))
+            filtersForm.setValue("collection", filtersForm.getValues("collectionMobile"))
         }
 
-        let medium = filtersForm.getValues("medium")?.map(m => Number(m));
+        let medium = filtersForm.getValues("medium") ? filtersForm.getValues("medium").map(m => Number(m)) : [];
+        const collection = filtersForm.getValues("collection");
 
         // filter duplicates
         medium = [...new Set(medium)]
 
         setQueryFilters({
             medium,
-        })
+            collection
+        });
+
+        const mediumQuery = medium.length != 0 ?
+            `m=${medium.map(m => hashId.encode(m)).join('')}` : ""
+
+        const collectionQuery = collection != 0 ?
+            `c=${hashId.encode(collection)}` : ""
 
         void router.push({
-            query: medium.length != 0 ?
-                `m=${medium.map(m => hashId.encode(m)).join('')}` :
-                null
+            query: [mediumQuery, collectionQuery].filter(q => q != "").join("&")
         });
     }
 
@@ -148,28 +182,54 @@ const Artworks: NextPageWithLayout = () => {
                                                     </legend>
                                                     <Disclosure.Panel className="pt-4 pb-2 px-4">
                                                         <div className="space-y-6">
-                                                            {section.options?.map((option, optionIdx) => (
-                                                                <div key={option.value} className="flex items-center">
+                                                            {
+                                                                section.type == FieldType.CHECKBOX &&
+                                                                section.options?.map((option, optionIdx) => (
+                                                                    <div key={option.value} className="flex items-center">
+                                                                        <div className="form-control">
+                                                                            <label className="label cursor-pointer" htmlFor={`${section.id}-${optionIdx}-mobile`}>
+                                                                                <input className="checkbox checkbox-primary"
+                                                                                    type="checkbox"
+                                                                                    value={option.value}
+                                                                                    {...filtersForm.register(
+                                                                                        (section.id == "medium" ? `mediumMobile` : `collectionMobile`),
+                                                                                        {
+                                                                                            onChange: (e: SyntheticEvent) => applyFilter(e, "mobile")
+                                                                                        })}
+                                                                                    id={`${section.id}-${optionIdx}-mobile`}
+                                                                                    defaultChecked={defaultFilters.medium?.includes(option.value)}
+                                                                                />
+                                                                                <span className="label-text ml-3">{option.label}</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                            }
+                                                            {
+                                                                section.type == FieldType.SELECT &&
+                                                                <div className="flex items-center">
                                                                     <div className="form-control">
-                                                                        <label className="label cursor-pointer" htmlFor={`${section.id}-${optionIdx}-mobile`}>
-                                                                            <input className="checkbox checkbox-primary"
-                                                                                type="checkbox"
-                                                                                value={option.value}
-                                                                                {...filtersForm.register(
-                                                                                    "mediumMobile",
-                                                                                    // (section.id == "medium" ? "medium" : section.id == "category" ? "category" : "sizes"),
-                                                                                    {
-                                                                                        onChange: () => applyFilter("mobile")
-                                                                                    })}
-                                                                                id={`${section.id}-${optionIdx}-mobile`}
-                                                                                name={`mediumMobile[]`}
-                                                                                defaultChecked={defaultFilters.medium?.includes(option.value)}
-                                                                            />
-                                                                            <span className="label-text ml-3">{option.label}</span>
+                                                                        <label className="label" htmlFor={section.id}>
+                                                                            <span className="label-text">{section.name}</span>
                                                                         </label>
+                                                                        <select className="select select-bordered"
+                                                                            {...filtersForm.register(
+                                                                                (section.id == "medium" ? "mediumMobile" : "collectionMobile"),
+                                                                                {
+                                                                                    onChange: (e: SyntheticEvent) => applyFilter(e, "mobile")
+                                                                                })}
+                                                                            id={`${section.id}-mobile`}
+                                                                            value={defaultFilters.collection}>
+
+                                                                            {section.options?.map((option) => (
+                                                                                <option key={option.value} value={option.value}>
+                                                                                    {option.label}
+                                                                                </option>
+                                                                            ))}
+                                                                        </select>
                                                                     </div>
                                                                 </div>
-                                                            ))}
+                                                            }
                                                         </div>
                                                     </Disclosure.Panel>
                                                 </fieldset>
@@ -186,9 +246,15 @@ const Artworks: NextPageWithLayout = () => {
                     <div className="border-b border-primary pt-24 pb-10">
                         <h1 className="text-4xl font-extrabold tracking-tight text-primary">
                             {
-                                queryFilters.medium.length == 1 ? medium.data?.filter(m => queryFilters.medium[0] == m.id)[0]?.name : "My"
+                                filtersForm.getValues("collection") != 0 ?
+                                    collections.data?.filter(c => c.id == filtersForm.getValues("collection"))[0]?.name :
+                                    <>
+                                        {
+                                            queryFilters.medium.length == 1 ? medium.data?.filter(m => queryFilters.medium[0] == m.id)[0]?.name : ""
+                                        }
+                                        {` `} Artworks
+                                    </>
                             }
-                            {` `} Artworks
                         </h1>
                         <p className="mt-4 text-base">
                             Checkout out the latest release of Basic Tees, new and improved with four openings!
@@ -229,27 +295,55 @@ const Artworks: NextPageWithLayout = () => {
                                             <fieldset>
                                                 <legend className="block text-sm font-medium">Filter by {section.name}</legend>
                                                 <div className="pt-6 space-y-3">
-                                                    {section.options?.map((option, optionIdx) => (
-                                                        <div key={option.value} className="flex items-center">
+                                                    {
+                                                        section.type == FieldType.CHECKBOX &&
+                                                        section.options?.map((option, optionIdx) => (
+                                                            <div key={option.value} className="flex items-center">
+                                                                <div className="form-control">
+                                                                    <label className="label cursor-pointer" htmlFor={`${section.id}-${optionIdx}`}>
+                                                                        <input className="checkbox checkbox-primary"
+                                                                            type="checkbox"
+                                                                            value={option.value}
+                                                                            {...filtersForm.register(
+                                                                                (section.id == "medium" ? `medium` : "collection"),
+                                                                                {
+                                                                                    onChange: (e: SyntheticEvent) => applyFilter(e, "default")
+                                                                                })}
+                                                                            id={`${section.id}-${optionIdx}`}
+                                                                            defaultChecked={defaultFilters.medium?.includes(option.value)}
+                                                                        />
+                                                                        <span className="label-text ml-3">{option.label}</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                    {
+                                                        section.type == FieldType.SELECT &&
+                                                        <div className="flex items-center">
                                                             <div className="form-control">
-                                                                <label className="label cursor-pointer" htmlFor={`${section.id}-${optionIdx}`}>
-                                                                    <input className="checkbox checkbox-primary"
-                                                                        type="checkbox"
-                                                                        value={option.value}
-                                                                        {...filtersForm.register(
-                                                                            "medium",
-                                                                            // (section.id == "medium" ? "medium" : section.id == "category" ? "category" : "sizes"),
-                                                                            {
-                                                                                onChange: () => applyFilter("default")
-                                                                            })}
-                                                                        id={`${section.id}-${optionIdx}`}
-                                                                        defaultChecked={defaultFilters.medium?.includes(option.value)}
-                                                                    />
-                                                                    <span className="label-text ml-3">{option.label}</span>
+                                                                <label className="label" htmlFor={section.id}>
+                                                                    <span className="label-text">{section.name}</span>
                                                                 </label>
+                                                                <select className="select select-bordered"
+                                                                    {...filtersForm.register(
+                                                                        (section.id == "medium" ? "medium" : "collection"),
+                                                                        {
+                                                                            onChange: (e: SyntheticEvent) => applyFilter(e, "default"),
+                                                                            valueAsNumber: true,
+                                                                        })}
+                                                                    id={`${section.id}`}
+                                                                    value={defaultFilters.collection}>
+
+                                                                    {section.options?.map((option) => (
+                                                                        <option key={option.value} value={option.value}>
+                                                                            {option.label}
+                                                                        </option>
+                                                                    ))}
+                                                                </select>
                                                             </div>
                                                         </div>
-                                                    ))}
+                                                    }
                                                 </div>
                                             </fieldset>
                                         </div>
@@ -268,6 +362,10 @@ const Artworks: NextPageWithLayout = () => {
                                 <div className="flex justify-center">
                                     <LoadingSpinner className="w-8 h-8" />
                                 </div>
+                            }
+
+                            {
+                                JSON.stringify(filtersForm.watch(), null, 2)
                             }
 
                             <div className="columns-1 gap-y-4 sm:columns-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:columns-3">
@@ -300,22 +398,23 @@ const Artworks: NextPageWithLayout = () => {
                                             <div className="flex-1 p-4 space-y-2 flex flex-col">
                                                 <h3 className="text-lg font-medium">
                                                     {artwork.name}
+                                                    <div className="text-sm opacity-60">{artwork.Collection?.name}</div>
                                                 </h3>
                                                 <div className="text- opacity-80">{artwork.shortDescription}</div>
                                                 <div className="flex-1 flex flex-col justify-end">
                                                     {
                                                         artwork.Medium.length != 0 &&
                                                         <p className="opacity-90 mt-2 mb-4">
-                                                            {artwork.Medium.map(m => (
+                                                            {/* {artwork.Medium.map(m => (
                                                                 <span className={clsx("badge m-1",
                                                                     filtersForm.getValues("medium") &&
-                                                                        filtersForm.getValues("medium")?.includes(m.id.toString()) ?
+                                                                        filtersForm.getValues("medium")?.includes(m.id) ?
                                                                         "badge-primary" :
                                                                         "badge-primary badge-outline")}
                                                                     key={m.id}>
                                                                     {m.name}
                                                                 </span>
-                                                            ))}
+                                                            ))} */}
                                                         </p>
                                                     }
                                                     <div className="flex justify-between">

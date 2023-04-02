@@ -166,7 +166,14 @@ const ArtworkDetail: NextPageWithLayout = () => {
 
                     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 sticky top-[7.2rem]">
                         <div className="flex justify-between">
-                            <h1 className="text-3xl font-extrabold tracking-tight">{artwork.data?.name}</h1>
+                            <div>
+                                <span className="text-3xl font-extrabold tracking-tight">
+                                    {artwork.data?.name}
+                                </span>
+                                <div className="text-sm">{artwork.data?.Collection?.name}</div>
+                            </div>
+
+
 
                             <button className={clsx("btn gap-2 rounded-full ",
                                 artwork.data.FavoritedBy.filter(f => f.id == session?.user.id).length == 0 ?
@@ -175,10 +182,11 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                 onClick={toggleFavorite}>
                                 {
                                     favoriteMutation.isLoading ?
-                                        <LoadingSpinner className="text-base-100 w-5 h-5" /> :
+                                        <LoadingSpinner className={clsx("w-5 h-5",
+                                            artwork.data.FavoritedBy.filter(f => f.id == session?.user.id).length == 0 ? "text-base-100" : "text-black")} /> :
                                         <AiFillHeart className="text-xl" />
                                 }
-                                
+
                                 {artwork.data.FavoritedBy.length + (artwork.data.id * 3)}
                             </button>
                         </div>

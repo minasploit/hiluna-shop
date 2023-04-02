@@ -20,9 +20,26 @@ export const collectionRouter = createTRPCRouter({
         }),
     list: publicProcedure
         .query(async ({ ctx }) => {
-            const res = await ctx.prisma.collection.findMany()
+            const res = await ctx.prisma.collection.findMany();
 
             return res;
+        }),
+    listForFilter: publicProcedure
+        .query(async ({ ctx }) => {
+            const res = await ctx.prisma.collection.findMany({
+                select: {
+                    id: true,
+                    name: true
+                }
+            });
+
+            return [
+                {
+                    id: 0,
+                    name: "None"
+                },
+                ...res
+            ];
         }),
     create: adminProcedure
         .input(AddCollectionFormSchema)
