@@ -88,9 +88,6 @@ const Artworks: NextPageWithLayout = () => {
     }, [defaultFilters, filtersForm]);
 
     function applyFilter(e: SyntheticEvent, filterType: 'default' | 'mobile') {
-
-        console.log(filtersForm.getValues("medium"));
-
         if (filterType == "default") {
             filtersForm.setValue("mediumMobile", filtersForm.getValues("medium"))
             filtersForm.setValue("collectionMobile", filtersForm.getValues("collection"))
@@ -405,16 +402,16 @@ const Artworks: NextPageWithLayout = () => {
                                                     {
                                                         artwork.Medium.length != 0 &&
                                                         <p className="opacity-90 mt-2 mb-4">
-                                                            {/* {artwork.Medium.map(m => (
+                                                            {artwork.Medium.map(m => (
                                                                 <span className={clsx("badge m-1",
                                                                     filtersForm.getValues("medium") &&
-                                                                        filtersForm.getValues("medium")?.includes(m.id) ?
+                                                                        filtersForm.getValues("medium")?.map(m => String(m)).includes(m.id.toString()) ?
                                                                         "badge-primary" :
                                                                         "badge-primary badge-outline")}
                                                                     key={m.id}>
                                                                     {m.name}
                                                                 </span>
-                                                            ))} */}
+                                                            ))}
                                                         </p>
                                                     }
                                                     <div className="flex justify-between">
