@@ -18,6 +18,7 @@ model Artwork {
     availableForSale Boolean
     price            Int
     currency         Currency        @default(ETB)
+    rating           Float           @default(2.5)
     orientation      Orientation?
     collectionId     Int?
     createdById      String

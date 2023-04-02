@@ -108,7 +108,14 @@ const NewArtwork: NextPageWithLayout = () => {
                 }) ?? []
             ],
             defaultValue: 0
-        }
+        },
+        {
+            name: "rating",
+            label: "Rating of the Artwork",
+            type: FieldType.NUMBER,
+            step: "0.5",
+            defaultValue: 2.5
+        },
     ]
 
     type AddArtworkFormSchemaType = z.infer<typeof AddArtworkFormSchema>;
@@ -175,7 +182,10 @@ const NewArtwork: NextPageWithLayout = () => {
                         <form onSubmit={artworkForm.handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-6 gap-6">
                                 {artworkFields.map((field) => (
-                                    <div className={clsx("col-span-6", !["shortDescription", "description", "files", "medium"].includes(field.name) && "sm:col-span-3")} key={field.name}>
+                                    <div className={clsx(
+                                        "col-span-6",
+                                        !["shortDescription", "description", "files", "medium"].includes(field.name) && "sm:col-span-3"
+                                    )} key={field.name}>
                                         <Field {...field} />
                                     </div>
                                 ))}

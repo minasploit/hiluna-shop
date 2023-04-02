@@ -30,7 +30,8 @@ const ArtworkSharedSchema = {
     price: z.number().default(0),
     currency: z.nativeEnum(Currency).default(Currency.ETB),
     collectionId: z.number().nullable(),
-    orientation: z.nativeEnum(Orientation).nullable()
+    orientation: z.nativeEnum(Orientation).nullable(),
+    rating: z.number()
 }
 export const AddArtworkSchema = z.object({
     ...ArtworkSharedSchema,

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { type NextPageWithLayout } from "../_app";
-import { FiPlayCircle, FiStar } from "react-icons/fi";
+import { FiPlayCircle } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { Currency, FileType } from "@prisma/client";
@@ -13,44 +13,8 @@ import { resolveUploadResource } from "~/utils/functions";
 import Link from "next/link";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { Tab } from "@headlessui/react";
-import styles from './artworks.module.css'
 import { useSession } from "next-auth/react";
 import { AiFillHeart } from "react-icons/ai"
-
-const product = {
-    // name: 'Zip Tote Basket',
-    // price: '$140',
-    rating: 4,
-    // images: [
-    //     {
-    //         id: 1,
-    //         name: 'Angled view',
-    //         src: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg',
-    //         alt: 'Angled front view with bag zipped and handles upright.',
-    //     },
-    //     // More images...
-    // ],
-    // colors: [
-    //     { name: 'Washed Black', bgColor: 'bg-gray-700', selectedColor: 'ring-gray-700' },
-    //     { name: 'White', bgColor: 'bg-white', selectedColor: 'ring-gray-400' },
-    //     { name: 'Washed Gray', bgColor: 'bg-gray-500', selectedColor: 'ring-gray-500' },
-    // ],
-    // details: [
-    //     {
-    //         name: 'Features',
-    //         items: [
-    //             'Multiple strap configurations',
-    //             'Spacious interior with top zip',
-    //             'Leather handle and tabs',
-    //             'Interior dividers',
-    //             'Stainless strap loops',
-    //             'Double stitched construction',
-    //             'Water-resistant',
-    //         ],
-    //     },
-    //     // More sections...
-    // ],
-}
 
 const ArtworkDetail: NextPageWithLayout = () => {
     const router = useRouter();
@@ -231,18 +195,21 @@ const ArtworkDetail: NextPageWithLayout = () => {
                             <h3 className="sr-only">Reviews</h3>
                             <div className="flex items-center">
                                 <div className="flex items-center">
-                                    {[0, 1, 2, 3, 4].map((rating) => (
-                                        <FiStar
-                                            key={rating}
-                                            className={clsx(
-                                                product.rating > rating ? 'text-base-content' : styles.ratingText,
-                                                'h-5 w-5 flex-shrink-0'
-                                            )}
-                                            aria-hidden="true"
-                                        />
-                                    ))}
+                                    <div className="rating rating-half">
+                                        <input type="radio" name="rating-10" className="rating-hidden" />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 0.5} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 1} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 1.5} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 2} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 2.5} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 3} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 3.5} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 4} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 4.5} />
+                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 5} />
+                                    </div>
                                 </div>
-                                <p className="sr-only">{product.rating} out of 5 stars</p>
+                                <p className="sr-only">{artwork.data.rating.toString()} out of 5 stars</p>
                             </div>
                         </div>
 

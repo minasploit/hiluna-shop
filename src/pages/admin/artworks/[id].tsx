@@ -129,6 +129,13 @@ const EditArtwork: NextPageWithLayout = () => {
             ],
             defaultValue: artwork.data?.collectionId ?? 0,
         },
+        {
+            name: "rating",
+            label: "Rating of the Artwork (out of 5)",
+            type: FieldType.NUMBER,
+            step: "0.5",
+            defaultValue: artwork.data?.rating
+        },
     ]
 
     type EditArtworksFormSchemaType = z.infer<typeof EditArtworkFormSchema>;

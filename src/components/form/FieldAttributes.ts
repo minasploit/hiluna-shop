@@ -46,6 +46,7 @@ interface CheckboxFieldAttributes extends VisibleBaseFieldAttributes {
 interface NumberFieldAttributes extends VisibleBaseFieldAttributes {
     type: FieldType.NUMBER;
     defaultValue?: number;
+    step?: string
 }
 
 interface RichTextFieldAttributes extends VisibleBaseFieldAttributes {
