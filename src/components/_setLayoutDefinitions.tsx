@@ -20,6 +20,7 @@ import Checkout from "~/pages/checkout";
 import Orders from "~/pages/orders";
 import ManageOrder from "~/pages/admin/orders/[id]";
 import Favorites from "~/pages/favorites";
+import Portfolio from "~/pages/portfolio";
 
 const UserLayoutPages = [
     Home,
@@ -27,7 +28,8 @@ const UserLayoutPages = [
     ArtworkDetail,
     Checkout,
     Orders,
-    Favorites
+    Favorites,
+    Portfolio
 ];
 
 const AdminLayoutPages = [

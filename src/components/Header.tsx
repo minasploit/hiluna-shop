@@ -9,12 +9,14 @@ import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import HeaderCartButton from "./HeaderCartButton";
 import { FiDollarSign, FiEye, FiHeart, FiImage, FiLogOut } from "react-icons/fi";
+import { MdPortrait } from "react-icons/md";
 import Lotie from "./Lotie";
 import Cart from "~/components/Cart";
 
 const nav = [
     { id: 0, title: "Manage Site", icon: <FiEye className="text-xl" />, href: "/admin", adminOnly: true },
     { id: 1, title: "Artworks", icon: <FiImage className="text-xl" />, href: "/artworks", adminOnly: false },
+    { id: 2, title: "My Portfolio", icon: <MdPortrait className="text-2xl" />, href: "/portfolio", adminOnly: false },
     // {
     //     id: 3, title: "Item 3", href: "item3",
     //     children: [

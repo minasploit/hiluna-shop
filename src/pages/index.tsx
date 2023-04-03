@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { Currency } from "@prisma/client";
 import Link from "next/link";
 import { hashId } from "~/utils/hashId";
+import { useRouter } from "next/router";
 
 const testimonials = [
 	{
@@ -29,6 +30,8 @@ const testimonials = [
 ]
 
 const Home: NextPageWithLayout = () => {
+
+	const router = useRouter();
 
 	const favorites = api.artwork.getFavorites.useQuery();
 	const featuredMedium = api.medium.listFeatured.useQuery();
@@ -172,16 +175,15 @@ const Home: NextPageWithLayout = () => {
 								id="sale-headingssssss"
 								className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl"
 							>
-								Get 25% off during our one-time sale
+								Get to know me and my previous works
 							</h2>
 							<p className="mt-4 max-w-xl mx-auto text-xl">
-								Most of our products are limited releases that won&apos;t come back. Get your favorite items while they&apos;re in
-								stock.
+								I have participated in various exhibitions and competitions and won local and international awards.
 							</p>
 							<button
 								className="btn btn-primary mt-6 inline-block w-full border border-transparent rounded-md py-3 px-8 font-medium sm:w-auto"
-							>
-								Get access to our one-time sale
+							 onClick={() => router.push("/portfolio")}>
+								View my portfolio
 							</button>
 						</div>
 					</section>
