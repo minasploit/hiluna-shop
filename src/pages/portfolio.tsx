@@ -61,7 +61,7 @@ const Portfolio: NextPageWithLayout = () => {
 
                             <div className="relative flex items-start group" aria-current="step">
                                 <span className="h-9 flex items-center" aria-hidden="true">
-                                    <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-white border-2 border-primary rounded-full">
+                                    <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-base-100 border-2 border-primary rounded-full">
                                         <span className="h-2.5 w-2.5 bg-primary rounded-full" />
                                     </span>
                                 </span>

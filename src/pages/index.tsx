@@ -289,14 +289,14 @@ const Home: NextPageWithLayout = () => {
 								<div className="relative pt-48 pb-16 sm:pb-24">
 									<div>
 										<h2 id="stock-headingsssssssssss" className="text-4xl font-extrabold tracking-tight md:text-5xl text-primary-content">
-											Final Stock.
+											Limited Stock.
 											<br />
-											Up to 50% off.
+											Get it now.
 										</h2>
 										<div className="mt-6 text-base">
-											<a href="#" className="font-semibold text-primary-content">
+											<Link href="/artworks" className="font-semibold text-primary-content">
 												Shop the sale<span aria-hidden="true"> &rarr;</span>
-											</a>
+											</Link>
 										</div>
 									</div>
 
