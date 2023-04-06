@@ -262,7 +262,7 @@ const Artworks: NextPageWithLayout = () => {
                             }
                         </h1>
                         <p className="mt-4 text-base">
-                            Checkout out the latest release of Basic Tees, new and improved with four openings!
+                            Checkout out my latest artworks and creations
                         </p>
                     </div>
 
