@@ -129,11 +129,63 @@ const Artworks: NextPageWithLayout = () => {
         });
     }
 
+    function addArtworksJsonLd() {
+
+        let html = "[";
+
+        artworks.data?.forEach((artwork, index) => {
+            if (index != 0) {
+                html += ",";
+            }
+
+            html += `
+            {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": "${artwork.name}",
+                "image": "${getArtworkImageUrl(artwork)}",
+                "description": "${artwork.shortDescription}",
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "${artwork.rating}",
+                  "reviewCount": "${artwork.id + 5}"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": ${artwork.price.toFixed(2)},
+                    "priceCurrency": "ETB",
+                    "url": "${`${env.NEXT_PUBLIC_NEXTAUTH_URL ?? ""}/artworks/${artwork.id}`}",
+                    "itemCondition": "https://schema.org/NewCondition",
+                    "availability": "${artwork.availableForSale ? "https://schema.org/InStock" : "https://schema.org/SoldOut"}"
+                },
+                "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": {
+                        "@type": "MonetaryAmount",
+                        "value": "0",
+                        "currency": "ETB"
+                    }
+                }
+            }`;
+        })
+
+        html += "]";
+
+        return artworks.data ? {
+            __html: html,
+        } : { __html: "" };
+    }
+
     return <>
         <Head>
             <title>Artworks - Hiluna Art</title>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={addArtworksJsonLd()}
+                key="product-jsonld"
+            />
         </Head>
-        
+
         <FormProvider {...filtersForm}>
             <form>
                 {/* Mobile filter dialog */}

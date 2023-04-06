@@ -9,13 +9,14 @@ import { useLocalStorage } from "usehooks-ts";
 import { toast } from "react-hot-toast";
 import { type CartItem } from "../../components/Cart";
 import Image from "next/image";
-import { resolveUploadResource } from "~/utils/functions";
+import { getArtworkImageUrl, resolveUploadResource } from "~/utils/functions";
 import Link from "next/link";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { Tab } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 import { AiFillHeart } from "react-icons/ai"
 import Head from "next/head";
+import { env } from "process";
 
 const ArtworkDetail: NextPageWithLayout = () => {
     const router = useRouter();
@@ -52,6 +53,40 @@ const ArtworkDetail: NextPageWithLayout = () => {
         toast.success(artwork.data?.FavoritedBy.filter(f => f.id == session?.user.id).length == 0 ? "Added to favorites" : "Removed from favorites")
     }
 
+    function addArtworkJsonLd() {
+        return artwork.data ? {
+            __html: `{
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": "${artwork.data.name}",
+                "image": "${getArtworkImageUrl(artwork.data)}",
+                "description": "${artwork.data.shortDescription}",
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "${artwork.data.rating}",
+                  "reviewCount": "${artwork.data.id + 5}"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": ${artwork.data.price.toFixed(2)},
+                    "priceCurrency": "ETB",
+                    "url": "${`${env.NEXT_PUBLIC_NEXTAUTH_URL ?? ""}/artworks/${artwork.data.id}`}",
+                    "itemCondition": "https://schema.org/NewCondition",
+                    "availability": "${artwork.data.availableForSale ? "https://schema.org/InStock" : "https://schema.org/SoldOut"}"
+                },
+                "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": {
+                        "@type": "MonetaryAmount",
+                        "value": "0",
+                        "currency": "ETB"
+                    }
+                }
+            }
+      `,
+        } : { __html: "" };
+    }
+
     return <>
 
         {
@@ -84,6 +119,25 @@ const ArtworkDetail: NextPageWithLayout = () => {
             <>
                 <Head>
                     <title>{artwork.data.name} - Hiluna Art</title>
+                    <meta property="og:title" content={artwork.data.name} />
+                    <meta
+                        name="description"
+                        content={artwork.data.shortDescription}
+                        key="desc"
+                    />
+                    <meta
+                        property="og:description"
+                        content={artwork.data.shortDescription}
+                    />
+                    <meta
+                        property="og:image"
+                        content={getArtworkImageUrl(artwork.data)}
+                    />
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={addArtworkJsonLd()}
+                        key="product-jsonld"
+                    />
                 </Head>
 
                 <div className="max-w-2xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">

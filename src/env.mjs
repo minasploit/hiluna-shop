@@ -34,6 +34,7 @@ const server = z.object({
  */
 const client = z.object({
 	// NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+	NEXT_PUBLIC_NEXTAUTH_URL: z.string().min(1),
 	NEXT_PUBLIC_HASHID_LENGTH: z.string().min(1),
 });
 
@@ -56,6 +57,7 @@ const processEnv = {
 	SMS_GATEWAY_API_URL: process.env.SMS_GATEWAY_API_URL,
 	SMS_GATEWAY_API_TOKEN: process.env.SMS_GATEWAY_API_TOKEN,
 
+	NEXT_PUBLIC_NEXTAUTH_URL: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
 	NEXT_PUBLIC_HASHID_LENGTH: process.env.NEXT_PUBLIC_HASHID_LENGTH,
 	// NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
