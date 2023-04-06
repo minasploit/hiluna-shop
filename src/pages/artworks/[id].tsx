@@ -15,6 +15,7 @@ import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { Tab } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 import { AiFillHeart } from "react-icons/ai"
+import Head from "next/head";
 
 const ArtworkDetail: NextPageWithLayout = () => {
     const router = useRouter();
@@ -80,183 +81,188 @@ const ArtworkDetail: NextPageWithLayout = () => {
 
         {
             artwork.data &&
-            <div className="max-w-2xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
-                <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-                    <Tab.Group as="div" className="flex flex-col-reverse">
-                        {/* Image selector */}
-                        <div className="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
-                            <Tab.List className="grid grid-cols-4 gap-6">
-                                {artwork.data.Files
-                                    .sort((f) => (f.File.fileType == FileType.Image) ? -1 : 1)
-                                    .map((file) => (
-                                        <Tab
-                                            key={file.File.id}
-                                            className="relative h-24 rounded-md flex items-center justify-center text-sm font-medium uppercase cursor-pointer hover:opacity-75"
-                                        >
-                                            {({ selected }) => (
-                                                <>
-                                                    <span className="sr-only">Artwork file</span>
-                                                    <span className="absolute inset-0 rounded-md overflow-hidden flex items-center">
-                                                        <div className="relative">
-                                                            {
-                                                                file.File.fileType === FileType.Image &&
-                                                                <Image
-                                                                    src={resolveUploadResource(file.File.fileUrl)}
-                                                                    alt="Artwork image"
-                                                                    priority={true}
-                                                                    width={120} height={120}
-                                                                    className="w-full h-full object-center object-cover sm:rounded-lg"
-                                                                />
-                                                            }
-                                                            {
-                                                                file.File.fileType === FileType.Video &&
-                                                                <video
-                                                                    src={resolveUploadResource(file.File.fileUrl)}
-                                                                    className="w-full h-full object-center object-cover sm:rounded-lg">
-                                                                </video>
-                                                            }
-                                                        </div>
-                                                    </span>
-                                                    {
-                                                        file.File.fileType === FileType.Video &&
-                                                        <div className="absolute">
-                                                            <FiPlayCircle className="w-10 h-10 text-white" />
-                                                        </div>
-                                                    }
-                                                    <span
-                                                        className={clsx(
-                                                            selected ? 'ring-primary' : 'ring-transparent',
-                                                            'absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none'
-                                                        )}
-                                                        aria-hidden="true"
-                                                    />
-                                                </>
-                                            )}
-                                        </Tab>
-                                    ))}
-                            </Tab.List>
-                        </div>
+            <>
+                <Head>
+                    <title>{artwork.data.name} - Hiluna Art</title>
+                </Head>
 
-                        <Tab.Panels className="w-full aspect-w-1 aspect-h-1">
-                            {artwork.data.Files.map((file) => (
-                                <Tab.Panel key={file.File.id}>
-                                    {
-                                        file.File.fileType === FileType.Image &&
-                                        <Image
-                                            src={resolveUploadResource(file.File.fileUrl)}
-                                            alt="Artwork thumbnail"
-                                            priority
-                                            blurDataURL={file.File.blurHash ?? undefined}
-                                            placeholder={file.File.blurHash ? "blur" : "empty"}
-                                            width={720} height={720}
-                                            className="w-full h-full object-center object-cover sm:rounded-lg"
-                                        />
-                                    }
-                                    {
-                                        file.File.fileType === FileType.Video &&
-                                        <video controls className="w-full h-full object-center object-cover sm:rounded-lg">
-                                            <source src={resolveUploadResource(file.File.fileUrl)} type={file.File.mimeType ?? "video/mp4"} />
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    }
-                                </Tab.Panel>
-                            ))}
-                        </Tab.Panels>
-                    </Tab.Group>
-
-                    <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 sticky top-[7.2rem]">
-                        <div className="flex justify-between">
-                            <div>
-                                <span className="text-3xl font-extrabold tracking-tight">
-                                    {artwork.data?.name}
-                                </span>
-                                <div className="text-sm">{artwork.data?.Collection?.name}</div>
+                <div className="max-w-2xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
+                    <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
+                        <Tab.Group as="div" className="flex flex-col-reverse">
+                            {/* Image selector */}
+                            <div className="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
+                                <Tab.List className="grid grid-cols-4 gap-6">
+                                    {artwork.data.Files
+                                        .sort((f) => (f.File.fileType == FileType.Image) ? -1 : 1)
+                                        .map((file) => (
+                                            <Tab
+                                                key={file.File.id}
+                                                className="relative h-24 rounded-md flex items-center justify-center text-sm font-medium uppercase cursor-pointer hover:opacity-75"
+                                            >
+                                                {({ selected }) => (
+                                                    <>
+                                                        <span className="sr-only">Artwork file</span>
+                                                        <span className="absolute inset-0 rounded-md overflow-hidden flex items-center">
+                                                            <div className="relative">
+                                                                {
+                                                                    file.File.fileType === FileType.Image &&
+                                                                    <Image
+                                                                        src={resolveUploadResource(file.File.fileUrl)}
+                                                                        alt="Artwork image"
+                                                                        priority={true}
+                                                                        width={120} height={120}
+                                                                        className="w-full h-full object-center object-cover sm:rounded-lg"
+                                                                    />
+                                                                }
+                                                                {
+                                                                    file.File.fileType === FileType.Video &&
+                                                                    <video
+                                                                        src={resolveUploadResource(file.File.fileUrl)}
+                                                                        className="w-full h-full object-center object-cover sm:rounded-lg">
+                                                                    </video>
+                                                                }
+                                                            </div>
+                                                        </span>
+                                                        {
+                                                            file.File.fileType === FileType.Video &&
+                                                            <div className="absolute">
+                                                                <FiPlayCircle className="w-10 h-10 text-white" />
+                                                            </div>
+                                                        }
+                                                        <span
+                                                            className={clsx(
+                                                                selected ? 'ring-primary' : 'ring-transparent',
+                                                                'absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none'
+                                                            )}
+                                                            aria-hidden="true"
+                                                        />
+                                                    </>
+                                                )}
+                                            </Tab>
+                                        ))}
+                                </Tab.List>
                             </div>
 
+                            <Tab.Panels className="w-full aspect-w-1 aspect-h-1">
+                                {artwork.data.Files.map((file) => (
+                                    <Tab.Panel key={file.File.id}>
+                                        {
+                                            file.File.fileType === FileType.Image &&
+                                            <Image
+                                                src={resolveUploadResource(file.File.fileUrl)}
+                                                alt="Artwork thumbnail"
+                                                priority
+                                                blurDataURL={file.File.blurHash ?? undefined}
+                                                placeholder={file.File.blurHash ? "blur" : "empty"}
+                                                width={720} height={720}
+                                                className="w-full h-full object-center object-cover sm:rounded-lg"
+                                            />
+                                        }
+                                        {
+                                            file.File.fileType === FileType.Video &&
+                                            <video controls className="w-full h-full object-center object-cover sm:rounded-lg">
+                                                <source src={resolveUploadResource(file.File.fileUrl)} type={file.File.mimeType ?? "video/mp4"} />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        }
+                                    </Tab.Panel>
+                                ))}
+                            </Tab.Panels>
+                        </Tab.Group>
 
-
-                            <button className={clsx("btn gap-2 rounded-full ",
-                                artwork.data.FavoritedBy.filter(f => f.id == session?.user.id).length == 0 ?
-                                    "btn-outline" :
-                                    "btn-primary")}
-                                onClick={toggleFavorite}>
-                                {
-                                    favoriteMutation.isLoading ?
-                                        <LoadingSpinner className={clsx("w-5 h-5",
-                                            artwork.data.FavoritedBy.filter(f => f.id == session?.user.id).length == 0 ? "text-base-100" : "text-black")} /> :
-                                        <AiFillHeart className="text-xl" />
-                                }
-
-                                {artwork.data.FavoritedBy.length + (artwork.data.id * 3)}
-                            </button>
-                        </div>
-
-                        <div className="mt-3">
-                            <h2 className="sr-only">Product information</h2>
-                            <p className="text-3xl">
-                                {
-                                    artwork.data?.availableForSale &&
-                                    <>
-                                        {artwork.data?.currency == Currency.USD && `$${artwork.data?.price.toLocaleString()}`}
-                                        {artwork.data?.currency == Currency.ETB && `${artwork.data?.price.toLocaleString()} ${artwork.data?.currency}`}
-                                    </>
-                                }
-                            </p>
-                        </div>
-
-                        {/* Reviews */}
-                        <div className="mt-3">
-                            <h3 className="sr-only">Reviews</h3>
-                            <div className="flex items-center">
-                                <div className="flex items-center">
-                                    <div className="rating rating-half">
-                                        <input type="radio" name="rating-10" className="rating-hidden" />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 0.5} readOnly />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 1} readOnly />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 1.5} readOnly />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 2} readOnly />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 2.5} readOnly />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 3} readOnly />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 3.5} readOnly />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 4} readOnly />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 4.5} readOnly />
-                                        <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 5} readOnly />
-                                    </div>
+                        <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 sticky top-[7.2rem]">
+                            <div className="flex justify-between">
+                                <div>
+                                    <span className="text-3xl font-extrabold tracking-tight">
+                                        {artwork.data?.name}
+                                    </span>
+                                    <div className="text-sm">{artwork.data?.Collection?.name}</div>
                                 </div>
-                                <p className="sr-only">{artwork.data.rating.toString()} out of 5 stars</p>
+
+
+
+                                <button className={clsx("btn gap-2 rounded-full ",
+                                    artwork.data.FavoritedBy.filter(f => f.id == session?.user.id).length == 0 ?
+                                        "btn-outline" :
+                                        "btn-primary")}
+                                    onClick={toggleFavorite}>
+                                    {
+                                        favoriteMutation.isLoading ?
+                                            <LoadingSpinner className={clsx("w-5 h-5",
+                                                artwork.data.FavoritedBy.filter(f => f.id == session?.user.id).length == 0 ? "text-base-100" : "text-black")} /> :
+                                            <AiFillHeart className="text-xl" />
+                                    }
+
+                                    {artwork.data.FavoritedBy.length + (artwork.data.id * 3)}
+                                </button>
                             </div>
-                        </div>
 
-                        <div className="my-3">
-                            {artwork.data.Medium.map(m => (
-                                <span className="badge badge-lg badge-primary mx-1" key={m.id}>
-                                    {m.name}
-                                </span>
-                            ))}
-                        </div>
-
-                        <div className="">
-                            <h3 className="sr-only">Description</h3>
-
-                            <div
-                                className="text-base space-y-6">
-                                {parse(artwork.data?.description ?? "")}
+                            <div className="mt-3">
+                                <h2 className="sr-only">Product information</h2>
+                                <p className="text-3xl">
+                                    {
+                                        artwork.data?.availableForSale &&
+                                        <>
+                                            {artwork.data?.currency == Currency.USD && `$${artwork.data?.price.toLocaleString()}`}
+                                            {artwork.data?.currency == Currency.ETB && `${artwork.data?.price.toLocaleString()} ${artwork.data?.currency}`}
+                                        </>
+                                    }
+                                </p>
                             </div>
-                        </div>
 
-                        <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 mt-4">
-                            <div className="sm:col-span-1">
-                                <dt className="text-sm font-medium">Dimensions</dt>
-                                <dd className="mt-1 text-sm">{artwork.data?.dimension}</dd>
+                            {/* Reviews */}
+                            <div className="mt-3">
+                                <h3 className="sr-only">Reviews</h3>
+                                <div className="flex items-center">
+                                    <div className="flex items-center">
+                                        <div className="rating rating-half">
+                                            <input type="radio" name="rating-10" className="rating-hidden" />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 0.5} readOnly />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 1} readOnly />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 1.5} readOnly />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 2} readOnly />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 2.5} readOnly />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 3} readOnly />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 3.5} readOnly />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 4} readOnly />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-1" checked={artwork.data.rating == 4.5} readOnly />
+                                            <input type="radio" name="rating-10" className="bg-primary mask mask-star-2 mask-half-2" checked={artwork.data.rating == 5} readOnly />
+                                        </div>
+                                    </div>
+                                    <p className="sr-only">{artwork.data.rating.toString()} out of 5 stars</p>
+                                </div>
                             </div>
-                            <div className="sm:col-span-1">
-                                <dt className="text-sm font-medium">Orientation</dt>
-                                <dd className="mt-1 text-sm">{artwork.data?.orientation}</dd>
-                            </div>
-                        </dl>
 
-                        {/* Colors */}
-                        {/* <div>
+                            <div className="my-3">
+                                {artwork.data.Medium.map(m => (
+                                    <span className="badge badge-lg badge-primary mx-1" key={m.id}>
+                                        {m.name}
+                                    </span>
+                                ))}
+                            </div>
+
+                            <div className="">
+                                <h3 className="sr-only">Description</h3>
+
+                                <div
+                                    className="text-base space-y-6">
+                                    {parse(artwork.data?.description ?? "")}
+                                </div>
+                            </div>
+
+                            <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 mt-4">
+                                <div className="sm:col-span-1">
+                                    <dt className="text-sm font-medium">Dimensions</dt>
+                                    <dd className="mt-1 text-sm">{artwork.data?.dimension}</dd>
+                                </div>
+                                <div className="sm:col-span-1">
+                                    <dt className="text-sm font-medium">Orientation</dt>
+                                    <dd className="mt-1 text-sm">{artwork.data?.orientation}</dd>
+                                </div>
+                            </dl>
+
+                            {/* Colors */}
+                            {/* <div>
                                 <h3 className="text-sm text-gray-600">Color</h3>
 
                                 <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-2">
@@ -291,29 +297,29 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                 </RadioGroup>
                             </div> */}
 
-                        <div className="mt-10 flex sm:flex-col1">
-                            {
-                                artwork.data?.availableForSale &&
-                                <>
-                                    {
-                                        cartItemIds.filter(c => c.id == Number(id)).length == 0 ?
-                                            <button
-                                                className="btn btn-primary btn-wide"
-                                                onClick={addToCart}>
-                                                Add to cart
-                                            </button>
-                                            :
-                                            <button
-                                                className="btn btn-error btn-outline btn-wide"
-                                                onClick={removeFromCart}>
-                                                Remove from cart
-                                            </button>
-                                    }
-                                </>
-                            }
-                        </div>
+                            <div className="mt-10 flex sm:flex-col1">
+                                {
+                                    artwork.data?.availableForSale &&
+                                    <>
+                                        {
+                                            cartItemIds.filter(c => c.id == Number(id)).length == 0 ?
+                                                <button
+                                                    className="btn btn-primary btn-wide"
+                                                    onClick={addToCart}>
+                                                    Add to cart
+                                                </button>
+                                                :
+                                                <button
+                                                    className="btn btn-error btn-outline btn-wide"
+                                                    onClick={removeFromCart}>
+                                                    Remove from cart
+                                                </button>
+                                        }
+                                    </>
+                                }
+                            </div>
 
-                        {/* <section aria-labelledby="details-heading" className="mt-12">
+                            {/* <section aria-labelledby="details-heading" className="mt-12">
                             <h2 id="details-heading" className="sr-only">
                                 Additional details
                             </h2>
@@ -358,9 +364,11 @@ const ArtworkDetail: NextPageWithLayout = () => {
                                 ))}
                             </div>
                         </section> */}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </>
+
         }
     </>
 }

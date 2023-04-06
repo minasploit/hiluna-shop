@@ -20,6 +20,7 @@ import { env } from "~/env.mjs";
 import { useSession } from "next-auth/react";
 import { AiFillHeart } from "react-icons/ai"
 import { FieldType } from "~/components/form/FieldAttributes";
+import Head from "next/head";
 
 const Artworks: NextPageWithLayout = () => {
 
@@ -129,6 +130,10 @@ const Artworks: NextPageWithLayout = () => {
     }
 
     return <>
+        <Head>
+            <title>Artworks - Hiluna Art</title>
+        </Head>
+        
         <FormProvider {...filtersForm}>
             <form>
                 {/* Mobile filter dialog */}

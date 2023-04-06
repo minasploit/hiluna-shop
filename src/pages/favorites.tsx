@@ -8,6 +8,7 @@ import { getArtworkImageUrl, getArtworkImage } from "~/utils/functions";
 import Image from "next/image";
 import { useLocalStorage } from "usehooks-ts";
 import { type CartItem } from "~/components/Cart";
+import Head from "next/head";
 
 const Favorites: NextPageWithLayout = () => {
     const artworks = api.favorite.list.useQuery();
@@ -15,6 +16,10 @@ const Favorites: NextPageWithLayout = () => {
     const [cartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
 
     return <>
+        <Head>
+            <title>Favorite Artworks - Hiluna Art</title>
+        </Head>
+
         <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
             <div className="border-b border-primary pt-16 pb-10">
                 <h1 className="text-4xl font-extrabold tracking-tight text-primary">

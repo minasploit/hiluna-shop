@@ -2,12 +2,17 @@ import Link from "next/link";
 import { FiImage, FiList, FiPenTool, FiUsers } from "react-icons/fi";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "../_app";
+import Head from "next/head";
 
 const AdminPage: NextPageWithLayout = () => {
 
     const dashboardNumbers = api.dashboard.getDashboardNumbers.useQuery();
 
     return <>
+        <Head>
+            <title>Dashboard - Hiluna Art</title>
+        </Head>
+
         <div className="text-center min-h-screen overflow-x-auto">
 
             <div className="stats stats-vertical sm:stats-horizontal shadow gap-5 mt-10">

@@ -21,6 +21,7 @@ import { type FtpUploadResult } from "./api/upload";
 import { PaymentMethod } from "@prisma/client";
 import { useRouter } from "next/router";
 import { getArtworkImageUrl } from "~/utils/functions";
+import Head from "next/head";
 
 const paymentMethods = [
     { id: 0, title: 'Cash on Delivery', label: 'Cash', description: 'Make the payment in cash when the artwork is delivered', value: PaymentMethod.CashOnDelivery },
@@ -142,6 +143,10 @@ const Checkout: NextPageWithLayout = () => {
 
     return (
         <>
+            <Head>
+                <title>Checkout - Hiluna Art</title>
+            </Head>
+
             <div className="max-w-2xl mx-auto pt-8 pb-24 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl mb-5">Checkout</h1>
 

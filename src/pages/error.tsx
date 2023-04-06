@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { type NextPageWithLayout } from "./_app";
+import Head from "next/head";
 
 const Error: NextPageWithLayout = () => {
     const router = useRouter();
@@ -25,6 +26,10 @@ const Error: NextPageWithLayout = () => {
     }, [error])
 
     return <>
+        <Head>
+            <title>Error - Hiluna Art</title>
+        </Head>
+
         <div className="min-h-screen flex justify-center items-center">
             <div className="card w-96 bg-base-100 shadow-xl">
                 <div className="card-body">

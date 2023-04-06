@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { type NextPageWithLayout } from "./_app";
+import Head from "next/head";
 
 const steps = [
     {
@@ -31,6 +32,10 @@ const steps = [
 
 const Portfolio: NextPageWithLayout = () => {
     return <>
+        <Head>
+            <title>Portfolio - Hiluna Art</title>
+        </Head>
+
         <main className="max-w-7xl mx-auto py-8 sm:py-16 px-4 sm:px-6 lg:pb-24 lg:px-8">
             <div className="max-w-xl">
                 <h1 className="text-primary text-4xl font-extrabold tracking-tight sm:text-3xl">My Portfolio</h1>

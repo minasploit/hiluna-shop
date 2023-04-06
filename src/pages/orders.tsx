@@ -10,6 +10,7 @@ import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { api } from "~/utils/api";
 import { hashId } from "~/utils/hashId";
 import { type NextPageWithLayout } from "./_app";
+import Head from "next/head";
 
 const Orders: NextPageWithLayout = () => {
 
@@ -29,6 +30,10 @@ const Orders: NextPageWithLayout = () => {
     }, [router, status])
 
     return <>
+        <Head>
+            <title>Order History - Hiluna Art</title>
+        </Head>
+
         <main className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:pb-24 lg:px-8">
             {
                 orderId &&
