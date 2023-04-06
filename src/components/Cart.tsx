@@ -188,7 +188,7 @@ const Cart = ({ cartOpen, setCartOpen }: { cartOpen: boolean, setCartOpen: Dispa
 																Checkout
 															</button>
 															:
-															<button className="btn btn-primary w-full" onClick={() => void signIn()}>
+															<button className="btn btn-primary w-full" onClick={() => void signIn("google")}>
 																<FiUserCheck className="mx-3 text-xl" />
 																Login to checkout
 															</button>

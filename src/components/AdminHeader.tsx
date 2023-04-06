@@ -119,7 +119,7 @@ const AdminHeader = () => {
                     }
                     {
                         !session &&
-                        <button className="btn btn-ghost" onClick={() => void signIn()}>Login</button>
+                        <button className="btn btn-ghost" onClick={() => void signIn("google")}>Login</button>
                     }
                 </div>
             </div>
