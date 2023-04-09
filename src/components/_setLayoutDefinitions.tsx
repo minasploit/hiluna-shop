@@ -14,7 +14,7 @@ import ManageCollection from "~/pages/admin/collections";
 import NewCollection from "~/pages/admin/collections/new";
 import EditCollection from "~/pages/admin/collections/[id]";
 import EditArtwork from "~/pages/admin/artworks/[id]";
-import ArtworkDetail from "~/pages/artworks/[id]";
+import ArtworkDetail from "~/pages/artworks/[hashedId]";
 import ManageOrders from "~/pages/admin/orders";
 import Checkout from "~/pages/checkout";
 import Orders from "~/pages/orders";

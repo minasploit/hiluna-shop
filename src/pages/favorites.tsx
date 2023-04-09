@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useLocalStorage } from "usehooks-ts";
 import { type CartItem } from "~/components/Cart";
 import Head from "next/head";
+import { hashId } from "~/utils/hashId";
 
 const Favorites: NextPageWithLayout = () => {
     const artworks = api.favorite.list.useQuery();
@@ -51,7 +52,7 @@ const Favorites: NextPageWithLayout = () => {
 
                     <div className="columns-1 gap-y-4 sm:columns-2 sm:gap-x-6 sm:gap-y-10 lg:columns-3 lg:gap-x-8 xl:columns-4">
                         {artworks.data?.map((artwork) => (
-                            <Link href={`/artworks/${artwork.id}`} key={artwork.id}>
+                            <Link href={`/artworks/${hashId.encode(artwork.id)}`} key={artwork.id}>
                                 <div
                                     className={
                                         clsx("group relative bg-base-200 bg-opacity-30 border rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8")

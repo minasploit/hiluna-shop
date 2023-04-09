@@ -28,6 +28,7 @@ const Artworks: NextPageWithLayout = () => {
 
     const { data: session } = useSession();
 
+    const [hasMounted, setHasMounted] = useState(false);
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [queryFilters, setQueryFilters] = useState<{
         medium: number[],
@@ -130,8 +131,8 @@ const Artworks: NextPageWithLayout = () => {
     }
 
     function addArtworksJsonLd() {
-
-        let html = "[";
+        let html = `
+        [`;
 
         artworks.data?.forEach((artwork, index) => {
             if (index != 0) {
@@ -154,7 +155,7 @@ const Artworks: NextPageWithLayout = () => {
                     "@type": "Offer",
                     "price": ${artwork.price.toFixed(2)},
                     "priceCurrency": "ETB",
-                    "url": "${`${env.NEXT_PUBLIC_NEXTAUTH_URL ?? ""}/artworks/${artwork.id}`}",
+                    "url": "${`${env.NEXT_PUBLIC_NEXTAUTH_URL ?? ""}/artworks/${hashId.encode(artwork.id)}`}",
                     "itemCondition": "https://schema.org/NewCondition",
                     "availability": "${artwork.availableForSale ? "https://schema.org/InStock" : "https://schema.org/SoldOut"}"
                 },
@@ -169,12 +170,17 @@ const Artworks: NextPageWithLayout = () => {
             }`;
         })
 
-        html += "]";
+        html += `]
+        `;
 
         return artworks.data ? {
             __html: html,
         } : { __html: "" };
     }
+
+    useEffect(() => {
+        setHasMounted(true)
+    }, []);
 
     return <>
         <Head>
@@ -443,7 +449,7 @@ const Artworks: NextPageWithLayout = () => {
                                     </div>
                                 }
                                 {artworks.data?.map((artwork) => (
-                                    <Link href={`/artworks/${artwork.id}`} key={artwork.id}>
+                                    <Link href={`/artworks/${hashId.encode(artwork.id)}`} key={artwork.id}>
                                         <div
                                             className={
                                                 clsx("group relative bg-base-200 bg-opacity-30 border rounded-lg flex flex-col overflow-hidden h-fit mb-4 sm:mb-6 md:mb-8",
@@ -494,7 +500,7 @@ const Artworks: NextPageWithLayout = () => {
                                                                     <p className="mt-1 text-sm inline">Not available for sale</p>
                                                             }
                                                             {
-                                                                cartItemIds.map(c => c.id).includes(artwork.id) &&
+                                                                hasMounted && cartItemIds.map(c => c.id).includes(artwork.id) &&
                                                                 <span className="badge ml-2">In your cart</span>
                                                             }
                                                         </div>

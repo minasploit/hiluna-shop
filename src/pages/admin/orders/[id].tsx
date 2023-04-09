@@ -12,6 +12,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { toast } from "react-hot-toast";
+import { hashId } from "~/utils/hashId";
 
 interface OrderStatusOption {
     title: string;
@@ -173,7 +174,7 @@ const ManageOrder: NextPageWithLayout = () => {
                             <dd className="grid mt-2 gap-2">
                                 {
                                     order.data.OrderedArtworks.map(orderedArtwork => (
-                                        <Link href={`/artworks/${orderedArtwork.artworkId}`} key={orderedArtwork.artworkId}>
+                                        <Link href={`/artworks/${hashId.encode(orderedArtwork.artworkId)}`} key={orderedArtwork.artworkId}>
                                             <div className="flex items-center space-x-3 hover:opacity-80" >
                                                 <div className="avatar">
                                                     <div className="mask mask-squircle w-12 h-12">

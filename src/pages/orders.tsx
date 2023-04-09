@@ -145,7 +145,7 @@ const Orders: NextPageWithLayout = () => {
                                     {order.OrderedArtworks.map((orderedArtwork) => (
                                         <tr key={`${order.id} ${orderedArtwork.artworkId}`}>
                                             <td className="py-6 pr-8">
-                                                <Link href={`/artworks/${orderedArtwork.artworkId}`} className="hover:opacity-75">
+                                                <Link href={`/artworks/${hashId.encode(orderedArtwork.artworkId)}`} className="hover:opacity-75">
                                                     <div className="flex items-center">
                                                         <Image
                                                             src={getArtworkImageUrl(orderedArtwork.Artwork)}
@@ -170,7 +170,7 @@ const Orders: NextPageWithLayout = () => {
                                             </td>
                                             <td className="hidden py-6 pr-8 sm:table-cell">{prettifyCamel(order.orderStatus)}</td>
                                             <td className="py-6 font-medium text-right whitespace-nowrap">
-                                                <Link href={`/artworks/${orderedArtwork.Artwork.id}`} className="text-primary">
+                                                <Link href={`/artworks/${hashId.encode(orderedArtwork.Artwork.id)}`} className="text-primary">
                                                     View<span className="hidden lg:inline"> Artwork</span>
                                                     <span className="sr-only">, {orderedArtwork.Artwork.name}</span>
                                                 </Link>

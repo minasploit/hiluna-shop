@@ -17,18 +17,27 @@ import { useSession } from "next-auth/react";
 import { AiFillHeart } from "react-icons/ai"
 import Head from "next/head";
 import { env } from "process";
+import { hashId } from "~/utils/hashId";
+import { useEffect, useState } from "react";
 
 const ArtworkDetail: NextPageWithLayout = () => {
     const router = useRouter();
-    const { id } = router.query;
+    const { hashedId } = router.query;
+
+    const [id, setId] = useState<number | undefined>(undefined);
 
     const { data: session } = useSession();
 
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
 
-    const artwork = api.artwork.getOne.useQuery(Number(id), { enabled: id != undefined });
+    const artwork = api.artwork.getOne.useQuery(id ?? 0, { enabled: id != undefined });
 
     const favoriteMutation = api.favorite.toggleFavorite.useMutation();
+
+    useEffect(() => {
+        if (typeof hashedId == "string")
+            setId(hashId.decode(hashedId));
+    }, [hashedId])
 
     function addToCart() {
         setCartItemIds([
@@ -55,7 +64,8 @@ const ArtworkDetail: NextPageWithLayout = () => {
 
     function addArtworkJsonLd() {
         return artwork.data ? {
-            __html: `{
+            __html: `
+            {
                 "@context": "https://schema.org/",
                 "@type": "Product",
                 "name": "${artwork.data.name}",
@@ -118,7 +128,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
             artwork.data &&
             <>
                 <Head>
-                    <title>{artwork.data.name} - Hiluna Art</title>
+                    <title>{`${artwork.data.name} - Hiluna Art`}</title>
                     <meta property="og:title" content={artwork.data.name} />
                     <meta
                         name="description"

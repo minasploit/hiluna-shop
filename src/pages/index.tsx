@@ -182,7 +182,7 @@ const Home: NextPageWithLayout = () => {
 							</p>
 							<button
 								className="btn btn-primary mt-6 inline-block w-full border border-transparent rounded-md py-3 px-8 font-medium sm:w-auto"
-							 onClick={() => router.push("/portfolio")}>
+								onClick={() => router.push("/portfolio")}>
 								View my portfolio
 							</button>
 						</div>
@@ -253,7 +253,7 @@ const Home: NextPageWithLayout = () => {
 										/>
 									</div>
 									<h3 className="mt-4 text-base font-semibold">
-										<a href={`/artworks/${favorite.id}`}>
+										<a href={`/artworks/${hashId.encode(favorite.id)}`}>
 											<span className="absolute inset-0" />
 											{favorite.name}
 										</a>

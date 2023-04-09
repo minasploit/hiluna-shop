@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { getArtworkImageUrl } from "~/utils/functions";
 import { Transition, Dialog } from "@headlessui/react";
+import { hashId } from "~/utils/hashId";
 
 export interface CartItem {
 	id: number;
@@ -17,13 +18,17 @@ export interface CartItem {
 
 const Cart = ({ cartOpen, setCartOpen }: { cartOpen: boolean, setCartOpen: Dispatch<SetStateAction<boolean>> }) => {
 
+	const [hasMounted, setHasMounted] = useState(false);
+
 	const { status } = useSession()
 	const router = useRouter();
 
 	const [subTotal, setSubTotal] = useState(0);
 
 	const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
-	const cartItems = api.artwork.getMany.useQuery(cartItemIds.map(c => c.id));
+	const cartItems = api.artwork.getMany.useQuery(cartItemIds.map(c => c.id), {
+		enabled: cartItemIds.length > 0
+	});
 
 	const removeFromCart = useCallback((id: number) => {
 		setCartItemIds(cartItemIds.filter(c => c.id != id));
@@ -59,6 +64,13 @@ const Cart = ({ cartOpen, setCartOpen }: { cartOpen: boolean, setCartOpen: Dispa
 		})
 
 	}, [cartItemIds, cartItems, removeFromCart]);
+
+	useEffect(() => {
+		setHasMounted(true)
+	}, []);
+
+	if (!hasMounted)
+		return null
 
 	return (
 		<>
@@ -133,7 +145,7 @@ const Cart = ({ cartOpen, setCartOpen }: { cartOpen: boolean, setCartOpen: Dispa
 																	<div>
 																		<div className="flex justify-between text-base font-medium">
 																			<h3>
-																				<Link href={`/artworks/${item.id}`} onClick={() => setCartOpen(false)}>
+																				<Link href={`/artworks/${hashId.encode(item.id)}`} onClick={() => setCartOpen(false)}>
 																					{item.name}
 																				</Link>
 																			</h3>

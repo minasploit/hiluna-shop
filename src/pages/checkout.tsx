@@ -22,6 +22,7 @@ import { PaymentMethod } from "@prisma/client";
 import { useRouter } from "next/router";
 import { getArtworkImageUrl } from "~/utils/functions";
 import Head from "next/head";
+import { hashId } from "~/utils/hashId";
 
 const paymentMethods = [
     { id: 0, title: 'Cash on Delivery', label: 'Cash', description: 'Make the payment in cash when the artwork is delivered', value: PaymentMethod.CashOnDelivery },
@@ -31,6 +32,9 @@ const paymentMethods = [
 ]
 
 const Checkout: NextPageWithLayout = () => {
+
+    const [hasMounted, setHasMounted] = useState(false);
+
     const [subTotal, setSubTotal] = useState(0);
     const [total, setTotal] = useState(0);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(paymentMethods[0]);
@@ -39,7 +43,9 @@ const Checkout: NextPageWithLayout = () => {
     const router = useRouter();
 
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
-    const cartItems = api.artwork.getMany.useQuery(cartItemIds.map(c => c.id));
+    const cartItems = api.artwork.getMany.useQuery(cartItemIds.map(c => c.id), {
+        enabled: cartItemIds.length > 0
+    });
 
     const removeFromCart = useCallback((id: number) => {
         setCartItemIds(cartItemIds.filter(c => c.id != id));
@@ -140,6 +146,13 @@ const Checkout: NextPageWithLayout = () => {
             toast.error("Error placing order...", { id: toastId });
         }
     };
+
+    useEffect(() => {
+        setHasMounted(true)
+    }, []);
+
+    if (!hasMounted)
+        return null
 
     return (
         <>
@@ -315,7 +328,7 @@ const Checkout: NextPageWithLayout = () => {
                                                     <div className="flex">
                                                         <div className="min-w-0 flex-1">
                                                             <h4 className="text-sm">
-                                                                <Link href={`/artworks/${item.id}`} className="font-medium">
+                                                                <Link href={`/artworks/${hashId.encode(item.id)}`} className="font-medium">
                                                                     {item.name}
                                                                 </Link>
                                                             </h4>
