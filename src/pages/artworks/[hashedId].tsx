@@ -24,13 +24,13 @@ const ArtworkDetail: NextPageWithLayout = () => {
     const router = useRouter();
     const { hashedId } = router.query;
 
-    const [id] = useState<number>(typeof hashedId == "string" ? hashId.decode(hashedId) : 0);
+    const [id] = useState<number | undefined>(typeof hashedId == "string" ? hashId.decode(hashedId) : -1);
 
     const { data: session } = useSession();
 
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
 
-    const artwork = api.artwork.getOne.useQuery(id, { enabled: id != undefined || id == 0 });
+    const artwork = api.artwork.getOne.useQuery(id ?? 0, { enabled: id != -1 });
 
     const favoriteMutation = api.favorite.toggleFavorite.useMutation();
 
