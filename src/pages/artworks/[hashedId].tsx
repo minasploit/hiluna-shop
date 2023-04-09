@@ -18,26 +18,21 @@ import { AiFillHeart } from "react-icons/ai"
 import Head from "next/head";
 import { env } from "process";
 import { hashId } from "~/utils/hashId";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const ArtworkDetail: NextPageWithLayout = () => {
     const router = useRouter();
     const { hashedId } = router.query;
 
-    const [id, setId] = useState<number | undefined>(undefined);
+    const [id] = useState<number>(typeof hashedId == "string" ? hashId.decode(hashedId) : 0);
 
     const { data: session } = useSession();
 
     const [cartItemIds, setCartItemIds] = useLocalStorage<CartItem[]>("cartitems", []);
 
-    const artwork = api.artwork.getOne.useQuery(id ?? 0, { enabled: id != undefined });
+    const artwork = api.artwork.getOne.useQuery(id, { enabled: id != undefined || id == 0 });
 
     const favoriteMutation = api.favorite.toggleFavorite.useMutation();
-
-    useEffect(() => {
-        if (typeof hashedId == "string")
-            setId(hashId.decode(hashedId));
-    }, [hashedId])
 
     function addToCart() {
         setCartItemIds([
