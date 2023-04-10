@@ -1,6 +1,7 @@
 import useCss from "~/hooks/useCss";
 import { resolveStaticResource } from "../utils/functions";
 import Image from "next/image";
+import Link from "next/link";
 
 const ArtwallFrames = [
     {
@@ -90,7 +91,12 @@ const ArtwallFrames = [
     },
 ]
 
-const Artwall = () => {
+const Artwall = ({ featuredMedium }: {
+    featuredMedium: {
+        id: number,
+        name: string
+    }[]
+}) => {
     const style = useCss;
 
     let lastTarget: (EventTarget & HTMLDivElement) | null = null;
@@ -120,12 +126,14 @@ const Artwall = () => {
                             <p id="" className="text-lg sm:text-xl">Welcome to</p>
                             <h1 id="" className="text-3xl sm:text-3xl md:text-5xl">Hiluna Art</h1>
                             {/* <a type="button" id="animationButton" href="/wall-art">Shop Now</a> */}
-                            <button className="btn btn-primary md:btn-wide mt-8">View Artworks</button>
+                            <Link href="/artworks" className="btn btn-primary md:btn-wide mt-8">View Artworks</Link>
 
                             <div id="animationButtonTemplateContainerDiv">
-                                <button className="btn btn-link">Featured Artwork</button>
-                                <button className="btn btn-link">Photography</button>
-                                <button className="btn btn-link">Sports Illustrated</button>
+                                {
+                                    featuredMedium?.map(f => (
+                                        <button className="btn btn-link" key={`fav-${f.id}`}>{f.name}</button>
+                                    ))
+                                }
                             </div>
 
                         </div>
