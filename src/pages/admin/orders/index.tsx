@@ -8,6 +8,7 @@ import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 import { hashId } from "~/utils/hashId";
 import { useState } from "react";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 const ManageOrders: NextPageWithLayout = () => {
 
@@ -123,7 +124,14 @@ const ManageOrders: NextPageWithLayout = () => {
             </table>
 
             {
-                !orders.data?.length &&
+                orders.isLoading &&
+                <div className="flex justify-center">
+                    <LoadingSpinner className="text-center my-6 h-8 w-8 text-primary" />
+                </div>
+            }
+
+            {
+                !orders.isLoading && !orders.data?.length &&
                 <div className="text-center my-6 text-lg font-medium">No Orders</div>
             }
         </div>

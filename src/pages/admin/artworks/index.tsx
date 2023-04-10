@@ -9,6 +9,7 @@ import { FiCheckCircle } from "react-icons/fi";
 import { getArtworkImageUrl } from "~/utils/functions";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 const ManageArtworks: NextPageWithLayout = () => {
     const [deleteArtworkId, setDeleteArtworkId] = useState(0);
@@ -62,7 +63,7 @@ const ManageArtworks: NextPageWithLayout = () => {
                 <h1 className="text-5xl font-bold">Artworks</h1>
                 <p className="py-6">Here are your artworks</p>
             </div>
-            
+
             <Link href="artworks/new">
                 <button className="btn btn-primary">Add new artwork</button>
             </Link>
@@ -139,7 +140,14 @@ const ManageArtworks: NextPageWithLayout = () => {
             </table>
 
             {
-                !artworks.data?.length &&
+                artworks.isLoading &&
+                <div className="flex justify-center">
+                    <LoadingSpinner className="text-center my-6 h-8 w-8 text-primary" />
+                </div>
+            }
+
+            {
+                !artworks.isLoading && !artworks.data?.length &&
                 <div className="text-center my-6 text-lg font-medium">No Artworks</div>
             }
         </div>

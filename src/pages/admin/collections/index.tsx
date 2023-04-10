@@ -2,13 +2,14 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 
 const ManageCollection: NextPageWithLayout = () => {
     const [deleteCollectionId, setDeleteCollectionId] = useState(0);
 
-    const collection = api.collection.list.useQuery();
+    const collections = api.collection.list.useQuery();
     const deleteCollectionMutation = api.collection.delete.useMutation();
 
     async function deleteCollection(id: number) {
@@ -19,7 +20,7 @@ const ManageCollection: NextPageWithLayout = () => {
 
             toast.success("Collection deleted", { id: toastId });
 
-            await collection.refetch()
+            await collections.refetch()
         } catch {
             toast.error("Error deleting collection", { id: toastId });
         }
@@ -57,7 +58,7 @@ const ManageCollection: NextPageWithLayout = () => {
                 <h1 className="text-5xl font-bold">Collections</h1>
                 <p className="py-6">Here are your collections</p>
             </div>
-            
+
             <Link href="collections/new">
                 <button className="btn btn-primary">Add new Collection</button>
             </Link>
@@ -75,7 +76,7 @@ const ManageCollection: NextPageWithLayout = () => {
                 </thead>
                 <tbody>
                     {
-                        collection.data?.map((collection, index) => (
+                        collections.data?.map((collection, index) => (
                             <tr key={collection.id}>
                                 <th>{index + 1}</th>
                                 <td>
@@ -97,7 +98,14 @@ const ManageCollection: NextPageWithLayout = () => {
             </table>
 
             {
-                !collection.data?.length &&
+                collections.isLoading &&
+                <div className="flex justify-center">
+                    <LoadingSpinner className="text-center my-6 h-8 w-8 text-primary" />
+                </div>
+            }
+
+            {
+                !collections.isLoading && !collections.data?.length &&
                 <div className="text-center my-6 text-lg font-medium">No Collections</div>
             }
         </div>

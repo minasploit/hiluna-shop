@@ -115,7 +115,7 @@ const css = `
     box-sizing: border-box;
     width: 100%;
     padding-bottom: 1%;
-    margin-top: -10%;
+    // margin-top: -10%;
     font-size: 1.5vw;
     font-family: montserratregular, arial;
     /* color: #222222; */
@@ -133,7 +133,7 @@ const css = `
     font-size: 3.5vw;
     font-family: montserratregular, arial;
     /* color: #222222; */
-    text-transform: uppercase;
+    // text-transform: uppercase;
     line-height: 100%;
     text-shadow: 0.0vw 0.30vw 0.0vw rgba(0, 0, 0, 0.10);
     letter-spacing: 0.1vw;
@@ -191,10 +191,6 @@ const css = `
 
 .buttonTemplate:focus {
     outline: none;
-}
-
-.buttonTemplate[data-selected='1'] {
-    text-decoration: underline;
 }
 
 .buttonTemplate::after {

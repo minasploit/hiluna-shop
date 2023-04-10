@@ -7,6 +7,7 @@ import { type NextPageWithLayout } from "~/pages/_app";
 import { api } from "~/utils/api";
 import { resolveUploadResource } from "~/utils/functions";
 import Image from "next/image";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 const ManageMedium: NextPageWithLayout = () => {
     const [deleteMediaId, setDeleteMediaId] = useState(0);
@@ -127,7 +128,14 @@ const ManageMedium: NextPageWithLayout = () => {
             </table>
 
             {
-                !medium.data?.length &&
+                medium.isLoading &&
+                <div className="flex justify-center">
+                    <LoadingSpinner className="text-center my-6 h-8 w-8 text-primary" />
+                </div>
+            }
+
+            {
+                !medium.isLoading && !medium.data?.length &&
                 <div className="text-center my-6 text-lg font-medium">No Medium</div>
             }
         </div>
