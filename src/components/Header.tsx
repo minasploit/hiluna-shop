@@ -50,7 +50,7 @@ const Header = () => {
                                     return <Fragment key={item.id}></Fragment>
 
                                 return <li key={item.id}>
-                                    <Link href={item.href}>
+                                    <Link href={item.href} rel={item.adminOnly ? "nofollow" : ""}>
                                         {item.icon}
                                         {item.title}
                                     </Link>
@@ -71,7 +71,8 @@ const Header = () => {
                             return <Fragment key={item.id}></Fragment>
 
                         return <li key={item.id}>
-                            <Link href={item.href} className={clsx("btn", router.route.startsWith(item.href) ? "bg-primary/20 hover:text-white/80" : "btn-ghost")}>
+                            <Link href={item.href} rel={item.adminOnly ? "nofollow" : ""}
+                                className={clsx("btn", router.route.startsWith(item.href) ? "bg-primary/20 hover:text-white/80" : "btn-ghost")}>
                                 {item.icon}
                                 {item.title}
                                 {/* {item.children &&
@@ -93,7 +94,7 @@ const Header = () => {
                 {
                     session?.user.role == UserRole.ADMIN &&
                     <div className="hidden sm:block">
-                        <Link className="swap swap-rotate btn btn-circle btn-ghost" href="/admin">
+                        <Link className="swap swap-rotate btn btn-circle btn-ghost" href="/admin" rel="nofollow">
                             <FiEye className="w-5 h-5" />
                         </Link>
                     </div>
