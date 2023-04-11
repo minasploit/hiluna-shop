@@ -81,7 +81,7 @@ const Artworks: NextPageWithLayout = () => {
         setQueryFilters(defaultFilters)
 
         if (!filtersForm.formState.isDirty) {
-            filtersForm.setValue("medium", defaultFilters.medium)
+            // filtersForm.setValue("medium", defaultFilters.medium)
             filtersForm.setValue("mediumMobile", defaultFilters.medium)
 
             filtersForm.setValue("collection", defaultFilters.collection)
