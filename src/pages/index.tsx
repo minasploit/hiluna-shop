@@ -7,6 +7,7 @@ import { Currency } from "@prisma/client";
 import Link from "next/link";
 import { hashId } from "~/utils/hashId";
 import { useRouter } from "next/router";
+import { Fragment } from "react";
 
 const testimonials = [
 	{
@@ -38,7 +39,7 @@ const Home: NextPageWithLayout = () => {
 
 	return (
 		<>
-			<Artwall featuredMedium={featuredMedium.data?.map(f => ({ id: f.id, name: f.name })) ?? []} />
+			<Artwall featuredMedium={featuredMedium.data?.map(f => ({ id: f.id, name: f.name, href: `/artworks?m=${hashId.encode(f.id)}` })) ?? []} />
 
 			<main className="flex flex-col gap-16 mt-16">
 				{
@@ -54,7 +55,7 @@ const Home: NextPageWithLayout = () => {
 						<div className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:grid-rows-2 sm:gap-x-6 lg:gap-8">
 							{
 								featuredMedium.data?.map((media, mediaIdx) => (
-									<>
+									<Fragment key={`favmedium-${media.id}`}>
 										{
 											mediaIdx == 0 &&
 											<div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
@@ -110,7 +111,7 @@ const Home: NextPageWithLayout = () => {
 												</div>
 											</div>
 										}
-									</>
+									</Fragment>
 								))
 							}
 						</div>

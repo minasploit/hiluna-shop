@@ -94,7 +94,8 @@ const ArtwallFrames = [
 const Artwall = ({ featuredMedium }: {
     featuredMedium: {
         id: number,
-        name: string
+        name: string,
+        href: string
     }[]
 }) => {
     const style = useCss;
@@ -131,7 +132,7 @@ const Artwall = ({ featuredMedium }: {
                             <div id="animationButtonTemplateContainerDiv">
                                 {
                                     featuredMedium?.map(f => (
-                                        <button className="btn btn-link" key={`fav-${f.id}`}>{f.name}</button>
+                                        <Link className="btn btn-link" key={`fav-${f.id}`} href={f.href}>{f.name}</Link>
                                     ))
                                 }
                             </div>
