@@ -155,7 +155,7 @@ const Artworks: NextPageWithLayout = () => {
                     "@type": "Offer",
                     "price": ${artwork.price.toFixed(2)},
                     "priceCurrency": "ETB",
-                    "url": "${`${env.NEXT_PUBLIC_NEXTAUTH_URL ?? ""}/artworks/${hashId.encode(artwork.id)}`}",
+                    "url": "${`${env.NEXT_PUBLIC_NEXTAUTH_URL ?? ""}artworks/${hashId.encode(artwork.id)}`}",
                     "itemCondition": "https://schema.org/NewCondition",
                     "availability": "${artwork.availableForSale ? "https://schema.org/InStock" : "https://schema.org/SoldOut"}"
                 },

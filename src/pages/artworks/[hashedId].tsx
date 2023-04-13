@@ -75,7 +75,7 @@ const ArtworkDetail: NextPageWithLayout = () => {
                     "@type": "Offer",
                     "price": ${artwork.data.price.toFixed(2)},
                     "priceCurrency": "ETB",
-                    "url": "${`${env.NEXT_PUBLIC_NEXTAUTH_URL ?? ""}/artworks/${artwork.data.id}`}",
+                    "url": "${`${env.NEXT_PUBLIC_NEXTAUTH_URL ?? ""}artworks/${artwork.data.id}`}",
                     "itemCondition": "https://schema.org/NewCondition",
                     "availability": "${artwork.data.availableForSale ? "https://schema.org/InStock" : "https://schema.org/SoldOut"}"
                 },
