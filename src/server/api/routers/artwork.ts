@@ -230,6 +230,12 @@ export const artworkRouter = createTRPCRouter({
     delete: adminProcedure
         .input(z.number())
         .mutation(async ({ ctx, input }) => {
+            await ctx.prisma.artworkFiles.deleteMany({
+                where: {
+                    artworkId: input
+                }
+            });
+
             const res = await ctx.prisma.artwork.delete({
                 where: {
                     id: input
