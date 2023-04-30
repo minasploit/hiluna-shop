@@ -41,7 +41,7 @@ const NewMedium: NextPageWithLayout = () => {
         },
         {
             name: "featured",
-            label: "Featued on the home page?",
+            label: "Featured on the home page?",
             type: FieldType.CHECKBOX
         },
         {
