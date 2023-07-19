@@ -5,6 +5,7 @@
  * This is especially useful for Docker builds.
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
+const analyze = await import('@next/bundle-analyzer')
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -55,4 +56,10 @@ const config = {
 		]
 	}
 };
-export default config;
+const withBundleAnalyzer = analyze.default({
+	enabled: process.env.ANALYZE === 'true'
+})
+export default withBundleAnalyzer({
+	...config
+})
+// export default config;
