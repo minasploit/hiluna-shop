@@ -23,7 +23,7 @@ const testimonials = [
 	{
 		id: 2,
 		quote: "Ordered a sculpture of a portrait, what an amazing piece I got!",
-		attribution: "Meleket Abel",
+		attribution: "Meleket Abel, Ethiopia",
 	},
 	{
 		id: 3,
