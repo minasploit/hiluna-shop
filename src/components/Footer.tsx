@@ -28,13 +28,13 @@
 // }
 
 const Footer = () => {
-
-    return <footer aria-labelledby="footer-heading" className="">
-        <h2 id="footer-heading" className="sr-only">
-            Footer
-        </h2>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* <div className="py-20 xl:grid xl:grid-cols-3 xl:gap-8 border-b border-gray-500">
+	return (
+		<footer aria-labelledby="footer-heading" className="">
+			<h2 id="footer-heading" className="sr-only">
+				Footer
+			</h2>
+			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				{/* <div className="py-20 xl:grid xl:grid-cols-3 xl:gap-8 border-b border-gray-500">
                 <div className="grid grid-cols-2 gap-8 xl:col-span-2">
                     <div className="space-y-16 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
                         <div>
@@ -115,11 +115,15 @@ const Footer = () => {
                 </div>
             </div> */}
 
-            <div className="py-10">
-                <p className="text-sm">Copyright &copy; 2023 Hiluna Art</p>
-            </div>
-        </div>
-    </footer>
-}
+				<div className="py-10">
+					<p className="text-sm">
+						Copyright &copy; {`${new Date().getFullYear()}`} Hiluna
+						Art
+					</p>
+				</div>
+			</div>
+		</footer>
+	);
+};
 
-export default Footer
+export default Footer;
